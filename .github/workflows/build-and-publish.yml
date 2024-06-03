@@ -12,7 +12,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        project: [drbd-reactor, drbd, drbd-utils, linstor-server, linstor-py-api, linstor-client, linstor-gateway]
+        project: [drbd-reactor, drbd, linstor-server, linstor-py-api, linstor-client]
 
     outputs:
       VERSION: ${{ steps.set_version.outputs.version }}
