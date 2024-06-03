@@ -13,6 +13,7 @@ jobs:
     strategy:
       matrix:
         os: [noble, jammy]
+
     runs-on: ubuntu-latest
 
     steps:
@@ -55,7 +56,7 @@ jobs:
             ./configure
           else
             echo "Configure script not found, checking for other setup scripts."
-            
+            # Add additional setup steps here if necessary
           fi
 
       - name: Build package
@@ -82,4 +83,4 @@ jobs:
         env:
           PACKAGECLOUD_TOKEN: ${{ secrets.PACKAGECLOUD_TOKEN }}
         run: |
-          package_cloud push https://packagecloud.io/dniasoff/qcp-linstor-dev/package/ubuntu/${{ matrix.os }}  src/drbd/*.deb
+          package_cloud push your_packagecloud_username/repository/ubuntu/${{ matrix.os }} ../*.deb
