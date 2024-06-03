@@ -12,7 +12,15 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        project: [linstor-server, linstor-py-api, linstor-client, linstor-gateway]
+        project: [drbd, drbd-reactor, linstor-server, linstor-py-api, linstor-client, linstor-gateway]
+        repo_url: [
+          'https://github.com/LINBIT/drbd.git'
+          'https://github.com/LINBIT/drbd-reactor.git',
+          'https://github.com/LINBIT/linstor-server.git',
+          'https://github.com/LINBIT/linstor-py-api.git',
+          'https://github.com/LINBIT/linstor-client.git',
+          'https://github.com/LINBIT/linstor-gateway.git'
+        ]
 
     outputs:
       VERSION: ${{ steps.set_version.outputs.version }}
@@ -21,6 +29,11 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
+
+    - name: Clone the repository
+      run: |
+        git clone ${{ matrix.repo_url }} ${{ matrix.project }}
+        cd ${{ matrix.project }}
 
     - name: Set version and pre-release tag
       id: set_version
@@ -54,7 +67,7 @@ jobs:
           cat <<EOF > debian/changelog
             ${{ matrix.project }} (${{ needs.sourcepackage.outputs.VERSION }}-1) unstable; urgency=low
 
-             * Initial release.
+            * Initial release.
 
             -- Your Name <your.email@example.com>  $(date -R)
         EOF
