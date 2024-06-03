@@ -15,8 +15,8 @@ jobs:
       matrix:
         os: [ubuntu-20.04, ubuntu-22.04]
         include:
-          - os: ubuntu-20.04
-            dist: focal
+          - os: ubuntu-22.04
+            dist: Nobel
           - os: ubuntu-22.04
             dist: jammy
 
