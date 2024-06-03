@@ -52,12 +52,12 @@ jobs:
         fi
         if [ ! -f "debian/changelog" ]; then
           cat <<EOF > debian/changelog
-${{ matrix.project }} (${{ needs.sourcepackage.outputs.VERSION }}-1) unstable; urgency=low
+            ${{ matrix.project }} (${{ needs.sourcepackage.outputs.VERSION }}-1) unstable; urgency=low
 
-  * Initial release.
+             * Initial release.
 
- -- Your Name <your.email@example.com>  $(date -R)
-EOF
+            -- Your Name <your.email@example.com>  $(date -R)
+        EOF
         fi
 
     - name: Build source package
