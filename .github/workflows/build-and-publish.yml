@@ -14,8 +14,6 @@ jobs:
       matrix:
         project: [linstor-server, linstor-py-api, linstor-client, linstor-gateway]
         repo_url: [
-          'https://github.com/LINBIT/drbd.git'
-          'https://github.com/LINBIT/drbd-reactor.git',
           'https://github.com/LINBIT/linstor-server.git',
           'https://github.com/LINBIT/linstor-py-api.git',
           'https://github.com/LINBIT/linstor-client.git',
