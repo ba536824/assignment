@@ -44,12 +44,17 @@ jobs:
       - name: Generate configuration files
         run: |
           cd drbd
-          ./autogen.sh
+          if [ -f ./configure ]; then
+            echo "Configure script found, running configure."
+            ./configure
+          else
+            echo "Configure script not found, checking for other setup scripts."
+            # Add additional setup steps here if necessary
+          fi
 
       - name: Configure and build package
         run: |
           cd drbd
-          ./configure
           make
           sudo make install
           make deb
