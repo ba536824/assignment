@@ -10,6 +10,9 @@ on:
 
 jobs:
   build:
+    strategy:
+      matrix:
+        os: [noble, jammy]
     runs-on: ubuntu-latest
 
     steps:
@@ -40,13 +43,13 @@ jobs:
 
       - name: Clone DRBD repository
         run: |
-          git clone https://github.com/LINBIT/drbd.git
-          cd drbd
-          git checkout -b build-branch
+          git clone https://github.com/LINBIT/linstor-server.git
+          cd linstor-server
+          git pull
 
       - name: Generate configuration files
         run: |
-          cd drbd
+          cd linstor-server
           if [ -f ./configure ]; then
             echo "Configure script found, running configure."
             ./configure
@@ -57,13 +60,13 @@ jobs:
 
       - name: Build package
         run: |
-          cd drbd
+          cd linstor-server
           make
           sudo make install
       
       - name: Build DEB Package
         run: |
-          cd drbd
+          cd linstor-server
           dpkg-buildpackage -us -uc -b
 
       - name: Install PackageCloud CLI
@@ -74,4 +77,4 @@ jobs:
         env:
           PACKAGECLOUD_TOKEN: ${{ secrets.PACKAGECLOUD_TOKEN }}
         run: |
-          package_cloud push your_packagecloud_username/repository/ubuntu/jammy src/drbd/*.deb
+         package_cloud push https://packagecloud.io/dniasoff/qcp-linstor-dev/package/ubuntu/${{ matrix.os }} src/drbd/*.deb
