@@ -55,7 +55,7 @@ jobs:
             ./configure
           else
             echo "Configure script not found, checking for other setup scripts."
-            # Add additional setup steps here if necessary
+            
           fi
 
       - name: Build package
@@ -68,7 +68,7 @@ jobs:
         run: |
           cd drbd
           dpkg-buildpackage -us -uc -S
-          
+
       - name: Build Binary Package
         run: |
           cd drbd
