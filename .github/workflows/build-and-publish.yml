@@ -63,7 +63,6 @@ jobs:
       - name: Build DRBD Reactor
         run: |
           cd src/drbd-reactor
-          ls -l autogen.sh
           chmod +x autogen.sh
           ./autogen.sh
           ./configure
