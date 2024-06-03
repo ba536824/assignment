@@ -34,7 +34,8 @@ jobs:
             python3-dev \
             python3-setuptools \
             python3-pip \
-            coccinelle
+            coccinelle \
+            fakeroot
 
       - name: Clone DRBD repository
         run: |
@@ -53,12 +54,16 @@ jobs:
             # Add additional setup steps here if necessary
           fi
 
-      - name: Configure and build package
+      - name: Build package
         run: |
           cd drbd
           make
           sudo make install
-          make deb
+      
+      - name: Build DEB Package
+        run: |
+          cd drbd
+          dpkg-buildpackage -us -uc -b
 
       - name: Install PackageCloud CLI
         run: |
