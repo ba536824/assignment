@@ -1,157 +1,127 @@
-name: Build and Deploy LINBIT Packages
+name: Build DEB Packages
 
 on:
   push:
     branches:
       - main
   pull_request:
+    branches:
+      - main
 
 jobs:
-  sourcepackage:
+  build:
     runs-on: ubuntu-latest
     strategy:
-      fail-fast: true
       matrix:
-        project: [linstor-server]
-        repo_url: [
-          'https://github.com/LINBIT/linstor-server.git',
-        ]
-
-    outputs:
-      VERSION: ${{ steps.set_version.outputs.version }}
-      PRERELEASE_TAG: ${{ steps.set_version.outputs.prerelease_tag }}
+        os: [ubuntu-20.04, ubuntu-22.04]
+        include:
+          - os: ubuntu-20.04
+            dist: focal
+          - os: ubuntu-22.04
+            dist: jammy
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-    - name: Clone the repository
-      run: |
-        git clone ${{ matrix.repo_url }} ${{ matrix.project }}
-        cd ${{ matrix.project }}
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
 
-    - name: Set version and pre-release tag
-      id: set_version
-      run: |
-        VERSION=$(date +%Y%m%d%H%M%S)
-        echo "::set-output name=version::$VERSION"
-        echo "::set-output name=prerelease_tag::alpha"
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
 
-    - name: Install build dependencies
-      run: |
-        sudo apt-get update -qq
-        sudo apt-get install -y --no-install-recommends \
-          build-essential \
-          debhelper \
-          devscripts \
-          dh-make \
-          lintian \
-          ruby-dev \
-          cargo \
-          rustc \
-          bash-completion \
-          git
+      - name: Cache APT packages
+        uses: actions/cache@v2
+        with:
+          path: /var/cache/apt
+          key: ${{ runner.os }}-apt-${{ hashFiles('**/build.yml') }}
+          restore-keys: |
+            ${{ runner.os }}-apt-
 
-    - name: Prepare debian directory
-      run: |
-        cd ${{ matrix.project }}
-        if [ ! -d "debian" ]; then
-          mkdir debian
-        fi
-        if [ ! -f "debian/changelog" ]; then
-          cat <<EOF > debian/changelog
-            ${{ matrix.project }} (${{ needs.sourcepackage.outputs.VERSION }}-1) unstable; urgency=low
+      - name: Set up APT
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y devscripts debhelper dh-make
 
-            * Initial release.
+      - name: Install dependencies
+        run: |
+          sudo apt-get install -y \
+            build-essential \
+            libssl-dev \
+            libxml2-dev \
+            libcurl4-openssl-dev \
+            libtool \
+            autoconf \
+            automake \
+            libglib2.0-dev \
+            python3-dev \
+            python3-setuptools \
+            python3-pip \
+            ruby \
+            rubygems
 
-            -- Your Name <your.email@example.com>  $(date -R)
-        EOF
-        fi
+      - name: Build DRBD Reactor
+        run: |
+          cd src/drbd-reactor
+          ./autogen.sh
+          ./configure
+          make
+          make deb
 
-    - name: Build source package
-      run: |
-        cd ${{ matrix.project }}
-        debuild -D -sa -Zxz
+      - name: Build DRBD
+        run: |
+          cd src/drbd
+          ./autogen.sh
+          ./configure
+          make
+          make deb
 
-    - name: Store source package
-      uses: actions/upload-artifact@v3.1.0
-      with:
-        name: my-srcpkg-${{ matrix.project }}
-        path: ../*.dsc
+      - name: Build DRBD Utils
+        run: |
+          cd src/drbd-utils
+          ./autogen.sh
+          ./configure
+          make
+          make deb
 
-  binary_packages:
-    name: Build binary packages
-    needs: sourcepackage
-    strategy:
-      fail-fast: true
-      matrix:
-        dist: [jammy, noble]
-        arch: [amd64]
-        project: [linstor-server, linstor-py-api, linstor-client, linstor-gateway]
+      - name: Build LINSTOR Server
+        run: |
+          cd src/linstor-server
+          ./autogen.sh
+          ./configure
+          make
+          make deb
 
-    runs-on: ubuntu-latest
+      - name: Build LINSTOR PyAPI
+        run: |
+          cd src/linstor-pyapi
+          python3 setup.py sdist bdist_deb
 
-    steps:
-    - name: Download Artifacts
-      uses: actions/download-artifact@v3.0.0
-      with:
-        name: my-srcpkg-${{ matrix.project }}
-        path: artifacts/${{ matrix.project }}
+      - name: Build LINSTOR Client
+        run: |
+          cd src/linstor-client
+          ./autogen.sh
+          ./configure
+          make
+          make deb
 
-    - name: Build
-      uses: sillsdev/gha-ubuntu-packaging@v0.9
-      with:
-        dist: "${{ matrix.dist }}"
-        platform: "${{ matrix.arch }}"
-        source_dir: "artifacts/${{ matrix.project }}"
-        sourcepackage: "my${{ needs.sourcepackage.outputs.VERSION }}-1.dsc"
-        prerelease_tag: ${{ needs.sourcepackage.outputs.PRERELEASE_TAG }}
+      - name: Build LINSTOR Gateway
+        run: |
+          cd src/linstor-gateway
+          ./autogen.sh
+          ./configure
+          make
+          make deb
 
-    - name: Store binary packages
-      uses: actions/upload-artifact@v3.1.0
-      with:
-        name: my-binarypkgs-${{ matrix.project }}
-        path: |
-          artifacts/*
-          !artifacts/${{ matrix.project }}/
-
-  deb_signing:
-    name: Sign source and binary packages
-    needs: [sourcepackage, binary_packages]
-    runs-on: ubuntu-latest
-    environment: deploy
-    strategy:
-      fail-fast: true
-      matrix:
-        project: [linstor-server, linstor-py-api, linstor-client, linstor-gateway]
-
-    steps:
-    - name: Download Artifacts
-      uses: actions/download-artifact@v3.0.0
-      with:
-        name: my-srcpkg-${{ matrix.project }}
-        path: artifacts/srcpkg/${{ matrix.project }}
-
-    - name: Download Binary Packages
-      uses: actions/download-artifact@v3.0.0
-      with:
-        name: my-binarypkgs-${{ matrix.project }}
-        path: artifacts/binpkg/${{ matrix.project }}
-
-    - name: Sign packages
-      uses: sillsdev/gha-deb-signing@v0.6
-      with:
-        src-pkg-name: "my${{ needs.sourcepackage.outputs.VERSION }}-1_source.changes"
-        bin-pkg-name: "my${{ needs.sourcepackage.outputs.VERSION }}-1${{ needs.sourcepackage.outputs.PRERELEASE_TAG }}+"
-        artifacts-prefix: "my-${{ matrix.project }}-"
-        artifacts-result-name: "my-${{ matrix.project }}-signedpkgs"
-        gpg-signing-key: "${{ secrets.GPG_SIGNING_KEY }}"
-        debsign-keyid: "${{ secrets.DEBSIGN_KEYID }}"
-
-    - name: Upload packages to PackageCloud
-      env:
-        PACKAGE_CLOUD_API_KEY: ${{ secrets.PACKAGE_CLOUD_API_KEY }}
-      run: |
-        for pkg in artifacts/binpkg/${{ matrix.project }}/*.deb; do
-          package_cloud push dniasoff/qcp-linstor-dev/ubuntu/${{ matrix.dist }} $pkg
-        done
+      - name: Upload DEB Packages
+        uses: actions/upload-artifact@v2
+        with:
+          name: deb-packages
+          path: |
+            src/drbd-reactor/*.deb
+            src/drbd/*.deb
+            src/drbd-utils/*.deb
+            src/linstor-server/*.deb
+            src/linstor-pyapi/dist/*.deb
+            src/linstor-client/*.deb
+            src/linstor-gateway/*.deb
