@@ -12,7 +12,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        project: [drbd, drbd-reactor, linstor-server, linstor-py-api, linstor-client, linstor-gateway]
+        project: [linstor-server, linstor-py-api, linstor-client, linstor-gateway]
         repo_url: [
           'https://github.com/LINBIT/drbd.git'
           'https://github.com/LINBIT/drbd-reactor.git',
