@@ -35,7 +35,8 @@ jobs:
             python3-setuptools \
             python3-pip \
             coccinelle \
-            fakeroot
+            fakeroot \
+            dkms
 
       - name: Clone DRBD repository
         run: |
