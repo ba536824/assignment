@@ -12,12 +12,9 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        project: [linstor-server, linstor-py-api, linstor-client, linstor-gateway]
+        project: [linstor-server]
         repo_url: [
           'https://github.com/LINBIT/linstor-server.git',
-          'https://github.com/LINBIT/linstor-py-api.git',
-          'https://github.com/LINBIT/linstor-client.git',
-          'https://github.com/LINBIT/linstor-gateway.git'
         ]
 
     outputs:
