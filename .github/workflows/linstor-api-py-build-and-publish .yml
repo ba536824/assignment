@@ -67,7 +67,7 @@ jobs:
       - name: Build DEB Package
         run: |
           cd linstor-api-py
-          dpkg-buildpackage -us -uc -b
+          dpkg-buildpackage -us -uc -b -S
 
       - name: Install PackageCloud CLI
         run: |

@@ -67,7 +67,7 @@ jobs:
       - name: Build DEB Package
         run: |
           cd drbd-utils
-          dpkg-buildpackage -us -uc -b
+          dpkg-buildpackage -us -uc -b -S
 
       - name: Install PackageCloud CLI
         run: |

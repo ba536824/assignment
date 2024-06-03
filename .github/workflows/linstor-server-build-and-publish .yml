@@ -1,4 +1,4 @@
-name: Build and Publish DRBD Package
+name: Build and Publish Linstor-server Package
 
 on:
   push:
