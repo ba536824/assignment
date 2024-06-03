@@ -12,7 +12,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        project: [drbd-reactor, drbd, linstor-server, linstor-py-api, linstor-client]
+        project: [linstor-server, linstor-py-api, linstor-client, linstor-gateway]
 
     outputs:
       VERSION: ${{ steps.set_version.outputs.version }}
@@ -31,7 +31,8 @@ jobs:
 
     - name: Install build dependencies
       run: |
-        sudo apt-get update && sudo apt-get install -y \
+        sudo apt-get update -qq
+        sudo apt-get install -y --no-install-recommends \
           build-essential \
           debhelper \
           devscripts \
@@ -42,6 +43,22 @@ jobs:
           rustc \
           bash-completion \
           git
+
+    - name: Prepare debian directory
+      run: |
+        cd ${{ matrix.project }}
+        if [ ! -d "debian" ]; then
+          mkdir debian
+        fi
+        if [ ! -f "debian/changelog" ]; then
+          cat <<EOF > debian/changelog
+${{ matrix.project }} (${{ needs.sourcepackage.outputs.VERSION }}-1) unstable; urgency=low
+
+  * Initial release.
+
+ -- Your Name <your.email@example.com>  $(date -R)
+EOF
+        fi
 
     - name: Build source package
       run: |
@@ -62,7 +79,7 @@ jobs:
       matrix:
         dist: [jammy, noble]
         arch: [amd64]
-        project: [drbd-reactor, drbd, drbd-utils, linstor-server, linstor-py-api, linstor-client, linstor-gateway]
+        project: [linstor-server, linstor-py-api, linstor-client, linstor-gateway]
 
     runs-on: ubuntu-latest
 
@@ -98,7 +115,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        project: [drbd-reactor, drbd, drbd-utils, linstor-server, linstor-py-api, linstor-client, linstor-gateway]
+        project: [linstor-server, linstor-py-api, linstor-client, linstor-gateway]
 
     steps:
     - name: Download Artifacts
@@ -122,3 +139,11 @@ jobs:
         artifacts-result-name: "my-${{ matrix.project }}-signedpkgs"
         gpg-signing-key: "${{ secrets.GPG_SIGNING_KEY }}"
         debsign-keyid: "${{ secrets.DEBSIGN_KEYID }}"
+
+    - name: Upload packages to PackageCloud
+      env:
+        PACKAGE_CLOUD_API_KEY: ${{ secrets.PACKAGE_CLOUD_API_KEY }}
+      run: |
+        for pkg in artifacts/binpkg/${{ matrix.project }}/*.deb; do
+          package_cloud push dniasoff/qcp-linstor-dev/ubuntu/${{ matrix.dist }} $pkg
+        done
