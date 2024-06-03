@@ -1,0 +1,50 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nethopper-postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nethopper-postgres
+  template:
+    metadata:
+      labels:
+        Service: nethopper-postgres
+    spec:
+      containers:
+      - name: postgres
+        image: postgres:latest
+        ports:
+        - containerPort: 5432
+        env:
+        - name: POSTGRES_DB
+          value: "nethopperdb"
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: nethopper-secrets
+              key: postgres-user
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: nethopper-secrets
+              key: postgres-password
+      volumes:
+      - name: postgres-data
+        persistentVolumeClaim:
+          claimName: nethopper-postgres-pvc
+---
+# postgres-service.yml
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nethopper-postgres
+spec:
+  type: ClusterIP
+  selector:
+    service: nethopper-postgres
+  ports:
+  - port: 5432

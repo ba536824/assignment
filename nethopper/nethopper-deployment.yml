@@ -1,0 +1,34 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nethopper-frontend
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nethopper-frontend
+  template:
+    metadata:
+      labels:
+        app: nethopper-frontend
+    spec:
+      containers:
+      - name: frontend
+        image: <nethopper-frontend:latest>
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nethopper-frontend
+spec:
+  selector:
+    app: nethopper-frontend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+      nodePort: 30000
+  type: NodePort
