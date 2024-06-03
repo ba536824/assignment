@@ -1,0 +1,92 @@
+name: Build LINBIT DEB Packages
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - name: Ubuntu Noble
+            distro: noble
+          - name: Ubuntu Jammy
+            distro: jammy
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Ubuntu environment
+        uses: actions/setup-ubuntu@v3
+        with:
+          distro: ${{ matrix.distro }}
+
+      - name: Install dependencies (common for all projects)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            fakeroot \
+            build-essential \
+            dpkg-dev \
+            debhelper \
+            python3-dev \
+            python3-pip
+
+      - name: Clone LINBIT repositories (modify URLs for each project)
+        run: |
+          git clone https://github.com/LINBIT/drbd.git
+          git clone https://github.com/LINBIT/drbd-reactor.git  # Assuming separate repo
+          git clone https://github.com/LINBIT/drbd-utils.git
+          git clone https://github.com/LINBIT/linstor.git     # Assuming single repo for Linstor components
+      - name: Build Drbd Reactor (if applicable)
+        run: |
+          cd drbd-reactor
+          # Replace with specific build commands for Drbd Reactor
+          ./configure && make && sudo fakeroot dpkg-deb --build . ..
+          cp ../*.deb $GITHUB_WORKSPACE/artifacts/
+        working-directory: drbd-reactor
+        if: matrix.distro == 'noble'  # Or a condition for Drbd Reactor build
+
+      - name: Build Drbd
+        run: |
+          cd drbd
+          # Replace with specific build commands for Drbd
+          ./configure && make && sudo fakeroot dpkg-deb --build . ..
+          cp ../*.deb $GITHUB_WORKSPACE/artifacts/
+        working-directory: drbd
+
+      - name: Build Drbd Utils
+        run: |
+          cd drbd-utils
+          # Replace with specific build commands for Drbd Utils
+          ./configure && make && sudo fakeroot dpkg-deb --build . ..
+          cp ../*.deb $GITHUB_WORKSPACE/artifacts/
+        working-directory: drbd-utils
+
+      - name: Build Linstor components (assuming single repo)
+        run: |
+          cd linstor
+          # Build Linstor Server
+          # Replace with specific build commands for Linstor Server
+          # ...
+          cp ../*.deb $GITHUB_WORKSPACE/artifacts/
+          # Build Linstor Py Api
+          # Replace with specific build commands for Linstor Py Api
+          # ...
+          cp ../*.deb $GITHUB_WORKSPACE/artifacts/
+          # Build Linstor Client
+          # Replace with specific build commands for Linstor Client
+          # ...
+          cp ../*.deb $GITHUB_WORKSPACE/artifacts/
+          # Build Linstor Gateway
+          # Replace with specific build commands for Linstor Gateway
+          # ...
+          cp ../*.deb $GITHUB_WORKSPACE/artifacts/
+        working-directory: linstor
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: deb-packages-${{ matrix.distro }}
+          path: $GITHUB_WORKSPACE/artifacts/*.deb
