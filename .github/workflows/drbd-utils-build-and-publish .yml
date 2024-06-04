@@ -53,7 +53,17 @@ jobs:
       - name: Generate configuration files
         run: |
           cd drbd-utils
-          chmod 700 autogen.sh 
+          chmod +x autogen.sh
+          ./autogen.sh || true
+          ./configure || true
+
+      - name: Verify Makefile existence
+        run: |
+          cd drbd-utils
+          if [ ! -f Makefile ]; then
+            echo "Makefile not found!"
+            exit 1
+          fi
 
       - name: Build package
         run: |
