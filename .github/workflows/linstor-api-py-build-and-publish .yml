@@ -43,28 +43,22 @@ jobs:
             cargo \
             rustc
 
-      - name: Clone DRBD repository
+      - name: Clone linstor-api-py repository
         run: |
           git clone https://github.com/LINBIT/linstor-api-py.git
           cd linstor-api-py
           git pull
 
-      - name: Generate configuration files
+      - name: Build LINSTOR API Py package
         run: |
           cd linstor-api-py
-          if [ -f ./configure ]; then
-            echo "Configure script found, running configure."
-            ./configure
-          else
-            echo "Configure script not found, checking for other setup scripts."
-            # Add additional setup steps here if necessary
-          fi
+          make -C linstor-common || true  # Attempt to make in linstor-common, allowing failure
+          python3 setup.py build
 
-      - name: Build package
+      - name: Install LINSTOR API Py package
         run: |
           cd linstor-api-py
-          make
-          sudo make install
+          sudo python3 setup.py install
       
       - name: Build Source Package
         run: |

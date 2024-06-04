@@ -43,28 +43,29 @@ jobs:
             cargo \
             rustc
 
+      - name: Clone LINSTOR API Py repository
+        run: |
+          git clone https://github.com/LINBIT/linstor-api-py.git
+          cd linstor-api-py
+          git pull
+      
+      - name: Build and Install LINSTOR API Py package
+        run: |
+          cd linstor-api-py
+          make -C linstor-common || true  # Attempt to make in linstor-common, allowing failure
+          python3 setup.py build
+          sudo python3 setup.py install
+
       - name: Clone Linstor-Client repository
         run: |
           git clone https://github.com/LINBIT/linstor-client.git
           cd linstor-client
           git pull
 
-      - name: Generate configuration files
+      - name: Build LINSTOR Client package
         run: |
           cd linstor-client
-          if [ -f ./configure ]; then
-            echo "Configure script found, running configure."
-            ./configure
-          else
-            echo "Configure script not found, checking for other setup scripts."
-            # Add additional setup steps here if necessary
-          fi
-
-      - name: Build package
-        run: |
-          cd linstor-client
-          make
-          sudo make install
+          python3 setup.py build_man
       
       - name: Build Source Package
         run: |

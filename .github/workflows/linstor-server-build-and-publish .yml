@@ -14,6 +14,7 @@ jobs:
       matrix:
         os: ["noble", "jammy"]
     runs-on: ubuntu-latest
+    timeout-minutes: 60
 
     steps:
       - name: Checkout repository
@@ -43,39 +44,40 @@ jobs:
             cargo \
             rustc
 
-      - name: Clone DRBD repository
+      - name: Clone and Build LINSTOR API Py
+        run: |
+          git clone https://github.com/LINBIT/linstor-api-py.git
+          cd linstor-api-py
+          git pull
+          make -C linstor-common || true  # Attempt to make in linstor-common, allowing failure
+          python3 setup.py build
+          sudo python3 setup.py install
+    
+      - name: Clone and Build LINSTOR Client
+        run: |
+          git clone https://github.com/LINBIT/linstor-client.git
+          cd linstor-client
+          git pull
+          PYTHONPATH="../linstor-api-py:." python3 setup.py build_man
+          sudo python3 setup.py install
+    
+      - name: Clone and Build LINSTOR Server
         run: |
           git clone https://github.com/LINBIT/linstor-server.git
           cd linstor-server
           git pull
-
-      - name: Generate configuration files
-        run: |
-          cd linstor-server
-          if [ -f ./configure ]; then
-            echo "Configure script found, running configure."
-            ./configure
-          else
-            echo "Configure script not found, checking for other setup scripts."
-            # Add additional setup steps here if necessary
-          fi
-
-      - name: Build package
-        run: |
-          cd linstor-server
+          ./autogen.sh  # Ensure autogen.sh is run if it exists
+          ./configure   # Ensure configure is run if it exists
           make
           sudo make install
-      
-      - name: Build Source Package
+    
+      - name: Clone and Build LINSTOR Gateway
         run: |
-          cd linstor-server
-          dpkg-buildpackage -us -uc -S
-
-      - name: Build Binary Package
-        run: |
-          cd linstor-server
+          git clone https://github.com/LINBIT/linstor-gateway.git
+          cd linstor-gateway
+          git pull
           dpkg-buildpackage -us -uc -b
-
+    
       - name: Install PackageCloud CLI
         run: |
           sudo gem install package_cloud

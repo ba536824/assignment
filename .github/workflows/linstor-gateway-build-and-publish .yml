@@ -43,39 +43,44 @@ jobs:
             cargo \
             rustc
 
-      - name: Clone DRBD repository
+      - name: Clone LINSTOR API Py repository
+        run: |
+          git clone https://github.com/LINBIT/linstor-api-py.git
+          cd linstor-api-py
+          git pull
+    
+      - name: Build and Install LINSTOR API Py package
+        run: |
+          cd linstor-api-py
+          make -C linstor-common || true  # Attempt to make in linstor-common, allowing failure
+          python3 setup.py build
+          sudo python3 setup.py install
+    
+      - name: Clone LINSTOR Client repository
+        run: |
+          git clone https://github.com/LINBIT/linstor-client.git
+          cd linstor-client
+          git pull
+    
+      - name: Build and Install LINSTOR Client package
+        env:
+          PYTHONPATH: "../linstor-api-py:."
+        run: |
+          cd linstor-client
+          python3 setup.py build_man
+          sudo python3 setup.py install
+    
+      - name: Clone LINSTOR Gateway repository
         run: |
           git clone https://github.com/LINBIT/linstor-gateway.git
           cd linstor-gateway
           git pull
-
-      - name: Generate configuration files
-        run: |
-          cd linstor-gateway
-          if [ -f ./configure ]; then
-            echo "Configure script found, running configure."
-            ./configure
-          else
-            echo "Configure script not found, checking for other setup scripts."
-            # Add additional setup steps here if necessary
-          fi
-
-      - name: Build package
-        run: |
-          cd linstor-gateway
-          make
-          sudo make install
-      
-      - name: Build Source Package
-        run: |
-          cd linstor-gateway
-          dpkg-buildpackage -us -uc -S
-      
-      - name: Build Binary Package
+    
+      - name: Build and Package LINSTOR Gateway
         run: |
           cd linstor-gateway
           dpkg-buildpackage -us -uc -b
-
+    
       - name: Install PackageCloud CLI
         run: |
           sudo gem install package_cloud

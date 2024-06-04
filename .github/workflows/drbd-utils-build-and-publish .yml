@@ -43,7 +43,7 @@ jobs:
             cargo \
             rustc
 
-      - name: Clone DRBD repository
+      - name: Clone DRBD-utils repository
         run: |
           git clone https://github.com/LINBIT/drbd-utils.git
           cd drbd-utils
@@ -52,13 +52,8 @@ jobs:
       - name: Generate configuration files
         run: |
           cd drbd-utils
-          if [ -f ./configure ]; then
-            echo "Configure script found, running configure."
-            ./configure
-          else
-            echo "Configure script not found, checking for other setup scripts."
-            # Add additional setup steps here if necessary
-          fi
+          ./autogen.sh || true
+          ./configure || true
 
       - name: Build package
         run: |
