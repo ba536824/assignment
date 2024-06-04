@@ -48,21 +48,11 @@ jobs:
       #     git clone https://github.com/LINBIT/linstor-api-py.git
       #     cd linstor-api-py
       #     git pull
-      - name: Use local DRBD-utils repository
+      - name: Use local linstor-api-py repository
         run: |
-          cd src/linstor-api-py
-          ./autogen.sh || true
-          ./configure || true
-
-      - name: Build LINSTOR API Py package
-        run: |
-          cd src/linstor-api-py
+          cd /Users/aaral/DevOps/assignment/src/linstor-api-py
           python3 setup.py build
-
-      - name: Install LINSTOR API Py package
-        run: |
-          cd src/linstor-api-py
-          sudo python3 setup.py install
+          python3 setup.py install
       
       - name: Build Source Package
         run: |
