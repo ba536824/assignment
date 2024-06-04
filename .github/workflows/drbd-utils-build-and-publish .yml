@@ -52,7 +52,6 @@ jobs:
       - name: Use local DRBD-utils repository
         run: |
           cd src/drbd-utils
-          chmod +x autogen.sh
           ./autogen.sh || true
           ./configure || true
 
