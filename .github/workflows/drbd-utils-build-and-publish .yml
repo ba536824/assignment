@@ -52,17 +52,8 @@ jobs:
 
       - name: Generate configuration files
         run: |
-          ./autogen.sh || { echo "autogen.sh failed"; exit 1; }
-          ./configure || { echo "configure failed"; exit 1; }
-        
-      - name: Verify Makefile existence
-        run: |
           cd drbd-utils
-          ls -la
-          if [ ! -f Makefile ]; then
-            echo "Makefile not found!"
-            exit 1
-          fi
+          chmod 700 autogen.sh 
 
       - name: Build package
         run: |
