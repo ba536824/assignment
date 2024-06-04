@@ -12,7 +12,7 @@ jobs:
   build:
     strategy:
       matrix:
-        os: ["noble", "jammy"]
+        os: ["jammy"]
     runs-on: ubuntu-latest
     timeout-minutes: 60
 
@@ -57,18 +57,18 @@ jobs:
 
       - name: Build package
         run: |
-          cd drbd-utils
+          cd src/drbd-utils
           make
           sudo make install
       
       - name: Build Source Package
         run: |
-          cd drbd-utils
+          cd src/drbd-utils
           dpkg-buildpackage -us -uc -S
       
       - name: Build Binary Package
         run: |
-          cd drbd-utils
+          cd src/drbd-utils
           dpkg-buildpackage -us -uc -b 
 
       - name: Install PackageCloud CLI
