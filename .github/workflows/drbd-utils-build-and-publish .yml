@@ -14,6 +14,7 @@ jobs:
       matrix:
         os: ["noble", "jammy"]
     runs-on: ubuntu-latest
+    timeout-minutes: 60
 
     steps:
       - name: Checkout repository
@@ -52,8 +53,20 @@ jobs:
       - name: Generate configuration files
         run: |
           cd drbd-utils
-          ./autogen.sh || true
-          ./configure || true
+          if [ -f autogen.sh ]; then
+            ./autogen.sh || true
+          fi
+          if [ -f configure ]; then
+            ./configure || true
+          fi
+        
+      - name: Verify Makefile existence
+        run: |
+          cd drbd-utils
+          if [ ! -f Makefile ]; then
+            echo "Makefile not found!"
+            exit 1
+          fi
 
       - name: Build package
         run: |
