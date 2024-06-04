@@ -39,7 +39,9 @@ jobs:
             python3-pip \
             coccinelle \
             fakeroot \
-            dkms
+            dkms \
+            cargo \
+            rustc
 
       - name: Clone DRBD repository
         run: |
@@ -64,7 +66,12 @@ jobs:
           make
           sudo make install
       
-      - name: Build DEB Package
+      - name: Build Source Package
+        run: |
+          cd linstor-server
+          dpkg-buildpackage -us -uc -S
+
+      - name: Build Binary Package
         run: |
           cd linstor-server
           dpkg-buildpackage -us -uc -b

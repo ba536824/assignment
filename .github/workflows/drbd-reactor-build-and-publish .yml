@@ -1,4 +1,4 @@
-name: Build and Publish DRBD Package
+name: Build and Publish DRBD-Reactor Package
 
 on:
   push:
@@ -40,7 +40,9 @@ jobs:
             python3-pip \
             coccinelle \
             fakeroot \
-            dkms
+            dkms \
+            cargo \
+            rustc
 
       - name: Clone drbd-reactor repository
         run: |

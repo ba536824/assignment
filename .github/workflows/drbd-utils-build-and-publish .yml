@@ -39,7 +39,9 @@ jobs:
             python3-pip \
             coccinelle \
             fakeroot \
-            dkms
+            dkms \
+            cargo \
+            rustc
 
       - name: Clone DRBD repository
         run: |

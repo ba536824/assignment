@@ -39,7 +39,9 @@ jobs:
             python3-pip \
             coccinelle \
             fakeroot \
-            dkms
+            dkms \
+            cargo \
+            rustc
 
       - name: Clone Linstor-Client repository
         run: |
@@ -64,10 +66,15 @@ jobs:
           make
           sudo make install
       
-      - name: Build DEB Package
+      - name: Build Source Package
         run: |
           cd linstor-client
-          dpkg-buildpackage -us -uc -b -S
+          dpkg-buildpackage -us -uc -S
+
+      - name: Build Binary Package
+        run: |
+          cd linstor-client
+          dpkg-buildpackage -us -uc -b
 
       - name: Install PackageCloud CLI
         run: |
