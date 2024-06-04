@@ -12,7 +12,7 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [noble, jammy]
+        os: ["noble", "jammy"]
     runs-on: ubuntu-latest
 
     steps:
@@ -64,10 +64,15 @@ jobs:
           make
           sudo make install
       
-      - name: Build DEB Package
+      - name: Build Source Package
         run: |
           cd drbd-utils
-          dpkg-buildpackage -us -uc -b -S
+          dpkg-buildpackage -us -uc -S
+      
+      - name: Build Binary Package
+        run: |
+          cd drbd-utils
+          dpkg-buildpackage -us -uc -b 
 
       - name: Install PackageCloud CLI
         run: |

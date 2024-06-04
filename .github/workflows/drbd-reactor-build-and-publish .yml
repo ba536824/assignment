@@ -1,4 +1,4 @@
-name: Build and Publish DRBD-Reactor Package
+name: Build and Publish DRBD Package
 
 on:
   push:
@@ -12,7 +12,8 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [noble, jammy]
+        os: ["noble", "jammy"]
+
     runs-on: ubuntu-latest
 
     steps:
@@ -41,11 +42,11 @@ jobs:
             fakeroot \
             dkms
 
-      - name: Clone DRBD-Reactor repository
+      - name: Clone drbd-reactor repository
         run: |
           git clone https://github.com/LINBIT/drbd-reactor.git
           cd drbd-reactor
-          git pull
+          git pull 
 
       - name: Generate configuration files
         run: |
@@ -64,10 +65,15 @@ jobs:
           make
           sudo make install
       
-      - name: Build DEB Package
+      - name: Build Source Package
         run: |
           cd drbd-reactor
-          dpkg-buildpackage -us -uc -b -S
+          dpkg-buildpackage -us -uc -S
+
+      - name: Build Binary Package
+        run: |
+          cd drbd-reactor
+          dpkg-buildpackage -us -uc -b
 
       - name: Install PackageCloud CLI
         run: |
@@ -77,4 +83,4 @@ jobs:
         env:
           PACKAGECLOUD_TOKEN: ${{ secrets.PACKAGECLOUD_TOKEN }}
         run: |
-          package_cloud push https://packagecloud.io/dniasoff/qcp-linstor-dev/package/ubuntu/${{ matrix.os }}  src/drbd/*.deb
+          package_cloud push your_packagecloud_username/repository/ubuntu/${{ matrix.os }} ../*.deb
