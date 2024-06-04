@@ -63,6 +63,7 @@ jobs:
       - name: Verify Makefile existence
         run: |
           cd drbd-utils
+          ls -la
           if [ ! -f Makefile ]; then
             echo "Makefile not found!"
             exit 1

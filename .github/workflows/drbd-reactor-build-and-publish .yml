@@ -1,12 +1,12 @@
 name: Build and Publish DRBD-Reactor Package
 
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+  #push:
+  #  branches:
+  #    - main
+  #pull_request:
+  #  branches:
+  #    - main
 
 jobs:
   build:
@@ -60,6 +60,12 @@ jobs:
             echo "Configure script not found, checking for other setup scripts."
             # Add additional setup steps here if necessary
           fi
+
+      - name: Create upstream tarball
+        run: |
+          cd drbd-reactor
+          VERSION=$(dpkg-parsechangelog --show-field Version | sed 's/-[^-]*$//')
+          tar -czf ../drbd-reactor_${VERSION}.orig.tar.gz --transform 's/^drbd-reactor/drbd-reactor-${VERSION}/' .
 
       - name: Build package
         run: |
