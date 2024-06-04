@@ -44,26 +44,17 @@ jobs:
             cargo \
             rustc
 
-      - name: Clone DRBD-utils repository
+      # - name: Clone DRBD-utils repository
+        # run: |
+        #   git clone https://github.com/LINBIT/drbd-utils.git
+        #   cd drbd-utils
+        #   git pull
+      - name: Use local DRBD-utils repository
         run: |
-          git clone https://github.com/LINBIT/drbd-utils.git
-          cd drbd-utils
-          git pull
-
-      - name: Generate configuration files
-        run: |
-          cd drbd-utils
+          cd src/drbd-utils
           chmod +x autogen.sh
           ./autogen.sh || true
           ./configure || true
-
-      # - name: Verify Makefile existence
-      #   run: |
-      #     cd drbd-utils
-      #     if [ ! -f Makefile ]; then
-      #       echo "Makefile not found!"
-      #       exit 1
-      #     fi
 
       - name: Build package
         run: |
