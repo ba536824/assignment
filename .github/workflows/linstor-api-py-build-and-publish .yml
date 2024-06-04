@@ -57,7 +57,6 @@ jobs:
       - name: Build LINSTOR API Py package
         run: |
           cd src/linstor-api-py
-          make -C linstor-common || true 
           python3 setup.py build
 
       - name: Install LINSTOR API Py package
