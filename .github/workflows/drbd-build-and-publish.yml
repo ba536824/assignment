@@ -1,88 +1,88 @@
-name: Build and Publish DRBD Package
+# name: Build and Publish DRBD Package
 
-on:
-  #push:
-  #  branches:
-  #    - main
-  #pull_request:
-  #  branches:
-  #    - main
+# on:
+#   #push:
+#   #  branches:
+#   #    - main
+#   #pull_request:
+#   #  branches:
+#   #    - main
 
-jobs:
-  build:
-    strategy:
-      matrix:
-        os: ["noble", "jammy"]
+# jobs:
+#   build:
+#     strategy:
+#       matrix:
+#         os: ["noble", "jammy"]
 
-    runs-on: ubuntu-latest
+#     runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+#     steps:
+#       - name: Checkout repository
+#         uses: actions/checkout@v2
 
-      - name: Set up APT
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y \
-            devscripts \
-            debhelper \
-            dh-make \
-            build-essential \
-            libssl-dev \
-            libxml2-dev \
-            libcurl4-openssl-dev \
-            libtool \
-            autoconf \
-            automake \
-            libglib2.0-dev \
-            python3-dev \
-            python3-setuptools \
-            python3-pip \
-            coccinelle \
-            fakeroot \
-            dkms \
-            cargo \
-            rustc
+#       - name: Set up APT
+#         run: |
+#           sudo apt-get update
+#           sudo apt-get install -y \
+#             devscripts \
+#             debhelper \
+#             dh-make \
+#             build-essential \
+#             libssl-dev \
+#             libxml2-dev \
+#             libcurl4-openssl-dev \
+#             libtool \
+#             autoconf \
+#             automake \
+#             libglib2.0-dev \
+#             python3-dev \
+#             python3-setuptools \
+#             python3-pip \
+#             coccinelle \
+#             fakeroot \
+#             dkms \
+#             cargo \
+#             rustc
 
-      - name: Clone DRBD repository
-        run: |
-          git clone https://github.com/LINBIT/drbd.git
-          cd drbd
-          git pull 
+#       - name: Clone DRBD repository
+#         run: |
+#           git clone https://github.com/LINBIT/drbd.git
+#           cd drbd
+#           git pull 
 
-      - name: Generate configuration files
-        run: |
-          cd drbd
-          if [ -f ./configure ]; then
-            echo "Configure script found, running configure."
-            ./configure
-          else
-            echo "Configure script not found, checking for other setup scripts."
-            # Add additional setup steps here if necessary
-          fi
+#       - name: Generate configuration files
+#         run: |
+#           cd drbd
+#           if [ -f ./configure ]; then
+#             echo "Configure script found, running configure."
+#             ./configure
+#           else
+#             echo "Configure script not found, checking for other setup scripts."
+#             # Add additional setup steps here if necessary
+#           fi
 
-      - name: Build package
-        run: |
-          cd drbd
-          make
-          sudo make install
+#       - name: Build package
+#         run: |
+#           cd drbd
+#           make
+#           sudo make install
       
-      - name: Build Source Package
-        run: |
-          cd drbd
-          dpkg-buildpackage -us -uc -S
+#       - name: Build Source Package
+#         run: |
+#           cd drbd
+#           dpkg-buildpackage -us -uc -S
 
-      - name: Build Binary Package
-        run: |
-          cd drbd
-          dpkg-buildpackage -us -uc -b
+#       - name: Build Binary Package
+#         run: |
+#           cd drbd
+#           dpkg-buildpackage -us -uc -b
 
-      - name: Install PackageCloud CLI
-        run: |
-          sudo gem install package_cloud
+#       - name: Install PackageCloud CLI
+#         run: |
+#           sudo gem install package_cloud
 
-      - name: Publish package to PackageCloud
-        env:
-          PACKAGECLOUD_TOKEN: ${{ secrets.PACKAGECLOUD_TOKEN }}
-        run: |
-          package_cloud push your_packagecloud_username/repository/ubuntu/${{ matrix.os }} ../*.deb
+#       - name: Publish package to PackageCloud
+#         env:
+#           PACKAGECLOUD_TOKEN: ${{ secrets.PACKAGECLOUD_TOKEN }}
+#         run: |
+#           package_cloud push your_packagecloud_username/repository/ubuntu/${{ matrix.os }} ../*.deb

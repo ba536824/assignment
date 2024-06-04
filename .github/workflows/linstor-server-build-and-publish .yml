@@ -1,89 +1,89 @@
-name: Build and Publish Linstor-server Package
+# name: Build and Publish Linstor-server Package
 
-on:
-  # push:
-  #   branches:
-  #     - main
-  # pull_request:
-  #   branches:
-  #     - main
+# on:
+#   # push:
+#   #   branches:
+#   #     - main
+#   # pull_request:
+#   #   branches:
+#   #     - main
 
-jobs:
-  build:
-    strategy:
-      matrix:
-        os: ["noble", "jammy"]
-    runs-on: ubuntu-latest
-    timeout-minutes: 60
+# jobs:
+#   build:
+#     strategy:
+#       matrix:
+#         os: ["noble", "jammy"]
+#     runs-on: ubuntu-latest
+#     timeout-minutes: 60
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+#     steps:
+#       - name: Checkout repository
+#         uses: actions/checkout@v2
 
-      - name: Set up APT
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y \
-            devscripts \
-            debhelper \
-            dh-make \
-            build-essential \
-            libssl-dev \
-            libxml2-dev \
-            libcurl4-openssl-dev \
-            libtool \
-            autoconf \
-            automake \
-            libglib2.0-dev \
-            python3-dev \
-            python3-setuptools \
-            python3-pip \
-            coccinelle \
-            fakeroot \
-            dkms \
-            cargo \
-            rustc
+#       - name: Set up APT
+#         run: |
+#           sudo apt-get update
+#           sudo apt-get install -y \
+#             devscripts \
+#             debhelper \
+#             dh-make \
+#             build-essential \
+#             libssl-dev \
+#             libxml2-dev \
+#             libcurl4-openssl-dev \
+#             libtool \
+#             autoconf \
+#             automake \
+#             libglib2.0-dev \
+#             python3-dev \
+#             python3-setuptools \
+#             python3-pip \
+#             coccinelle \
+#             fakeroot \
+#             dkms \
+#             cargo \
+#             rustc
 
-      - name: Clone and Build LINSTOR API Py
-        run: |
-          git clone https://github.com/LINBIT/linstor-api-py.git
-          cd linstor-api-py
-          git pull
-          make -C linstor-common || true  # Attempt to make in linstor-common, allowing failure
-          python3 setup.py build
-          sudo python3 setup.py install
+#       - name: Clone and Build LINSTOR API Py
+#         run: |
+#           git clone https://github.com/LINBIT/linstor-api-py.git
+#           cd linstor-api-py
+#           git pull
+#           make -C linstor-common || true  # Attempt to make in linstor-common, allowing failure
+#           python3 setup.py build
+#           sudo python3 setup.py install
     
-      - name: Clone and Build LINSTOR Client
-        run: |
-          git clone https://github.com/LINBIT/linstor-client.git
-          cd linstor-client
-          git pull
-          PYTHONPATH="../linstor-api-py:." python3 setup.py build_man
-          sudo python3 setup.py install
+#       - name: Clone and Build LINSTOR Client
+#         run: |
+#           git clone https://github.com/LINBIT/linstor-client.git
+#           cd linstor-client
+#           git pull
+#           PYTHONPATH="../linstor-api-py:." python3 setup.py build_man
+#           sudo python3 setup.py install
     
-      - name: Clone and Build LINSTOR Server
-        run: |
-          git clone https://github.com/LINBIT/linstor-server.git
-          cd linstor-server
-          git pull
-          ./autogen.sh  # Ensure autogen.sh is run if it exists
-          ./configure   # Ensure configure is run if it exists
-          make
-          sudo make install
+#       - name: Clone and Build LINSTOR Server
+#         run: |
+#           git clone https://github.com/LINBIT/linstor-server.git
+#           cd linstor-server
+#           git pull
+#           ./autogen.sh  # Ensure autogen.sh is run if it exists
+#           ./configure   # Ensure configure is run if it exists
+#           make
+#           sudo make install
     
-      - name: Clone and Build LINSTOR Gateway
-        run: |
-          git clone https://github.com/LINBIT/linstor-gateway.git
-          cd linstor-gateway
-          git pull
-          dpkg-buildpackage -us -uc -b
+#       - name: Clone and Build LINSTOR Gateway
+#         run: |
+#           git clone https://github.com/LINBIT/linstor-gateway.git
+#           cd linstor-gateway
+#           git pull
+#           dpkg-buildpackage -us -uc -b
     
-      - name: Install PackageCloud CLI
-        run: |
-          sudo gem install package_cloud
+#       - name: Install PackageCloud CLI
+#         run: |
+#           sudo gem install package_cloud
 
-      - name: Publish package to PackageCloud
-        env:
-          PACKAGECLOUD_TOKEN: ${{ secrets.PACKAGECLOUD_TOKEN }}
-        run: |
-         package_cloud push https://packagecloud.io/dniasoff/qcp-linstor-dev/package/ubuntu/${{ matrix.os }} src/drbd/*.deb
+#       - name: Publish package to PackageCloud
+#         env:
+#           PACKAGECLOUD_TOKEN: ${{ secrets.PACKAGECLOUD_TOKEN }}
+#         run: |
+#          package_cloud push https://packagecloud.io/dniasoff/qcp-linstor-dev/package/ubuntu/${{ matrix.os }} src/drbd/*.deb
