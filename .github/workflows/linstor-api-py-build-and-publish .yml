@@ -12,7 +12,7 @@ jobs:
   build:
     strategy:
       matrix:
-        os: ["noble", "jammy"]
+        os: ["jammy"]
     runs-on: ubuntu-latest
 
     steps:
@@ -43,31 +43,36 @@ jobs:
             cargo \
             rustc
 
-      - name: Clone linstor-api-py repository
+      # - name: Clone linstor-api-py repository
+      #   run: |
+      #     git clone https://github.com/LINBIT/linstor-api-py.git
+      #     cd linstor-api-py
+      #     git pull
+      - name: Use local DRBD-utils repository
         run: |
-          git clone https://github.com/LINBIT/linstor-api-py.git
-          cd linstor-api-py
-          git pull
+          cd src/linstor-api-py
+          ./autogen.sh || true
+          ./configure || true
 
       - name: Build LINSTOR API Py package
         run: |
-          cd linstor-api-py
-          make -C linstor-common || true  # Attempt to make in linstor-common, allowing failure
+          cd src/linstor-api-py
+          make -C linstor-common || true 
           python3 setup.py build
 
       - name: Install LINSTOR API Py package
         run: |
-          cd linstor-api-py
+          cd src/linstor-api-py
           sudo python3 setup.py install
       
       - name: Build Source Package
         run: |
-          cd linstor-api-py
+          cd src/linstor-api-py
           dpkg-buildpackage -us -uc -S
 
       - name: Build Binary Package
         run: |
-          cd instor-api-py
+          cd src/instor-api-py
           dpkg-buildpackage -us -uc -b   
 
       - name: Install PackageCloud CLI
