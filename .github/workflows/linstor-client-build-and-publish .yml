@@ -25,6 +25,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install setuptools
+          pip install python-linstor
 
       - name: Set up APT
         run: |
@@ -62,11 +63,15 @@ jobs:
         with:
             python-version: '3.x'
     
-      - name: Install Python dependencies
+      # - name: Install Python dependencies
+      #   run: |
+      #       python -m pip install --upgrade pip
+      #       pip install setuptools
+      #       pip install python-linstor
+      - name: Create and install build dependencies
         run: |
-            python -m pip install --upgrade pip
-            pip install setuptools
-            pip install python-linstor
+          cd src/linstor-client
+          sudo mk-build-deps -i --tool 'apt-get -y -f install'
 
       - name: local LINSTOR API Py repository
         run: |
