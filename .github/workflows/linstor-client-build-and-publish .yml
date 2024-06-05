@@ -58,7 +58,8 @@ jobs:
             python3-all \
             equivs \
             aspcud \
-            dh-virtualenv
+            dh-virtualenv \
+            debmake
           
       # - name: Create and install build dependencies
       #   run: |
