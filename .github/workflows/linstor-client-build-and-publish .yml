@@ -72,7 +72,8 @@ jobs:
       - name: Local Linstor-Client repository
         run: |
           cd src/linstor-client
-          python3 setup.py build_man
+          ls -l
+          python3 setup.py build_man 
       
       - name: Build Source Package
         run: |
