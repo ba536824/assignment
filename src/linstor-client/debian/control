@@ -1,0 +1,27 @@
+Source: linstor-client
+Maintainer: LINBIT HA Solutions GmbH <drbd-user@lists.linbit.com>
+Uploaders: Roland Kammerer <roland.kammerer@linbit.com>
+Section: python
+Priority: optional
+Build-Depends: bash-completion,
+               debhelper (>= 9),
+               dh-python,
+               docbook-xsl,
+               help2man,
+               python3-all (>= 3.5),
+               python3-setuptools,
+               xsltproc
+Standards-Version: 3.9.6
+
+Package: linstor-client
+Architecture: all
+# keep python-natsort on its own line!
+Depends: ${misc:Depends},
+         python3-natsort,
+         python-linstor (>=1.22.0),
+         ${python3:Depends}
+Description: Linstor client command line tool
+ This is a command client that communicates with the Linstor controller
+ and gives a userfriendly command line syntax to add/remove/query
+ Linstor objects
+ .

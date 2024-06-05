@@ -1,0 +1,1521 @@
+linstor-client (1.22.1-1) experimental; urgency=medium
+
+  [ Rene Peinthor ]
+  * encrypt-modify: ask for new password again(verify)
+  * gitlab: add ubuntu-noble build
+
+  [ Moritz Wanzenböck ]
+  * r l: fix ports not showing
+  * r l/v l/r lv: do not show "Unknown" state for non-DRBD resources.
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Thu, 25 Apr 2024 11:26:18 +0000
+
+linstor-client (1.22.0-1) experimental; urgency=medium
+
+  [ Rene Peinthor ]
+  * remove unused vg list -R option
+  * Allow to specify options for list commands in the client config file
+  * Default machine-readable output-version is now v1
+  * encryption: allow setting user volume passphrases
+  * rd-clone: added --volume-passphrase option
+  * vlm-dfn: added modify-passphrase command
+  * Added --from-file to most list commands to read input data from a file
+
+  [ Johanna Kucera ]
+  * Backups: add --force-restore option
+
+  [ Michael Troutman ]
+  * improve LINSTOR client command help text
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Tue, 02 Apr 2024 07:30:33 +0000
+
+linstor-client (1.21.1-1) experimental; urgency=medium
+
+  [ Gabor Hernadi ]
+  * Backup,list: Clarify help text
+  * OpenFlex: Removed commands
+  * ConnStatus: Added handler for MISSING_EXT_TOOLS
+
+  [ Rene Peinthor ]
+  * vlm_cmds: Do not hide evicted resources in volume list
+  * PhysicalStorageCreate: Allow zfsthin as provider kind
+  * linstor-common: rename KEY_STOR_POOL_DFN_MAX_OVERSUBSCRIPTION_RATIO var
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Thu, 22 Feb 2024 05:32:39 +0000
+
+linstor-client (1.21.0-1) experimental; urgency=medium
+
+  [ Gabor Hernadi ]
+  * RscGrp: Added --peer-slots option
+  * QSI: Remove "(OversubscriptionRatio)"
+  * Rsc,List: Fix skipDisk prop access
+
+  [ Johanna Kucera ]
+  * Backups: add storpool-rename for l2l shippings
+  * Schedules: allow storpool-rename on schedule enable
+  * Snapshots: add storpool-rename option for restore
+
+  [ Rene Peinthor ]
+  * gitlab-ci: build special version on branch
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Mon, 22 Jan 2024 08:10:33 +0000
+
+linstor-client (1.20.1-1) experimental; urgency=medium
+
+  [ Christoph Böhmwalder ]
+  * linstor: always enable keep_alive
+
+  [ Gabor Hernadi ]
+  * Ctrl,Node: Add set-log-level
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Wed, 25 Oct 2023 04:31:12 +0000
+
+linstor-client (1.20.0-1) experimental; urgency=medium
+
+  [ Rene Peinthor ]
+  * fix pep8 error
+  * Fix resource involved command AttributeError
+  * update CHANGELOG.md
+
+  [ Gabor Hernadi ]
+  * Exos,list: Fixed help message
+  * Rsc,List: Show DELETING state for DRBD_DELETE rsc flag
+  * Remote: Fix typo
+  * Rsc,List: Show SkipDisk
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Wed, 11 Oct 2023 07:42:02 +0000
+
+linstor-client (1.19.0-1) experimental; urgency=medium
+
+  [ Rene Peinthor ]
+  * linstor -v: state that this is the client version
+  * fix aux arguments list handling (replicas-on-same, replica...) for empty
+  * improve replicas{-on-same,-on-different} metavar description
+
+  [ Johanna Kucera ]
+  * BackupShipping: add queue list command
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Wed, 19 Jul 2023 10:46:35 +0000
+
+linstor-client (1.18.0-1) experimental; urgency=medium
+
+  [ Roland Kammerer ]
+  * containers: rm quay and docker hub
+
+  [ Gabor Hernadi ]
+  * RscDfn,create: Do not ignore peer slots
+  * Qsi: Print new oversubscription ratios
+  * NodeCon: Fixed issues with path list
+  * snap: New subcommand: create-multiple
+
+  [ Rene Peinthor ]
+  * drbd-opts: now works with sector units
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Mon, 17 Apr 2023 12:07:53 +0000
+
+linstor-client (1.17.0-1) experimental; urgency=medium
+
+  [ Rene Peinthor ]
+  * flake8: fix/ignore errors
+  * vlm-list: add --show-props option
+  * improve broken pipe error handling
+  * add rg query-size-info command
+  * changelog.md: update
+
+  [ Gabor Hernadi ]
+  * NodeCon,RscCon: Remove DrbdOptions subcommand
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Tue, 14 Mar 2023 12:54:31 +0000
+
+linstor-client (1.16.0-1) experimental; urgency=medium
+
+  [ Gabor Hernadi ]
+  * Add node-connection
+
+  [ Michael Troutman ]
+  * corrects Linstor and linstor in user-facing msgs
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Tue, 13 Dec 2022 12:32:49 +0000
+
+linstor-client (1.15.1-1) experimental; urgency=medium
+
+  [ Gabor Hernadi ]
+  * Snap,EBS: Added State message
+
+  [ Johannes Thoma ]
+  * node info: also ignore underliners in table headers
+  * Added column for storage spaces thin for node info
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Tue, 18 Oct 2022 07:23:58 +0000
+
+linstor-client (1.15.0-1) experimental; urgency=medium
+
+  [ Johanna Kucera ]
+  * RscGrp: add autoplace-options to spawn command
+
+  [ Johannes Thoma ]
+  * LINSTOR for Windows: Microsoft Storage Spaces support
+
+  [ Michael Troutman ]
+  * corrects some issues w/ the `vd create --help` msg
+
+  [ Rene Peinthor ]
+  * pep: fix flake8 errors
+  * list: add --show-props to all list cmds with properties
+  * physical-storage-create: sed support
+  * advise: Add too many replicas issue and also add filtering
+  * add Changelog.md
+
+  [ Christoph Böhmwalder ]
+  * support key-value-store api
+
+  [ Gabor Hernadi ]
+  * Ebs: Added commands
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Tue, 20 Sep 2022 12:38:02 +0000
+
+linstor-client (1.14.0-1) experimental; urgency=medium
+
+  [ Rene Peinthor ]
+  * fix broken remote completer
+  * schedule: add basic commands and enable/disable/delete
+
+  [ Gabor Hernadi ]
+  * Schedule,crt,mod: Add cron syntax description
+  * Schedule,lbr: Add color for winning setting
+
+  [ Johanna Kucera ]
+  * SosReport: add commands for new filter options
+  * BackupShipping: add keep-snaps option to delete-cmds
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Wed, 06 Jul 2022 11:10:15 +0000
+
+linstor-client (1.13.1-1) experimental; urgency=medium
+
+  * gitlab: remove package before building
+  * file_cmds: switch editor fallback to nano
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Thu, 12 May 2022 09:59:32 +0000
+
+linstor-client (1.13.0-1) experimental; urgency=medium
+
+  [ Roland Kammerer ]
+  * containers: switch to ubi8
+
+  [ Rene Peinthor ]
+  * add flake8 build step and fix pep8 errors
+  * gitlab: run all on jenkins push
+  * clone: add --use-zfs-clone option
+  * add rsc dfn wait-sync command
+  * controller-cmds: add backupdb command
+
+  [ Moritz "WanzenBug" Wanzenböck ]
+  * backup: add options for snapshot names
+  * show resource+snapshot name for backups
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Tue, 22 Feb 2022 09:02:42 +0000
+
+linstor-client (1.12.0-1) experimental; urgency=medium
+
+  [ Christoph Böhmwalder ]
+  * support external files
+
+  [ Rene Peinthor ]
+  * backup_cmds: list output, shouldn't be wrapped in a list
+  * backup_cmd: pep8
+  * backups: backupinfo machine readable shouldn't be wrapped in list
+
+  [ Gabor Hernadi ]
+  * node evacuate
+  * exos,create: Fixed parsing ctrl_b_ip
+  * Sp,c: Improve shared-space description
+
+  [ Johanna Kucera ]
+  * BackupShipping: use correct variable name for time param
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Thu, 09 Dec 2021 07:29:48 +0000
+
+linstor-client (1.10.2-1) experimental; urgency=medium
+
+  [ Gabor Hernadi ]
+  * BackupShipping: Removed argument from --restore and --create
+  * BackupShipping: Added backup info subcommand
+
+  [ Rene Peinthor ]
+  * backup-cmds: fix copy paste description
+  * backup-cmds: improve backup list table header
+  * backup-cmds: add download only option
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Wed, 22 Sep 2021 13:50:54 +0000
+
+linstor-client (1.10.1-1) experimental; urgency=medium
+
+  * Snapshot,delete: Add --nodes parameter
+  * Node,list: added optional Eviction Time to state when node is OFFLINE
+  * RscGrp: Added adjust command
+  * Node,restore: Add delete-resources and -snapshots
+
+ -- Gabor Hernadi <gabor.hernadi@linbit.com>  Tue, 07 Sep 2021 09:33:03 +0000
+
+linstor-client (1.10.0-1) experimental; urgency=medium
+
+  [ Moritz "WanzenBug" Wanzenböck ]
+  * advise: fix suggestion for autoplacing tiebreaker
+
+  [ Rene Peinthor ]
+  * vlm_cmds: fix incorrect description
+  * rsc-cmds: do not show tiebreaker in faulty view
+  * main: handle LinstorApiCallErrors
+  * clone-api: add clone command for resource-definition
+  * BackupShipping: Added commands
+  * storpools: metavar will be set by check_subcommands
+
+  [ Gabor Hernadi ]
+  * Renamed Transaction* command classes
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Fri, 27 Aug 2021 08:44:00 +0000
+
+linstor-client (1.9.0-1) experimental; urgency=medium
+
+  [ Rene Peinthor ]
+  * linstor controller which command that shows currently used controller
+  * node-info: show provider/layer errors only with new option
+  * drbd-opts: timeout clashes with the global linstor-client timeout option
+  * qmvs: remove old property reading
+  * node/info: add missing layers and providers
+  * cmds: always show all resources (including tiebreaker)
+  * node-info: add REMOTE_SPDK
+  * setup.py: fix parsing debian changelog with nonascii chars
+
+  [ Moritz "WanzenBug" Wanzenböck ]
+  * Add linstor advise subcommands
+
+  [ Gabor Hernadi ]
+  * RemoteSpdk: Added subcommands
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Mon, 19 Jul 2021 08:43:05 +0000
+
+linstor-client (1.8.0-1) experimental; urgency=medium
+
+  * node: show info also for combined nodes
+  * add client info to the user-agent of pythonlinstor
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Mon, 14 Jun 2021 13:22:57 +0000
+
+linstor-client (1.7.3-1) experimental; urgency=medium
+
+  * rsc-cmds: add make available command
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Wed, 02 Jun 2021 07:42:06 +0000
+
+linstor-client (1.7.2-1) experimental; urgency=medium
+
+  * Exos: Made health_reasons optional
+
+ -- Gabor Hernadi <gabor.hernadi@linbit.com>  Tue, 18 May 2021 10:47:17 +0000
+
+linstor-client (1.7.1-1) experimental; urgency=medium
+
+  * setup.cfg: build-requires is deprecated
+  * rsc-cmds: involved remove debug output and fix removing elements
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Wed, 28 Apr 2021 06:50:15 +0000
+
+linstor-client (1.7.0-1) experimental; urgency=medium
+
+  [ Rene Peinthor ]
+  * interactive: help with a command reported command as unknown
+  * debian: install bash completion through setup.py
+  * resource/involved: New command that shows only involved resources from [...]
+  * tests: fix for latest controller version
+  * gitlab-ci: try to checkout same linstor-api-py branch
+  * gitlab-ci: trigger linstor-tests on jenkins push
+  * fix showing incorrect linstor-client githash
+
+  [ Gabor Hernadi ]
+  * Allow commands to neglect SHORT version
+  * sp-create: added --external_locking flag
+  * sp list: added sharedName column
+  * storpools: add exos storage pool support
+  * RG: add diskless-storpool-list filter
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Tue, 27 Apr 2021 11:36:59 +0000
+
+linstor-client (1.6.1-1) experimental; urgency=medium
+
+  * interactive: recover interactive connection after socket timeout
+  * rsc-td: fix incorrect toggle disk short option
+  * rsc-td: toggle disk storage pool options are now optional
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Wed, 13 Jan 2021 07:45:24 +0000
+
+linstor-client (1.6.0-1) experimental; urgency=medium
+
+  [ Rene Peinthor ]
+  * node-cmds: show evicted and deleting nodes
+  * node-cmds: add node restore command
+
+  [ Gabor Hernadi ]
+  * auto-place: add diskless placement and relative count
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Fri, 18 Dec 2020 08:52:10 +0000
+
+linstor-client (1.4.2-1) experimental; urgency=medium
+
+  * add space-reporting command
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Wed, 25 Nov 2020 11:58:38 +0000
+
+linstor-client (1.4.1-1) experimental; urgency=medium
+
+  * migrate: remove unused AllowLargerVolumeSize property
+  * fix incorrect use of argparse.ArgumentTypeError
+  * drbd-options: add units to error message
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Mon, 09 Nov 2020 08:21:41 +0000
+
+linstor-client (1.4.0-1) experimental; urgency=medium
+
+  * main: allow setting global args from environment variables
+  * move error cmds into its own module
+  * error-report: add delete command
+  * gitlab-ci: push jenkins to nexus repo
+  * commandline: allow argparse choices to be case insensitive
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Wed, 23 Sep 2020 09:35:28 +0000
+
+linstor-client (1.3.0-1) experimental; urgency=medium
+
+  * use apiconsts flags for TIE_BREAKER check
+  * correctly hide/indicate inactive resources
+  * snapshots: add shipping list command (ship-list)
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Mon, 17 Aug 2020 12:23:54 +0000
+
+linstor-client (1.2.0-1) experimental; urgency=medium
+
+  [ Rene Peinthor ]
+  * make: remove const_githash.py as install dependency
+  * add sos-report support
+  * err-list: show extended error info
+  * error-list: improve module-node output
+  * rsc-dfn: support modify resource group
+  * gitlab-ci: use registry env variable
+  * argparse-help: show all properties and their enum values
+  * rsc-cmds: add activate and deactive commands
+  * snapshot-cmds: add ship command
+  * rsc-create: add --inactive argument
+  * show create date on resource and snapshot
+
+  [ Roland Kammerer ]
+  * containers: add support for multiarch
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Mon, 03 Aug 2020 10:25:43 +0000
+
+linstor-client (1.1.2-1) experimental; urgency=medium
+
+  * refere to new python-linstor 1.1.2 library
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Thu, 28 May 2020 16:01:02 +0000
+
+linstor-client (1.1.1-1) experimental; urgency=medium
+
+  * api: support storage-pool list argument for auto select filters
+  * rsc-create: fix storage pool argument
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Wed, 20 May 2020 10:57:09 +0000
+
+linstor-client (1.1.0-1) experimental; urgency=medium
+
+  * snapshot list: add resources and nodes filter
+  * use gitlab-ci and update tests to use a pre started controller
+  * crypt-create-pass: let the user enter passphrase twice
+  * property filter support
+  * main: remove unused format argument
+  * node-list: add option to show aux properties for node
+  * drbd-opts: correctly show drbd unit
+  * resource-list: add --faulty option, to only show faulty resources
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Thu, 07 May 2020 08:13:56 +0000
+
+linstor-client (1.0.15-1) experimental; urgency=medium
+
+  * fix resource usage color output
+  * drbd-opts: fix byte like string options
+  * rsc_grp: fix resource group list properties
+  * document --async flag as deprecated
+  * rsc_groups: fix modifying resource groups
+  * node-describe: fix locale/utf8 check
+  * add auto-select test and improve diskless on remaining description
+  * rsc-grp-spawn: support external name
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Wed, 08 Apr 2020 14:00:43 +0000
+
+linstor-client (1.0.14-1) experimental; urgency=medium
+
+  * resource-groups: fix missing completers
+  * node: improve node ip resolving
+  * node: only show satellite nodes info
+  * improve: table column headers
+  * Add drbd-connection info to resource and volume list output
+  * add openflex node create and storage pool create
+  * tests: fix suite not returning correct exit code
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Wed, 11 Mar 2020 13:24:11 +0000
+
+linstor-client (1.0.13-1) experimental; urgency=medium
+
+  * use new ConnectionStatus enum const
+  * Fix set property if key with '=' is given
+  * rsc-dfn: add auto-place command
+  * tests: fix client unittests
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Tue, 03 Mar 2020 14:21:19 +0000
+
+linstor-client (1.0.12-1) experimental; urgency=medium
+
+  [ Roland Kammerer ]
+  * dm-migrate: fix py2/3 input()
+  * dm-migrate: 0-pad current GI
+  * dm-migrate: fix overindentation
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Tue, 04 Feb 2020 09:53:59 +0000
+
+linstor-client (1.0.11-1) experimental; urgency=medium
+
+  * write interactive errors to stderr
+  * vlm_dfn: show gross size in list
+  * vlm_grp: support gross sizes
+  * rsc/vlm-list: do not show unused if state is unknown
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Mon, 27 Jan 2020 13:36:50 +0000
+
+linstor-client (1.0.10-1) experimental; urgency=medium
+
+  * Added support for SPDK in Physical Storage commands
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Wed, 15 Jan 2020 07:33:21 +0000
+
+linstor-client (1.0.9-1) experimental; urgency=medium
+
+  [ Rene Peinthor ]
+  * commands: unhide physical storage commands
+  * physical-storage: allow storage pool creation
+  * commands: remove swordfish support
+  * unittest: fix test execution in py3.6 >=
+  * packaging: use python3 per default
+
+  [ Rainer Laschober ]
+  * StoragePoolDefinition: completely remove this object from the client
+
+  [ Roland Kammerer ]
+  * prepare py2/3 pkg split
+
+  [ Gabor Hernadi ]
+  * Added gross flag for vlmDfn (create and modify)
+  * Added command: rg qmvs rscGrpName
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Tue, 14 Jan 2020 08:25:40 +0000
+
+linstor-client (1.0.8-1) experimental; urgency=medium
+
+  [ Gabor Hernadi ]
+  * rsc_cmds: added --nvme-initiator and --drbd-diskless to resource creat [...]
+
+  [ Rene Peinthor ]
+  * set-property-help: correctly escape and have better formatting
+  * Fix interactive mode if config parameters are present
+
+  [ Tomasz Bykowski ]
+  * Added initial support for SPDK
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Tue, 03 Dec 2019 12:10:31 +0100
+
+linstor-client (1.0.6-1) experimental; urgency=medium
+
+  [ Rainer Laschober ]
+  * vlm_cmds: Add named parameter when listing props (bug)
+  * Add command node info which lists layer- and provider-data and their u [...]
+
+  [ Rene Peinthor ]
+  * move query-max-volume-size to controller and mark it deprecated on spd
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Thu, 07 Nov 2019 13:20:24 +0100
+
+linstor-client (1.0.5-1) experimental; urgency=medium
+
+  [ Rene Peinthor ]
+  * fix missing missing keyword filters
+  * proxy-cmds: add zstd compression type
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Fri, 25 Oct 2019 12:53:56 +0200
+
+linstor-client (1.0.4-1) experimental; urgency=medium
+
+  [ Rainer Laschober ]
+  * rsc_conn_cmds: Fix typo
+  * ResourceGroups: Naming and small fix for ctrl-side filtering of list data
+  * StoragePools: Naming
+  * ResourceDefinitions: Prepare ctrl-side filtering of list data
+  * Nodes: Prepare ctrl-side filtering of list data
+
+  [ Rene Peinthor ]
+  * vlm-cmds: show reports after the table out and indicate state
+  * print-props: do not fail on -m prop list for unknown object
+  * vlm-dfn: share parse_size_str() method
+  * physical-storage: add physical storage commands
+  * physical-storage: allow multiple devices per node and storage pool
+  * hide auto-qorum resources and add a -a list flag
+  * hide physical-storage commands for now
+  * rsc_conn_cmds: Add columns for netifs; remove print()
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Thu, 24 Oct 2019 11:36:57 +0200
+
+linstor-client (1.0.3-1) experimental; urgency=medium
+
+  [ Rene Peinthor ]
+  * update Dockerfiles to use python-linstor 1.0.3 
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Wed, 11 Sep 2019 11:35:40 +0200
+
+linstor-client (1.0.2-1) experimental; urgency=medium
+
+  [ Rene Peinthor ]
+  * rsc_conn_cmds: fix broken path list
+  * storpool_cmds: use supports_snapshots() method
+  * argparse: fix argparse writing --version to stderr
+
+  [ Beorn Facchini ]
+  * Add arguments for SSL certificates
+
+  [ Rainer Laschober ]
+  * Fix copy/paste-typos
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Tue, 10 Sep 2019 14:23:47 +0200
+
+linstor-client (1.0.1-1) experimental; urgency=medium
+
+  [ Roland Kammerer ]
+  * table: fix utf-8 problem
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Mon, 12 Aug 2019 07:55:55 +0200
+
+linstor-client (1.0.0-1) experimental; urgency=medium
+
+  [ Rene Peinthor ]
+  * storpool_cmds: Check storage pool create subparser
+  * table: fix table colums with non str type
+  * rsc_dfn_cmds: fix typo
+  * table: Add support for multline rows/columns
+  * linstor_client: Special handling of LinstorArgumentError
+  * resourcegrp/volumegrp: Add commands to create/modify/delete
+  * rsc_grp_cmds: fix set property
+  * rsc_dfn_cmds: show linked resource group in resource definition list
+  * table: fix utf-8 support detection
+  * util/apircoutput: color INFO blue
+  * rsc_dfn_cmds: create allow resource group linking
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Thu, 08 Aug 2019 10:57:53 +0200
+
+linstor-client (0.9.9-1) experimental; urgency=medium
+
+  [ Rene Peinthor ]
+  * controller/version: fix --curl mode
+  * add linstor authentication arguments
+  * add allow-insecure-auth to global args filter
+  * tests: better assert for api success
+
+  [ Gabor Hernadi ]
+  * Add file and filethin providers
+
+  [ Rainer Laschober ]
+  * Make argument 'ip' of 'n i m' optional
+  * Add new conn status for node without stlt conn
+  * Allow node to set active stlt conn on netIf crt or mod
+  * node_cmds: display only active ip in 'n l'
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Thu, 25 Jul 2019 09:20:05 +0200
+
+linstor-client (0.9.8-1) experimental; urgency=medium
+
+  [ Rene Peinthor ]
+  * storpool-listprops: fix list properties output
+  * curl-mode: fix error on list-property commands
+  * volume/commands: add own subparser for volumes
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Tue, 25 Jun 2019 10:39:43 +0200
+
+linstor-client (0.9.7-1) experimental; urgency=medium
+
+  [ Roland Kammerer ]
+  * docker: base images on UBI
+
+  [ Rene Peinthor ]
+  * code cleanup
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Tue, 18 Jun 2019 11:26:29 +0200
+
+linstor-client (0.9.6-1) experimental; urgency=medium
+
+  [ Rene Peinthor ]
+  * storpoollist: add better storage pool error reporting
+
+  [ Woojay Poynter ]
+  * Correctly matches --provider values
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Thu, 06 Jun 2019 11:02:33 +0200
+
+linstor-client (0.9.5-1) experimental; urgency=medium
+
+  [ Roland Kammerer ]
+  * migration: add current-gi
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Mon, 27 May 2019 11:21:22 +0200
+
+linstor-client (0.9.4-1) experimental; urgency=medium
+
+  [ Rene Peinthor ]
+  * node-create: avoid stacktrace for ip resolve errors
+  * unittest: fix nodes create response change
+  * rest only client
+  * add curl mode
+  * rsc_dfn: decode not needed with rest-json
+
+  [ Roland Kammerer ]
+  * dm-migrate: add transactions
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Thu, 23 May 2019 08:41:49 +0200
+
+linstor-client (0.9.3-1) experimental; urgency=medium
+
+  [ Gabor Hernadi ]
+  * Added connection status OTHER_CONTROLLER
+
+  [ Rene Peinthor ]
+  * cleanup utils.py and add test_tables unittest
+  * use ApiCallRcResponse interface, instead of the proto message
+  * client_main: better help for timeout value
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Thu, 18 Apr 2019 11:32:29 +0200
+
+linstor-client (0.9.2-1) experimental; urgency=medium
+
+  [ Rene Peinthor ]
+  * remove RES_EXT_NAME check constants
+  * githash import, except ImportError
+  * remove all name checks
+  * node-create: ip is now optional and will be resolved if missing
+  * unittest: remove storage pool tests
+  * fix typo
+  * check provider and layer list case insensitive
+  * drbd-options: prefix handler options
+
+  [ Gabor Hernadi ]
+  * Added --peer-slots to "rd c" and "rd m" commands
+  * Added --providers to auto-place command
+
+  [ Roland Kammerer ]
+  * docker: add docker.io registry
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Mon, 08 Apr 2019 15:45:39 +0200
+
+linstor-client (0.9.1-1) experimental; urgency=medium
+
+  [ Rene Peinthor ]
+  * always disconnect linstorapi on exit
+  * table: fix utf-8 output on all python versions
+  * client: fix hanging client on error in python3
+  * rsc-dfn: allow create with external name but without name
+  * use v1 output format from responses
+
+  [ Rainer Laschober ]
+  * add functionality for external name in rsc_dfn create and list
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Thu, 21 Mar 2019 10:27:05 +0100
+
+linstor-client (0.9.0-1) experimental; urgency=medium
+
+  [ Joel Colledge ]
+  * Protobuf volume allocated has been renamed to allocated_size
+
+  [ Gabor Hernadi ]
+  * Added "HOSTNAME MISMATCH" status to node list
+
+  [ Rene Peinthor ]
+  * rsc-conn: add commands to create/list/delete path connections
+  * remove shutdown controller command
+  * remove create-watch command
+  * vlmdfn: use regex string
+  * add layerstack functionality
+  * add option to specify the prefered machine readable output format version
+  * auto-place: add layer-list argument
+  * unitests: fix assert_volume_def
+  * storage-pool: use new storagepool.provider_kind
+  * storpool-list: fix diskless storage pool showing size
+  * output-version argument can now also be set via environment variable
+  * protobuf: remove oneof as we have to support protobuf 2.5
+
+  [ Roland Kammerer ]
+  * docker: set second registry
+  * config handling: use api-py
+  * docker: allow specific version tags
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Fri, 15 Mar 2019 13:35:48 +0100
+
+linstor-client (0.7.3-1) experimental; urgency=medium
+
+  [ Rene Peinthor ]
+  * table: optimize color overriding
+  * rsc-list: use a lookup map for resource state
+  * case insensitive resource definition list filter
+  * if linstor is started without options/arguments, drop into interactive
+  * move controller_list method into linstorapi
+
+  [ Joel Colledge ]
+  * Include thin volume allocated capacity in the volume list
+  * Add option to migrate disk from another node when adding disk to diskl [...]
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Mon, 17 Dec 2018 13:41:52 +0100
+
+linstor-client (0.7.2-1) experimental; urgency=medium
+
+  [ Joel Colledge ]
+  * Add snapshot rollback command
+  * Add auto-completion for node reconnect command
+
+  [ Rene Peinthor ]
+  * vlm-dfn/props: fix case sensitive resource lookup
+  * name lookups should be case insensitiv
+  * Add warning if no property map could be found or more data
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Thu, 22 Nov 2018 10:52:27 +0100
+
+linstor-client (0.7.1-1) experimental; urgency=medium
+
+  [ Rene Peinthor ]
+  * add node reconnect command
+  * fix missing rparent
+
+  [ Joel Colledge ]
+  * Create snapshots using reactive approach
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Mon, 12 Nov 2018 11:51:20 +0100
+
+linstor-client (0.7.0-1) experimental; urgency=medium
+
+  [ Joel Colledge ]
+  * Multiple resources can now be created with a single API call
+  * The auto-place API is now synchronous so watching for events is not ne [...]
+  * Remove resource definition ready event which is no longer used
+  * Introduce transactional resource creation mode
+  * Show oversubscription information in the max volume size query
+  * Show port field of resource connection
+  * Add DRBD proxy configuration commands
+  * Fix tests to expect storage pool creation responses in a different order
+  * Remove need for drbdsetup_options.py
+  * Add configuration of DRBD Proxy options
+  * Add configuration of DRBD Proxy compression plugins
+  * Fix sorting of DRBD option arguments
+
+  [ Rene Peinthor ]
+  * interactive: allow commands to start with 'linstor'
+  * add a --verbose/-V flag
+  * Table: improve usage of table creation
+  * table: allow single colored cells and improve rendering
+  * resource-connection: add list, sp, lp, drbd-options commands
+  * error-list: allow to specify hours for --since parameter
+  * unittest: disable all unittests that create resources
+  * rsc-list: add swordfish volume state colors
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Tue, 30 Oct 2018 10:11:46 +0100
+
+linstor-client (0.6.2-1) experimental; urgency=medium
+
+  [ Rene Peinthor ]
+  * list-cmds: show additional api reply messages
+  * list: do not print non api call responses
+  * filter watch created output from reply output
+  * use correct reply filter methods
+  * fix-python3: async is a keyword in python 3.7
+  * apicallresponse: show linstor command to get error reports
+  * tests: add delete_non_existing_rsc_dfn
+  * main: except ArgumentTypeError
+  * drbd-options: byte options can now use units
+  * rsc: split InUse output from state
+  * storpool-swordfish: storage_service property isn't needed anymore
+  * rsc-list: fix exception if a satellite is not connected
+  * controller-set-prop: honor --aux option
+
+  [ Roland Kammerer ]
+  * fix error-reports show redirect
+  * snapshot create: improve help message
+  * migrate: zfs thin is now supported
+
+  [ Joel Colledge ]
+  * Delete APIs are now synchronous so watching for events is not necessary
+  * Resource delete responses have been swapped
+  * Remove misleading attempt at typing parser argument
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Tue, 02 Oct 2018 08:27:53 +0200
+
+linstor-client (0.6.1-1) experimental; urgency=medium
+
+  [ Rene Peinthor ]
+  * storage-pool: use full driver names for api calls
+  * storage-pool: fix driver pool display
+  * storage-pool: add zfs thin create command
+  * swordfish: add command to add swordfish node target
+  * dm-migrate: enable zfsthin storage driver
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Mon, 10 Sep 2018 14:55:23 +0200
+
+linstor-client (0.6.0-1) experimental; urgency=medium
+
+  [ Joel Colledge ]
+  * Resource create no longer needs to wait for events
+  * Fix tests to expect the satellite unreachable message after the regist [...]
+  * Add command for adding a disk to a diskless resource
+  * Add option to remove a disk making a resource diskless
+
+  [ Rene Peinthor ]
+  * respect multiple controllers again
+  * storage_pool-create: add shared-space argument
+  * storpool-create: add swordfish driver
+  * storage-pool: rework create and add swordfish drv
+  * dm-migrate: fix typo
+  * nodes: show ports for satellite connections
+
+  [ Roland Kammerer ]
+  * dm-migrate: allow sp c skip
+  * dm-migrate: export LS_CONTROLLERS
+  * dm-migrate: set AllowLargerVolumeSize
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Fri, 31 Aug 2018 11:16:27 +0200
+
+linstor-client (0.5.0-1) experimental; urgency=medium
+
+  [ Rene Peinthor ]
+  * rsc-show: fix possible rsc_dfn exception while deleting rsc_dfns
+  * interactive: store and read the command history
+  * interactive: enable python-linstor keep alive mode
+  * node-list: show satellite connection type
+  * remove setup.cfg.sles11
+  * fix rpm dependencies
+  * delete-res: fix incorrect help text
+  * rsc-delete: use exit_on_error_event_handler
+  * delete-resdfn: add synchronous delete
+  * controller: add command show the controller version
+  * drbd-options: sorted option output list
+  * node: add a node modify command
+  * allow empty responses to be handled correctly
+  * drbd-options: use peer-device-options filter
+  * storpool: rename field free_space to free_capacity
+  * storpool: show/list total_capacity
+  * SizeCalc: class was moved to the linstor api library
+
+  [ Roland Kammerer ]
+  * build: include Dockerfile in release tarballs
+  * dm-migrate: change syntax, add drbdsetup opts
+  * dm-migrate: ask for storage pools
+  * dm-migrate: order resource creations
+  * dm-migrate: ask spd and allow setting defaults
+  * dm-migrate: fix drbdsetup opts
+  * dm-migrate: LS_CONTROLLERS; reason for exit
+
+  [ Joel Colledge ]
+  * Show free space for all stor pools
+  * Allow the node ID to be overridden when creating resources
+  * Events no longer send data with the close message
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Thu, 16 Aug 2018 08:38:02 +0200
+
+linstor-client (0.2.2-1) experimental; urgency=medium
+
+  [ Joel Colledge ]
+  * Add volume resize command
+  * Show resizing state in volume and volume definition lists
+  * Improve resource create and delete help messages
+  * Show thin pool indicator instead of size for thinly provisioned pools
+  * Remove variables from API call response since the original format stri [...]
+
+  [ Roland Kammerer ]
+  * Dockerfile: consistent naming and indenting
+  * build: allow FORCE=1 for dockerimage target
+  * Dockerfile: initial lbbuild integration
+  * build: dockerpath target
+
+  [ Rene Peinthor ]
+  * unittest: fix new volumedefinition property
+  * fix incorrect diskless state reporting
+  * resource-list: indicate resource in use
+  * storpooldfn: remove filter options from storage pool definition
+  * rework all list command filter/groupby options
+  * change renamed api method name controller_shutdown()
+  * storage_pool_dfn: add query max size command
+  * rsc-auto-place: add diskless-on-remaining option
+  * packaging: remove protobuf dependency, already provided from python-linstor
+  * rsc-list: improve the output of resource state
+  * better handle connection timeouts
+
+ -- Joel Colledge <joel.colledge@linbit.com>  Tue, 17 Jul 2018 11:51:57 +0200
+
+linstor-client (0.2.1-1) experimental; urgency=medium
+
+  [ Rene Peinthor ]
+  * allow reuse of the Linstor object (disconnect/connect)
+  * linstorapi: add type hint for _LinstorNetClient
+  * linstortests: root project name is now linstor-server
+  * move client files into the linstor_client module package
+  * cleanup imports of linstor api modules
+  * update linstor-common to see renamed backing_disk field
+  * fix incorrect module reference
+  * remove linstor module
+  * setup.py: remove linstor api packages
+  * git: remove submodule file
+  * setup: add python-linstor dependency
+  * MANIFEST.in: remove linstor-common
+  * setup.py: depend on the correct package
+  * move test_utils to linstor-api-py
+  * tests: remove test_utils test, moved to linstor-api
+  * resource: fix incorrect drbd-peer-options positional order
+  * setup.py: fix some old linstor paths and readd linstor_client package
+  * setup.py: fix main script module paths
+  * deb: remove python-linstor from build deps and don't call gensrc
+  * use devicepath from vlm proto
+  * makefile: fix docker image creation
+  * tests: fix error list unittest by forcing an error report
+  * commands: fix table imports
+  * improve some usage metavar names
+  * linstor_client_mani: tiny import cleanup
+  * vlmdfn: allow to set a storage pool
+  * add --replicas-on-* options to resource create --auto-place
+  * table: better catch import error
+  * debian/control: depend on dh-python and python-all >= 2.7
+
+  [ Joel Colledge ]
+  * Add snapshot delete command
+  * Add snapshot restore command
+  * Restore on all nodes when none are specified
+  * Add snapshot volume definition restore
+  * Allow nodes to be selected when creating a snapshot
+  * Show nodes and volumes in snapshot list
+  * Fix import for list-properties command
+  * Tidy up units for volume definition sizes
+  * Fix deletion of controller properties
+  * Fix expected resource properties to include peer slots
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Fri, 22 Jun 2018 10:10:25 +0200
+
+linstor-client (0.2.0-1) experimental; urgency=medium
+
+  [ Hayley Swimelar ]
+  * subparsify resource commands
+  * add volume and additonal resource subcommands
+  * add in node command subparsers
+  * add in resource definition subparsers
+  * add in volume definition subparsers
+  * add in storage pool subparsers
+  * add in storage pool definition subparsers
+  * remove old commands from list of commands
+  * add encryption subcommands
+  * clean up subcommands on top level parser
+  * add in controller subparser
+  * make describe node fit new api
+  * add helper function to create descriptons for subparsers
+  * add description for node subcommands
+  * add help output for resource subcommands
+  * add help output for resource dfn subcommands
+  * add help output for volume dfn subcommands
+  * add help output for storage pool subcommands
+  * add help output for storage pool dfn subcommands
+  * add help output for misc subcommands
+  * make node interfaces their own subparser
+
+  [ Rene Peinthor ]
+  * clean up import of several files
+  * remove setauxproperty subcommand and setproperties to setproperty
+  * rename delete action from 'remove' to 'delete'
+  * fix unittests to use new command syntax
+  * fix setting of controller properties
+  * move controller commands into its own class/file
+  * move drbd-resource-options command into resource-definition object
+  * move drbd-volume-options command into volume-definition object
+  * move drbd-peer-options into resource object commands
+  * move error-report commands into its own group
+  * sort main commandlist
+  * show subcommands on incomplete object calls
+  * reorder positional arguments by object priority
+  * show error-reports subcommands on incomplete call
+  * show encryption subcommands on incomplete call
+  * import our shipped argparse
+  * use description instead of help attribute for subparsers
+  * zsh-completer: restore basic command completion
+  * add help command to no connection commands
+  * list node interface subcommands on incomplete call
+  * rsc-cmds: fix unresolved ArgumentError
+  * stop creating errors while printing help for commands
+  * hide stacktrace if command is canceled in interactive mode
+  * resource: simplify satellite_not_connected check
+  * linstorapi: use static event reader table
+  * linstorapi: document event methods
+  * resource: delete is now synchronous
+  * linstorapi: allow close_remove events to contain data
+  * rsc: delete event now receives a final deleted apicallrc
+  * rsc: fix machine output for error cases or multi node calls
+  * show '--diskless' instead of '-d' in quick help
+  * add a -t --tree option to list command
+  * add the node lost command
+  * node-list: show better node connection status
+  * new linstor logging now writes to stdout
+  * do not include linstorapi in module
+
+  [ Joel Colledge ]
+  * Enable the help command to give help for subcommands
+  * Supply VG and LV when creating an LVM thin storage pool
+  * Supply VG and LV when creating LVM thin storage pools for tests
+  * Add create snapshot command
+  * Make snapshot creation synchronous
+  * Clarify that the snapshot create API takes a snapshot definition
+  * Add snapshot list command
+  * Fix specifying port and encryption type when creating nodes
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Mon, 04 Jun 2018 17:22:43 +0200
+
+linstor-client (0.1.8-1) experimental; urgency=medium
+
+  [ Rene Peinthor ]
+  * add commands to list and show error reports
+  * list-volumes: show unintentional diskless volumes in red
+
+  [ Joel Colledge ]
+  * Handle resource deployment state event
+
+  [ Roland Kammerer ]
+  * build,fixup: also include eventdata
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Thu, 03 May 2018 09:20:10 +0200
+
+linstor-client (0.1.7-1) experimental; urgency=medium
+
+  [ Joel Colledge ]
+  * Handle closing event streams and disconnected satellites
+  * Use new-peer instead of net-options so that the 'transport' DRBD prope [...]
+
+  [ Roland Kammerer ]
+  * include xml files (drbdsetup.xml)
+
+ -- Roland Kammerer <roland.kammerer@linbit.com>  Mon, 30 Apr 2018 18:26:44 +0200
+
+linstor-client (0.1.6-1) experimental; urgency=medium
+
+  [ Rene Peinthor ]
+  * update .gitignore file
+  * zsh-completer: options with '-' and ' in the name where incorrectly ge [...]
+  * all received proto message should share the same base class
+  * some PEP8 and minor fixes
+  * linstorapi: add a delete controller config property method
+  * implement setting and unsetting of drbd options
+  * fix unittests, with new node property
+  * move tree.py into linstor module (from commands)
+  * use latest linstor-common
+  * add machine_readable flag support describe-node
+  * fix drbd options with boolean type
+  * unittest: add tests for drbd {resource,volume} options
+  * iteritems() -> items() py3 fix
+  * zsh-completer: escape ':' while generating
+  * drbd-options: only allow yes/no for boolean options
+  * show the drbd device in list-volume output
+  * remove use of ExitCode from linstorapi
+  * linstorapi: add modify rsc connection method
+  * add command drbd-resource-connection-option
+  * check for missing objects in linstor props
+  * cleanup and add a stats method to the _LinstorNetClient
+  * storagepools: do not show free space for diskless driver
+
+  [ Roland Kammerer ]
+  * Dockerfile: mv MAINTAINER section
+  * docker: improve integration
+  * Makefile: rm git reset of drbdsetup_options.py
+
+  [ Joel Colledge ]
+  * Clarify that the range properties only apply to auto-allocation
+  * Simplify tree printing
+  * Do not assume that the storage pool for a volume is given by a propert [...]
+  * Tidy up colors in tree drawing
+  * Fix describe-node rebase issues - compatibility with ProtoMessageResponse
+  * Introduce LinStor events
+  * Use a new watch ID for each watch
+  * Add create-watch to the hidden commands list to fix unit test
+  * Fix waiting for newly created resources to be ready
+  * Support filters with the create-watch command
+
+  [ junhe ]
+  * Added decribe-node command
+  * added --no-utf8 option
+  * added support for color, --no-color and diskless resource
+
+  [ Hayley Swimelar ]
+  * clean up imports for nodes
+  * clean up node commands imports
+
+ -- Roland Kammerer <roland.kammerer@linbit.com>  Thu, 26 Apr 2018 15:59:29 +0200
+
+linstor-client (0.1.5-1) experimental; urgency=medium
+
+  [ Robert Altnoeder ]
+  * Fixed: dspvlmdfnprps -> dspvlmdfnprp
+
+  [ Rene Peinthor ]
+  * first implementation of the LinstorClient class
+  * replace NodeCommands api access with LinstorClient class
+  * add storage pool definition commands to api
+  * add storage pool commands to api
+  * add resource definition commands to api
+  * add volume definition commands to api
+  * fix errors for closed sockets
+  * add resource commands to api
+  * add shutdown and controller property command to linstorapi
+  * disconnect if an unknown api message was recieved
+  * properties didn't initializes the Table class correclty
+  * cleanup remove unused code
+  * move completer functions into Commands class and remove commcontroller [...]
+  * add __enter__ __exit__ methods to linstorapi and some helpers
+  * use consts.ExitCode
+  * improve error handling and reporting
+  * move parse_host function into LinstorNetClient
+  * Add checks for app version
+  * add "Error: " to linstor errors on output
+  * make LinstorNetClient privatish
+  * Fully document all Linstor() methods
+  * fix typos and add more docstrings
+  * merge set-aux-property commands into set-property commands
+  * fix create-resource --auto-place with a specific storage-pool
+  * fix: offline commands will work again
+  * default utf8 mode now depends if stdout is a tty
+  * unittests: use new in memory database options
+  * unittests: use h2 for tests
+  * list message commands now correctly handle error replies
+  * unittest: linstor Controller doesn't need an open stdin anymore
+  * list-controller-properties will handle apicallreply now correctly
+  * fix positional argparse completers
+  * add docstring for Commands.find_node
+  * interactive: decrease the wall of text on incorrectly entered commands
+  * create-resource: allow to specify more than 1 node
+  * introduce an ArgumentError that will output help for the current command
+  * allow creation of diskless storage pools
+  * show usage if create-resource command failed
+  * list-storage-pools: list free space of storage pools
+  * list-storage-pools: add filter and groupby arguments
+  * list message are now filtered on the controller
+  * unittest: add tests for filtered list commands
+  * unittest: add tests for object completers
+  * move setup of misc commands to MiscCommands
+  * add volume definition crypt support
+  * crypt: add create, enter and modify passphrase commands
+
+  [ Roland Kammerer ]
+  * list-storage-pools: do not split "Name"
+  * build: add python-setuptools build dep
+  * build: do not assume dh_clean
+
+ -- Roland Kammerer <roland.kammerer@linbit.com>  Wed, 28 Mar 2018 16:15:12 +0200
+
+linstor-client (0.1.4-1) experimental; urgency=medium
+
+  [ Robert Altnoeder ]
+  * Changed interactive mode prompt to "LINSTOR ==> "
+  * Removed redundant aliases, made command names more consistent
+  * Fixed alias dspstorpoolprp -> dspstorpooldfnprp
+  * Prevent recursively entering interactive mode
+
+  [ Rene Peinthor ]
+  * add --auto-place option to the create-reasource command
+  * fix typos in the zsh completer
+  * unittests: fix after command renames
+  * add all proto Msg* to the proto __init__.py
+  * fix import paths for python3
+  * importing protobuf message doesn't work with older protobuf compilers
+
+  [ Gabor Hernadi ]
+  * Added not_place_with_rsc_regex argument
+
+ -- Roland Kammerer <roland.kammerer@linbit.com>  Tue, 06 Mar 2018 15:58:50 +0100
+
+linstor-client (0.1.3-1) experimental; urgency=medium
+
+  [ Roland Kammerer ]
+  * build: reset rpm release
+  * dm-migrate: add this hidden command
+
+  [ Rene Peinthor ]
+  * introduce a hidden command list
+  * fix storage-pool-definition completer
+  * update docstring for _send_msg and parse_key_value_pairs
+  * interactive: only show syntax help if it was a real argparse error
+  * move Table class into its own file
+  * remove --show argument from list-resource
+  * hide the dfltdisklessstorpool by default, can be shown by --all
+  * use same valid_inner_chars than controller
+  * ignore generated consts_githash.py file
+  * table: fix crash in empty tables with grouping
+  * Table can now be extended with TableHeader objects
+  * enable groupby argument for list-resource command
+  * add empty output tests for Table text output
+  * list-resource: filter by resource or node options
+  * fix incorrect python3 import
+  * add a hidden gen-zsh-completer command
+  * disable drbd-option commands they are currently not implementated
+  * improve vlm state display
+  * diskless storage pools will now be filtered on the controller
+
+ -- Roland Kammerer <roland.kammerer@linbit.com>  Thu, 22 Feb 2018 15:42:50 +0100
+
+linstor-client (0.1.2-2) experimental; urgency=medium
+
+  [ Rene Peinthor ]
+  * moved generated protobuf messages into linstor package
+
+ -- Roland Kammerer <roland.kammerer@linbit.com>  Fri, 16 Feb 2018 09:57:00 +0100
+
+linstor-client (0.1.2-1) experimental; urgency=medium
+
+  [ Rene Peinthor ]
+  * utils.Table: allow first column to be empty, easier use of colorless tables
+  * introduces a LinstorError exception
+  * define constant exit codes
+  * node: list-netinterfaces command
+  * interactive: quit is an accepted exit aliases
+  * unittests: show unparsable json output
+  * unittest: look again for a fixed linstor.tar file
+  * add create/delete netinterface commands, adapt to merged satcon/netif
+  * move controller independent main_commands test into own file
+  * gitignore: linstor/properties.py is generated
+  * add set aux property commands and restrict others
+  * submodule: auxiliary namespace is needed
+  * implement modify netinterface command
+  * update API_VERSION number to 1, introduce min version
+  * unittest: run controller with the new memory_database option
+  * volumedfn: use Command constants
+  * volumedfn: remove old print code
+  * create-volume-def: add volume number option
+  * use defined exit codes
+  * fix incorrect completer for resource commands
+
+  [ Robert Altnoeder ]
+  * Added/Corrected command alias names
+
+ -- Roland Kammerer <roland.kammerer@linbit.com>  Thu, 15 Feb 2018 19:11:07 +0100
+
+linstor-client (0.1.1-1) experimental; urgency=medium
+
+  [ Roland Kammerer ]
+  * Initial commit
+  * add .pep8 config
+  * build: add proto files/tools from linstor-common
+  * build: clean generated files on pkg build
+  * add README.md for packaging
+  * debian: add python-protobuf as build dependency
+  * build: also regenerate src on doc
+  * build: don't build doc, included in tarball
+  * debian: move gensrc to rules
+  * build: add comment about Debian gensrc
+  * build: add Dockerfile
+  * fix ping command
+  * implement new-node command
+  * renamed port constants
+  * docker: clean apt pkg cache
+  * debian: fix indenting
+  * build: fix tarball generation
+  * build: rename to linbit-cli
+  * build: rename to linstor-client
+  * README.md: update information
+  * switch submodule urls to github
+
+  [ Rene Peinthor ]
+  * fix --controllers argument
+  * use default ports for satellite and controller
+  * add .gitignore (*.pyc and generated proto msgs)
+  * add wip commands
+  * use latest linstor-common
+  * update submodule to updated protobuf structure (working in py3)
+  * python3 compat changes
+  * move get controllers list into its own function
+  * _handle_ret() will not exit by itself anymore
+  * CommController: added __enter__/__exit__, small fix to sendrecv
+  * add storpooldfn commands for new, del and list
+  * storpooldfn: fix listing storpool definitions
+  * storpool: add commands creating, deleting and listing
+  * add node interfaces to the list-nodes output
+  * add create-resource, delete-resource, list-resources commands
+  * package name will be added on server
+  * variable is not needed anymore
+  * reduce command aliases to create and delete variations and remove abbr [...]
+  * linstor-common up / use string uuids
+  * code restructuring of commands
+  * fix pep8 warnings
+  * fix imports and some coding errors
+  * add approximate_size_string() from old drbdmanage client
+  * correctly read size from commandline (with converting) for vlmdfns
+  * remove reference from drbdmanage
+  * uuid's are strings now
+  * add linstor.commands package to setup.py
+  * new msgcrtnode support, all list commands support now -m arg
+  * unittests: add first basic unittests for list commands
+  * resource definition proto got some prefixes
+  * add default value for args argument
+  * raw_input() was renamed to input()
+  * move completer functions into their command classes and implement them
+  * split parse method into parse and parse_and_execute
+  * improve linstore_cli unittest setup and add tests for node
+  * utils: use variable for output stream
+  * fix interactive mode
+  * move driver completer to storpool class
+  * dirty fix of the json_format dependency problem until a replacement is found
+  * add get-*-properties commands to all objects and restructure code further
+  * restructured stub for setting drbd options in linstor
+  * remove _controller_list method, is now in ComController
+  * add list aliases without 's'
+  * add ApiCallResponse wrapper class that can be asked if it is an error
+  * 2 stage the Command*._delete into _delete and _delete_and_output
+  * implicit adding of a storage pool definition on adding an storage pool
+  * fix create-storage-pool
+  * add delete volume definition command
+  * use ApiCallResponse class in delete calls and simplify code
+  * tests: LinstorTestCase will now clean and start a fresh Controller per [...]
+  * tests: get the init sql script from the linstor.jar
+  * tests: add xmlrunnter unittest script
+  * add unittest ignores
+  * remove remaining strings of drbdmanage (-> linstor)
+  * create-resource: remove port argument
+  * create-volume-definition: use minor number argument
+  * create-resource-definition: hide secret argument
+  * remove --force arguments from delete commands
+  * unittest: force bind on ipv4 localhost
+  * prefer commandline argument controllers
+  * add debug output for jenkins
+  * tests: force flush stdout
+  * unittests: wait for controller to be terminated
+  * storage pool definition is now implicitly created on linstore-server
+  * show all exception errors
+  * machine readable output can now be text or json
+  * unittest: increase wait time for controller start
+  * unittest: finally fix unittest on jenkins
+  * remove commented code, props can be read with get-*-property command
+  * add skipped test to dump command help
+  * use new stringlist api flags
+  * nodes: rework list output
+  * all list commands are now using the util.Table class
+  * add protobuf_to_dict library
+  * move Commands class into its own file and use protobuf_to_dict for jso [...]
+  * change default machine-readable output to json
+  * tests: raise exception if linstor controller should be down already
+  * tests: json field names are not camelcase anymore
+  * do better parsing of ip/hostname addresses and with that enable ipv6
+  * include utils test in module
+  * fix parsing of simple hostnames
+  * rework output of delete api call responses
+  * update linstortestcase to current packaging standards
+  * fix return code mask checks
+  * use py3 compatible imports
+  * py2/3 safe import
+  * fix byte concatination and stop eating exceptions
+  * protobuf_to_dict: py2/3 fixed TYPE map
+  * convert to bytes before pickle load
+  * only decode if not a str (py3)
+  * make imports also work in python3
+  * tests: decode controller output
+  * linstor-client now also works in python3
+  * every command will now have a machine readable output argument
+  * apicallresponse uses now unsigned int64 for return code
+  * run controller on different port depending on python version
+  * tests: commands can and will now be checked on their api call return code
+  * fix typo
+  * make sure commands return all of their api call responses
+  * add timeout parameter for linstor-client connections
+  * add .idea to git ignore
+  * code cleanup and adding some type hinting
+  * fix commented out proto2json version
+  * add function to find the corresponding resource state
+  * fix unittests for removed RC_* constants
+  * check vlm_minor_nr is in volumes result
+  * unittests: improve exception handling
+  * adapt to latest protobuf changes
+  * add diskless argument for create-resource
+  * add __repr__ for ApiCallResponse
+  * improve help text in volume definition commands
+  * unittest: add test for creation commands
+  * unittest: check in list command if storage pool exist
+  * fix table column justify output with utf8
+  * add more info output in the list-resource command
+  * move colors into a class and a different package
+  * remove obsolete dbus debug commands
+  * remove copy of size_completer function
+  * cleanup more commands
+  * add myself to authors
+  * exit if volume sizes are wrong
+  * global arguments can now also specified via a config file
+  * close open file descriptors
+  * open to with open
+  * python3 does not allow to catch an exception object that is not child  [...]
+  * improve unittesting
+  * unittest: fix german typo
+  * check also linstor-server sibling directory for a distribution
+  * fix unittests for new MASK_CRT returncodes
+  * small utils.Table cleanup
+  * remove separators argument, not used anymore
+  * add list-volumes command
+  * clients excepts now a api version message, improved server connection errors
+  * fix interactive mode
+  * cleanup not needed commands
+  * update argcomplete to version 1.9.3
+  * use correct completer functions
+  * fix some commandline help strings
+  * give environment controllers priority
+  * add test for creating and deleting storage pool definitions
+  * fix STORPOOL_NAME check was not in place
+  * storage-pool: correclty set storage driver properties
+  * it makes no sense to show the used storage pool for a resource
+  * socket.sendall does not work with ssl wrapped sockets, rewrite with so [...]
+  * client now uses an internal linstor:// uri scheme and support ssl conn [...]
+  * rename Commands._create to Commands._send_msg
+  * netinterface node properties aren't needed anymore
+  * remove commented print code
+  * fix incorrect create-resource node_name help description
+  * don't look for a specific linstor tar, just search some folders for any tar
+  * make origin of resource name more understandable
+  * add set property methods for all objects and rework get property methods
+  * remove all obsolete or not implemented commands
+  * explicitly define main commands and show aliases only in the list-command
+  * argcomplete: fix accessing non existing _argcomplete_namespace
+  * add a shutdown controller command
+  * remove the 's' in property command, so it doesn't collide in auto complete
+  * output all apicallresponse message
+  * support retrieving and setting(basic) controller properties
+  * list-volumes: correctly display diskless volumes
+
+  [ Robert Altnoeder ]
+  * Fixed receiver so it supports asynchronous replies
+  * More detailed output, basic delete-node command
+  * Added command aliases:
+  * Added command aliases for various commands
+  * Fixed network I/O: incomplete recv() of message data
+  * Modified/added command aliases
+
+  [ Peter Schwindt ]
+  * Naming is serious, too
+
+  [ Joel Colledge ]
+  * Correct the default satellite connection port for combined nodes
+  * Look up the correct parameter name for the volume deletion command
+  * Ignore .iml files from IntelliJ IDEA
+  * Use the correct port field when creating a resource definition with a  [...]
+  * Fetch snapshot support status when listing storage pools
+  * Fix storage pool definition deletion
+
+ -- Roland Kammerer <roland.kammerer@linbit.com>  Fri, 09 Feb 2018 16:12:40 +0100
+
+linstor-client (0.1-1) experimental; urgency=medium
+
+  Initiial version of this package.
+
+ -- Roland Kammerer <roland.kammerer@linbit.com>  Fri, 13 Oct 2017 14:29:47 +0200

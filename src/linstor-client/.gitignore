@@ -1,0 +1,21 @@
+# ide files and dirs
+.idea/
+*.iml
+
+# ignore "compiled" python
+*.pyc
+
+# make generated files
+man-pages/
+dist/
+linstor_client.egg-info/
+build
+MANIFEST
+
+# ignore generated githash version
+linstor_client/consts_githash.py
+
+# unittests ignores
+build/
+test-reports/
+.cache/

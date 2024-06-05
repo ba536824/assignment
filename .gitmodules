@@ -1,3 +1,6 @@
 [submodule "src/src/drbd"]
 	path = src/src/drbd
 	url = https://github.com/ba536824/assignment.git
+[submodule "src/assignment"]
+	path = src/assignment
+	url = https://github.com/ba536824/assignment.git

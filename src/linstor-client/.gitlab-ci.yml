@@ -1,0 +1,155 @@
+variables:
+  LINSTOR_CONTROLLER_HOST: 'linstor-controller'
+  LINSTOR_CONTROLLER_PORT: '3370'
+
+stages:
+  - lint
+  - build
+  - test
+  - deploy
+  - deploy_tests
+
+before_script:
+  # setup ssh access to clone python-linstor dep
+  - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+  - eval $(ssh-agent -s)
+  - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+  - mkdir -p ~/.ssh
+  - chmod 700 ~/.ssh
+  - ssh-keyscan $GIT_HOST >> ~/.ssh/known_hosts
+  # now install python-linstor into venv
+  - pushd /tmp
+  - python -m venv venv
+  - git clone --recursive git@$GIT_HOST:$PYTHON_LINSTOR_PATH
+  - cd linstor-api-py
+  - git checkout $CI_COMMIT_REF_NAME || true
+  - git submodule update
+  - make gensrc
+  - ../venv/bin/python setup.py install
+  # and also install xmlrunner package
+  - ../venv/bin/pip install xmlrunner
+  - popd
+
+services:
+  - name: $CI_REGISTRY/linstor/linstor-server/controller
+    alias: linstor-controller
+
+pep8:
+  stage: lint
+  image: pipelinecomponents/flake8
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH == "jenkins"'
+    - if: $CI_COMMIT_BRANCH == 'master'
+  before_script:
+    - echo noop
+  script:
+    flake8 .
+
+test:2.7:
+  stage: test
+  image: python:2.7
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH == "jenkins"'
+    - if: $CI_COMMIT_BRANCH == 'master'
+  before_script:
+    # setup ssh access to clone python-linstor dep
+    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - ssh-keyscan $GIT_HOST >> ~/.ssh/known_hosts
+    - pip install virtualenv
+    # now install python-linstor into venv
+    - pushd /tmp
+    - python -m virtualenv venv
+    - git clone --recursive git@$GIT_HOST:$PYTHON_LINSTOR_PATH
+    - cd linstor-api-py
+    - git checkout $CI_COMMIT_REF_NAME || true
+    - git submodule update
+    - make gensrc
+    - ../venv/bin/python setup.py install
+    # and also install xmlrunner package
+    - ../venv/bin/pip install xmlrunner
+    - popd
+  script:
+    - /tmp/venv/bin/python tests.py
+  artifacts:
+    reports:
+      junit: test-reports/TEST-*.xml
+
+test:3.5:
+  stage: test
+  image: python:3.5
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH == "jenkins"'
+    - if: $CI_COMMIT_BRANCH == 'master'
+  script:
+    - /tmp/venv/bin/python tests.py
+  artifacts:
+    reports:
+      junit: test-reports/TEST-*.xml
+
+test:3.10:
+  stage: test
+  image: python:3.10
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH == "jenkins"'
+    - if: $CI_COMMIT_BRANCH == 'master'
+  script:
+    - /tmp/venv/bin/python tests.py
+  artifacts:
+    reports:
+      junit: test-reports/TEST-*.xml
+
+deploy_client:
+  stage: deploy
+  image: $LINBIT_DOCKER_REGISTRY/build-helpers:latest
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: $CI_COMMIT_BRANCH == 'master'
+  before_script:
+    - curl -sSL $LINBIT_REGISTRY_URL/repository/lbbuild/lbbuildctl-latest -o /usr/local/bin/lbbuildctl
+    - chmod +x /usr/local/bin/lbbuildctl
+  script:
+    - |
+      case "$CI_COMMIT_REF_NAME" in
+        "master") VERSION_SUFFIX="" ;;
+        *) VERSION_SUFFIX=.dev$(echo -n $CI_COMMIT_REF_NAME | md5sum| sed -e 's/[^0-9]//g' | cut -c -9) ;;
+      esac
+    - LINSTOR_CLIENT_VERSION=1.99.0$VERSION_SUFFIX
+    - PYTHON_LINSTOR_VERSION=1.99.0
+    - |
+      if curl --head -f $LINBIT_REGISTRY_URL/repository/lbbuild-upstream/python-linstor-$PYTHON_LINSTOR_VERSION$VERSION_SUFFIX.tar.gz ; then
+        PYTHON_LINSTOR_VERSION=$LINSTOR_CLIENT_VERSION
+        echo "USING PYTHON_LINSTOR: $PYTHON_LINSTOR_VERSION"
+      fi
+    - awk -f "/usr/local/bin/dch.awk" -v PROJECT_VERSION="$LINSTOR_CLIENT_VERSION" -v PROJECT_NAME="linstor-client" debian/changelog > debian/changelog.tmp
+    - mv debian/changelog{.tmp,}
+    - sed -i "s/LINSTOR_CLI_VERSION [0-9.]*/LINSTOR_CLI_VERSION $LINSTOR_CLIENT_VERSION/g" Dockerfile
+    - sed -i "s/PYTHON_LINSTOR_VERSION [0-9.]*/PYTHON_LINSTOR_VERSION $LINSTOR_CLIENT_VERSION/g" Dockerfile
+    - sed -i "s/python-linstor >= [0-9.]*/python-linstor >= $LINSTOR_CLIENT_VERSION/g" setup.cfg setup.cfg.py2
+    - sed -i "s/\"python-linstor>=[0-9.]*\"/\"python-linstor>=$LINSTOR_CLIENT_VERSION\"/g" setup.py
+    - sed -i "s/VERSION = \"[0-9.]*\"/VERSION = \"$LINSTOR_CLIENT_VERSION\"/g" linstor_client/consts.py
+#    - dummy-release.sh linstor-client $LINSTOR_CLIENT_VERSION ignore
+    - NO_DOC="-no-doc" make debrelease
+    - curl -isSf -u $LINBIT_REGISTRY_USER:$LINBIT_REGISTRY_PASSWORD --upload-file dist/linstor-client-$LINSTOR_CLIENT_VERSION.tar.gz $LINBIT_REGISTRY_URL/repository/lbbuild-upstream/
+    - curl -X DELETE -u $LINBIT_REGISTRY_USER:$LINBIT_REGISTRY_PASSWORD $LINBIT_REGISTRY_URL/repository/rhel8/x86_64/linstor-client-$LINSTOR_CLIENT_VERSION-1.noarch.rpm
+    - lbbuildctl build linstor-client --arch amd64 --ci -v "$LINSTOR_CLIENT_VERSION" -p "$PYTHON_LINSTOR_VERSION"
+        -e LINBIT_REGISTRY_USER=$LINBIT_REGISTRY_USER
+        -e LINBIT_REGISTRY_PASSWORD=$LINBIT_REGISTRY_PASSWORD
+        -e LINBIT_REGISTRY_URL=$LINBIT_REGISTRY_URL
+        -d ubuntu-bionic,ubuntu-focal,ubuntu-noble,rhel7.0,rhel8.0
+
+staging:
+  stage: deploy_tests
+  variables:
+    ARG_COMMIT_BRANCH: $CI_COMMIT_REF_NAME
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: $CI_COMMIT_BRANCH == 'master'
+  trigger: linstor/linstor-tests
