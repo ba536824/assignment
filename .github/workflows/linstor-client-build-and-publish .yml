@@ -82,16 +82,15 @@ jobs:
       
       - name: Create upstream tarball
         run: |
-          cd ..
+          cd src
           tar -czf linstor-client_1.22.1.orig.tar.gz linstor-client/
           mv linstor-client_1.22.1.orig.tar.gz linstor-client/
       
       - name: Build  Package
         run: |
-          cd linstor-client
-          dpkg-source --before-build .
-          dpkg-buildpackage -d -us -uc -S
-          dpkg-buildpackage -d -us -uc -b
+          cd src/linstor-client
+          dpkg-buildpackage -us -uc -S
+        #  dpkg-buildpackage -d -us -uc -b
 
       - name: Install PackageCloud CLI
         run: |
