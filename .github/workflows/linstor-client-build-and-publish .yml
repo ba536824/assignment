@@ -49,7 +49,9 @@ jobs:
             dkms \
             cargo \
             rustc \
-            keyutils 
+            keyutils \
+            xsltproc \
+            help2man
           
       - name: Setup Python
         uses: actions/setup-python@v2
@@ -72,7 +74,6 @@ jobs:
       - name: Local Linstor-Client repository
         run: |
           cd src/linstor-client
-          ls -l
           python3 setup.py build_man 
       
       - name: Build Source Package
