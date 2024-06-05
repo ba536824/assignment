@@ -48,22 +48,18 @@ jobs:
             fakeroot \
             dkms \
             cargo \
-            rustc
+            rustc \
+            keyutils
 
       - name: Use local DRBD-utils repository
         run: |
           cd src/drbd-utils
-          ./autogen.sh || true
-          ./configure || true
+          ./configure --enable-spec
+          # or use specific configure parameters
+          # ./configure --without-84support --without-drbdmon --with-windrbd --without-manual --prefix=/cygdrive/c/windrbd/usr --localstatedir=/cygdrive/c/windrbd/var --sysconfdir=/cygdrive/c/windrbd/etc
+          make
+          sudo make install
           
-      - name: Debug List directory contents
-        run: |
-          ls -l src/drbd-utils
-    
-      - name: Debug Print autotools configuration
-        run: |
-          cat src/drbd-utils/configure.ac
-
       - name: Build package
         run: |
           cd src/drbd-utils
