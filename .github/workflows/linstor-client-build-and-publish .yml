@@ -84,8 +84,8 @@ jobs:
         run: |
           cd src/linstor-client
           dpkg-source --before-build .
-          dpkg-buildpackage -us -uc -S
-          dpkg-buildpackage -us -uc -b
+          dpkg-buildpackage -d -us -uc -S
+          dpkg-buildpackage -d -us -uc -b
 
       - name: Install PackageCloud CLI
         run: |
