@@ -80,9 +80,15 @@ jobs:
           cd src/linstor-client
           python3 setup.py build_man 
       
+      - name: Create upstream tarball
+        run: |
+          cd ..
+          tar -czf linstor-client_1.22.1.orig.tar.gz linstor-client/
+          mv linstor-client_1.22.1.orig.tar.gz linstor-client/
+      
       - name: Build  Package
         run: |
-          cd src/linstor-client
+          cd linstor-client
           dpkg-source --before-build .
           dpkg-buildpackage -d -us -uc -S
           dpkg-buildpackage -d -us -uc -b
