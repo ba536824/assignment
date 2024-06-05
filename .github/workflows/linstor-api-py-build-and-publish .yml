@@ -18,6 +18,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+        with:
+          submodules: true
 
       - name: Set up APT
         run: |
@@ -42,15 +44,19 @@ jobs:
             dkms \
             cargo \
             rustc
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
 
-      # - name: Clone linstor-api-py repository
-      #   run: |
-      #     git clone https://github.com/LINBIT/linstor-api-py.git
-      #     cd linstor-api-py
-      #     git pull
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install setuptools
+
       - name: Use local linstor-api-py repository
         run: |
-          cd /Users/aaral/DevOps/assignment/src/linstor-api-py
+          cd src/linstor-api-py
           python3 setup.py build
           python3 setup.py install
       
