@@ -51,7 +51,11 @@ jobs:
             rustc \
             keyutils \
             xsltproc \
-            help2man
+            help2man \
+            dh-python \
+            docbook-xsl \
+            python3-all \
+            python3-setuptools
           
       - name: Setup Python
         uses: actions/setup-python@v2
