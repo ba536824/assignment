@@ -6,7 +6,6 @@
 *.pyc
 
 # make generated files
-man-pages/
 dist/
 linstor_client.egg-info/
 build
