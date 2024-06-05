@@ -60,7 +60,7 @@ jobs:
         run: |
             python -m pip install --upgrade pip
             pip install setuptools
-            pip install linstor
+            pip install python-linstor
 
       - name: local LINSTOR API Py repository
         run: |
