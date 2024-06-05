@@ -64,7 +64,7 @@ jobs:
       - name: local LINSTOR API Py repository
         run: |
           cd src/linstor-api-py
-          make  
+          make 
           python3 setup.py build
           sudo python3 setup.py install
 
