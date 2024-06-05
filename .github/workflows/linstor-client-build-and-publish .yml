@@ -82,8 +82,8 @@ jobs:
         run: |
           cd src
           tar -czf linstor-client_1.22.1.orig.tar.gz linstor-client/
-          mv linstor-client_1.22.1.orig.tar.gz linstor-client/
-      
+          mv linstor-client_1.22.1.orig.tar.gz linstor-client-1.22.1.tar.gz
+          
       - name: Build  Package
         run: |
           cd src/linstor-client
