@@ -55,6 +55,14 @@ jobs:
           cd src/drbd-utils
           ./autogen.sh || true
           ./configure || true
+          
+      - name: Debug List directory contents
+        run: |
+          ls -l src/drbd-utils
+    
+      - name: Debug Print autotools configuration
+        run: |
+          cat src/drbd-utils/configure.ac
 
       - name: Build package
         run: |
