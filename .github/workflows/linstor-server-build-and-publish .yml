@@ -12,7 +12,7 @@ jobs:
   build:
     strategy:
       matrix:
-        os: ["noble", "jammy"]
+        os: ["jammy"]
     runs-on: ubuntu-latest
     timeout-minutes: 60
 
@@ -78,9 +78,9 @@ jobs:
       - name: Local LINSTOR Server
         run: |
           cd src/linstor-server
-          ./autogen.sh  # Ensure autogen.sh is run if it exists
-          ./configure   # Ensure configure is run if it exists
-          make
+          ./autogen.sh  
+          ./configure 
+          ./Makefile.em
           sudo make install
     
       - name: local Build LINSTOR Gateway
