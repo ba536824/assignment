@@ -24,7 +24,7 @@ jobs:
       - name: Initialize and update submodules
         run: |
           git submodule update --init --recursive
-          
+
       - name: Set up APT
         run: |
           sudo apt-get update
@@ -64,6 +64,7 @@ jobs:
           cd src/linstor-api-py
           python3 setup.py build
           python3 setup.py install
+          make -C linstor-common cleanpython
       
       - name: Build Source Package
         run: |
