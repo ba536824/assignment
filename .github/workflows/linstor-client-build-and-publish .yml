@@ -61,11 +61,6 @@ jobs:
             dh-virtualenv \
             debmake
           
-      # - name: Create and install build dependencies
-      #   run: |
-      #     cd src/linstor-client
-      #     mk-build-deps --install --remove --tool 'apt-cudf-get --solver aspcud -o APT::Get::Assume-Yes=1 -o Debug::pkgProblemResolver=0 -o APT::Install-Recommends=0' debian/control
-
       - name: local LINSTOR API Py repository
         run: |
           cd src/linstor-api-py
@@ -88,8 +83,8 @@ jobs:
         run: |
           cd src/linstor-client
           debmake -u -b":python" 
-          dpkg-buildpackage -us -uc -S
-          dpkg-buildpackage -d -us -uc -b
+        #  dpkg-buildpackage -us -uc -S
+        #   dpkg-buildpackage -d -us -uc -b
 
       - name: Install PackageCloud CLI
         run: |
