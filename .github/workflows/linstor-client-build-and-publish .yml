@@ -71,7 +71,7 @@ jobs:
       - name: Create and install build dependencies
         run: |
           cd src/linstor-client
-          sudo mk-build-deps -i --tool 'apt-get -y -f install'
+          sudo mk-build-deps -i --tool 'apt-get -y --no-install-recommends install'
 
       - name: local LINSTOR API Py repository
         run: |
