@@ -12,7 +12,8 @@ Build-Depends: bash-completion,
                python3-setuptools,
                xsltproc,
                setuptools,
-               mk-build-deps
+               mk-build-deps,
+               dh-virtualenv
 Standards-Version: 3.9.6
 
 Package: linstor-client
