@@ -69,10 +69,10 @@ jobs:
       #       python -m pip install --upgrade pip
       #       pip install setuptools
       #       pip install python-linstor
-      - name: Create and install build dependencies
-        run: |
-          cd src/linstor-client
-          mk-build-deps --install --remove --tool 'apt-cudf-get --solver aspcud -o APT::Get::Assume-Yes=1 -o Debug::pkgProblemResolver=0 -o APT::Install-Recommends=0' debian/control
+      # - name: Create and install build dependencies
+      #   run: |
+      #     cd src/linstor-client
+      #     mk-build-deps --install --remove --tool 'apt-cudf-get --solver aspcud -o APT::Get::Assume-Yes=1 -o Debug::pkgProblemResolver=0 -o APT::Install-Recommends=0' debian/control
 
       - name: local LINSTOR API Py repository
         run: |
