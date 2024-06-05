@@ -56,7 +56,8 @@ jobs:
             dh-python \
             docbook-xsl \
             python3-all \
-            equivs
+            equivs \
+            aspcud
           
       - name: Setup Python
         uses: actions/setup-python@v2
@@ -71,7 +72,7 @@ jobs:
       - name: Create and install build dependencies
         run: |
           cd src/linstor-client
-          sudo mk-build-deps -i --tool 'apt-get -y --no-install-recommends install'
+          mk-build-deps --install --remove --tool 'apt-cudf-get --solver aspcud -o APT::Get::Assume-Yes=1 -o Debug::pkgProblemResolver=0 -o APT::Install-Recommends=0' debian/control
 
       - name: local LINSTOR API Py repository
         run: |
