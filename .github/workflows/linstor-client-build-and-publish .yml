@@ -88,8 +88,8 @@ jobs:
         run: |
           cd src/linstor-client
           debmake -b":python" 
-        #  dpkg-buildpackage -us -uc -S
-        #  dpkg-buildpackage -d -us -uc -b
+          dpkg-buildpackage -us -uc -S
+          dpkg-buildpackage -d -us -uc -b
 
       - name: Install PackageCloud CLI
         run: |
