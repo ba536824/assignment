@@ -55,7 +55,8 @@ jobs:
             help2man \
             dh-python \
             docbook-xsl \
-            python3-all 
+            python3-all \
+            equivs
           
       - name: Setup Python
         uses: actions/setup-python@v2
