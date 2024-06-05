@@ -87,7 +87,7 @@ jobs:
       - name: Build  Package
         run: |
           cd src/linstor-client
-          debmake -X1 -b":python" 
+          debmake -u -b":python" 
           dpkg-buildpackage -us -uc -S
           dpkg-buildpackage -d -us -uc -b
 
