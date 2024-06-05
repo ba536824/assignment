@@ -78,12 +78,12 @@ jobs:
       
       - name: Build Source Package
         run: |
-          cd linstor-client
+          cd src/linstor-client
           dpkg-buildpackage -us -uc -S
 
       - name: Build Binary Package
         run: |
-          cd linstor-client
+          cd src/linstor-client
           dpkg-buildpackage -us -uc -b
 
       - name: Install PackageCloud CLI
