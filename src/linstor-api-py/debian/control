@@ -10,7 +10,8 @@ Build-Depends: bash-completion,
                help2man,
                python3-all (>= 3.5),
                python3-setuptools,
-               xsltproc
+               xsltproc,
+               setuptools
 Standards-Version: 3.9.6
 
 Package: python-linstor
