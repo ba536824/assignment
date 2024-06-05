@@ -1,0 +1,23 @@
+test_suite_file = "run.toml"
+
+[tests]
+[tests.iscsi-create-lio-t]
+vms = [3]
+
+[tests.iscsi-create-scst]
+vms = [3]
+
+[tests.nfs-create]
+vms = [3]
+
+[tests.nvme-create]
+vms = [3]
+
+[tests.healthcheck]
+vms = [1]
+
+[tests.create-same-name]
+vms = [3]
+
+[tests.create-same-ip]
+vms = [3]

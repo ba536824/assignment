@@ -1,0 +1,10 @@
+/linstor-gateway
+/linstor-iscsi
+/linstor-nfs
+*.tar.gz
+/tests-out/
+*.rpm
+*.deb
+/vendor/
+/.idea/
+version.env

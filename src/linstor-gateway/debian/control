@@ -1,0 +1,16 @@
+Source: linstor-gateway
+Section: admin
+Priority: optional
+Maintainer: Christoph Böhmwalder <christoph.boehmwalder@linbit.com>
+Build-Depends: debhelper (>= 9)
+Standards-Version: 3.9.8
+Homepage: https://github.com/LINBIT/linstor-gateway
+Vcs-Git: https://github.com/LINBIT/linstor-gateway.git
+Vcs-Browser: https://github.com/LINBIT/linstor-gateway
+
+Package: linstor-gateway
+Architecture: amd64
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Exposes highly available LINSTOR storage via iSCSI, NFS, or NVMe-OF
+ LINSTOR Gateway manages highly available iSCSI targets, NFS exports, and
+ NVMe-oF targets by leveraging LINSTOR and drbd-reactor.

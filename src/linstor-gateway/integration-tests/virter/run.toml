@@ -1,0 +1,28 @@
+version = 1
+
+[values]
+LinstorGatewayVersion = "*"
+LinstorDevicePath = "/dev/sda"
+TestSuiteImage = "linstor-gateway-e2e"
+OutDir = ""
+
+[[steps]]
+[steps.container]
+image = "quay.io/ansible/ansible-runner:stable-2.9-devel"
+command = [
+	"ansible-playbook",
+	"--inventory", "/virter/workspace/virter/inventory",
+	"/virter/workspace/virter/provision-playbook.yml",
+	"--extra-vars", "linstor_gateway_version={{ .LinstorGatewayVersion }}",
+	"--extra-vars", "linstor_device_path={{ .LinstorDevicePath }}",
+	"--tags", "run",
+]
+[steps.container.env]
+ANSIBLE_PIPELINING = "yes"
+
+[[steps]]
+[steps.container]
+image = "{{.TestSuiteImage}}"
+[steps.container.copy]
+source = "/log"
+dest = "{{.OutDir}}"

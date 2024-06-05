@@ -1,0 +1,23 @@
+version = 1
+
+[values]
+KernelVersion = "5.14.0-362.13.1.el9_3.x86_64"
+RhelMajorVersion = "9"
+LinbitRepoBaseURL = ""
+CIRepoBaseURL = ""
+
+[[steps]]
+[steps.container]
+image = "quay.io/ansible/ansible-runner:stable-2.9-devel"
+command = [
+	"ansible-playbook",
+	"--inventory", "/virter/workspace/virter/inventory",
+	"/virter/workspace/virter/provision-playbook.yml",
+	"--extra-vars", "kernel_version={{ .KernelVersion }}",
+	"--extra-vars", "rhel_major_version={{ .RhelMajorVersion }}",
+	"--extra-vars", "linbit_repo_baseurl={{ .LinbitRepoBaseURL }}",
+	"--extra-vars", "ci_repo_baseurl={{ .CIRepoBaseURL }}",
+	"--tags", "preload"
+]
+[steps.container.env]
+ANSIBLE_PIPELINING = "yes"

@@ -1,0 +1,17 @@
+version = 1
+
+[values]
+LinstorGatewayVersion = "*"
+
+[[steps]]
+[steps.container]
+image = "quay.io/ansible/ansible-runner:stable-2.9-devel"
+command = [
+	"ansible-playbook",
+	"--inventory", "/virter/workspace/virter/inventory",
+	"/virter/workspace/virter/provision-playbook.yml",
+	"--extra-vars", "linstor_gateway_version={{ .LinstorGatewayVersion }}",
+	"--tags", "testimage"
+]
+[steps.container.env]
+ANSIBLE_PIPELINING = "yes"
