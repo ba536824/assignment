@@ -55,7 +55,9 @@ jobs:
             dh-python \
             docbook-xsl \
             python3-all \
-            python3-setuptools
+            python3-setuptools \
+            mk-build-deps
+
           
       - name: Setup Python
         uses: actions/setup-python@v2
