@@ -48,8 +48,19 @@ jobs:
             fakeroot \
             dkms \
             cargo \
-            rustc
-
+            rustc \
+            keyutils
+          
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+            python-version: '3.x'
+    
+      - name: Install Python dependencies
+        run: |
+            python -m pip install --upgrade pip
+            pip install setuptools
+            
       - name: local LINSTOR API Py repository
         run: |
           cd src/linstor-api-py
