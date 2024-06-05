@@ -57,7 +57,8 @@ jobs:
             docbook-xsl \
             python3-all \
             equivs \
-            aspcud
+            aspcud \
+            dh-virtualenv
           
       - name: Setup Python
         uses: actions/setup-python@v2
