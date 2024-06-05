@@ -1,0 +1,131 @@
+drbd (9.1.21~rc.1-1) unstable; urgency=medium
+
+  * Release candidate
+
+ -- Philipp Reisner <philipp.reisner@linbit.com>  Mon, 27 May 2024 15:18:05 +0200
+
+drbd (9.1.20-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Philipp Reisner <philipp.reisner@linbit.com>  Tue, 30 Apr 2024 09:25:24 +0200
+
+drbd (9.1.19-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Philipp Reisner <philipp.reisner@linbit.com>  Tue,  5 Mar 2024 17:35:41 +0200
+
+drbd (9.1.18-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Philipp Reisner <philipp.reisner@linbit.com>  Fri, 22 Dec 2023 10:30:03 +0200
+
+drbd (9.1.17-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Philipp Reisner <philipp.reisner@linbit.com>  Tue, 31 Oct 2023 10:15:19 +0200
+
+drbd (9.1.16-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Philipp Reisner <philipp.reisner@linbit.com>  Wed,  9 Aug 2023 10:26:37 +0200
+
+drbd (9.1.15-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Philipp Reisner <philipp.reisner@linbit.com>  Mon,  5 Jun 2023 09:00:00 +0200
+
+drbd (9.1.14-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Philipp Reisner <philipp.reisner@linbit.com>  Mon,  3 Apr 2023 15:59:45 +0200
+
+drbd (9.1.13-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Philipp Reisner <philipp.reisner@linbit.com>  Mon, 30 Jan 2023 11:21:21 +0200
+
+drbd (9.1.12-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Philipp Reisner <philipp.reisner@linbit.com>  Mon, 14 Nov 2022 13:54:11 +0200
+
+drbd (9.1.11-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Philipp Reisner <philipp.reisner@linbit.com>  Mon,  5 Sep 2022 09:00:00 +0200
+
+drbd (9.1.10-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Philipp Reisner <philipp.reisner@linbit.com>  Thu,  1 Sep 2022 09:17:45 +0200
+
+drbd (9.1.9-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Philipp Reisner <philipp.reisner@linbit.com>  Mon, 29 Aug 2022 10:08:23 +0200
+
+drbd (9.1.8-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Philipp Reisner <philipp.reisner@linbit.com>  Thu, 14 Jul 2022 16:08:47 +0200
+
+drbd (9.1.7-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Philipp Reisner <philipp.reisner@linbit.com>  Wed, 20 Apr 2022 18:41:19 +0200
+
+drbd (9.1.6-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Philipp Reisner <philipp.reisner@linbit.com>  Mon, 14 Feb 2022 16:52:25 +0200
+
+drbd (9.1.5-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Philipp Reisner <philipp.reisner@linbit.com>  Tue, 14 Dec 2021 10:34:27 +0200
+
+drbd (9.1.4-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Philipp Reisner <philipp.reisner@linbit.com>  Tue,  5 Oct 2021 09:54:23 +0200
+
+drbd (9.1.3-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Philipp Reisner <philipp.reisner@linbit.com>  Wed, 14 Jul 2021 16:03:12 +0200
+
+drbd (9.1.2-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Philipp Reisner <philipp.reisner@linbit.com>  Thu,  6 May 2021 09:54:48 +0200
+
+drbd (9.1.1-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Philipp Reisner <philipp.reisner@linbit.com>  Fri, 26 Mar 2021 08:57:14 +0200
+
+drbd (9.1.0-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Philipp Reisner <philipp.reisner@linbit.com>  Thu, 25 Feb 2021 17:11:56 +0200

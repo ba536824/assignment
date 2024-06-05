@@ -1,0 +1,68 @@
+.Dd $Mdocdate$
+.Dt DRBD-REACTOR.TOML 5
+.Os
+.Sh NAME
+.Nm drbd-reactor.toml
+.Nd DRBD-REACTOR daemon configuration file
+.Sh DESCRIPTION
+.Nm
+is the configuration file for the DRBD-REACTOR daemon,
+.Xr drbd-reactor 1 .
+The file has to be valid
+.Lk https://toml.io "toml"
+file.
+.Pp
+The configuration file consists of sections for global settings, logging, and
+the actual plugin configuration. While this is rarely used and should be used
+with caution, it is possible to have multiple instances of a plugin as well as
+multiple loggers. The program ships with a commented version of the
+configuration file, please refer to that for further details.
+.Pp
+Note that plugin settings are shown here for demonstration purposes only,
+plugin configuration should be stored in
+.Pa /etc/drbd-reactor.d/
+.Sh EXAMPLES
+.Bd -literal -offset indent
+snippets = "/etc/drbd-reactor.d"
+# update statistics every 45 seconds
+statistics-poll-interval = 45
+
+[[log]]
+level = "debug"
+
+# Configure a promoter
+[[promoter]]
+[promoter.resources.foo]
+start = ["foo.mount", "foo.service"]
+on-drbd-demote-failure = "reboot"
+
+# Configure a user mode helper filter
+[[umh]]
+[[umh.resource]]
+command = "drbd-reactor-role-change.sh"
+event-type = "Change"
+old.role = { operator = "NotEquals", value = "Primary" }
+new.role = "Primary"
+
+# Configure a prometheus exporter
+[[prometheus]]
+enums = true
+
+# Configure an agentx subagent
+[[agentx]]
+peer-states = false
+.Ed
+.Sh AUTHORS
+.An -nosplit
+The
+.Xr drbd-reactor 1
+program was written by the following authors:
+.An -split
+.An Roland Kammerer Aq Mt rck@linbit.com
+.An Moritz Wanzenböck Aq Mt moritz.wanzenboeck@linbit.com
+.Sh CAVEATS
+Please note that the path specified in
+.Sy snippets
+gets path-joined with
+.Dq *.toml
+and the result is then subject to glob expansion.

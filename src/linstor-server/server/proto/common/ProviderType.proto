@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package com.linbit.linstor.proto.common;
+
+enum ProviderType
+{
+    UNKNOWN_PROVIDER = 0;
+
+    DISKLESS = 1;
+
+    LVM = 2;
+    LVM_THIN = 3;
+    ZFS = 4;
+    ZFS_THIN = 5;
+    FILE = 8;
+    FILE_THIN = 9;
+    SPDK = 10;
+    // 11, openflex_target, deleted
+    EXOS = 12 [deprecated = true];
+    REMOTE_SPDK = 13;
+    EBS_INIT = 14;
+    EBS_TARGET = 15;
+    STORAGE_SPACES = 16;
+    STORAGE_SPACES_THIN = 17;
+}

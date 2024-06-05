@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package com.linbit.linstor.proto.javainternal.c2s;
+
+// Internal message containing controller data
+message MsgIntSetControllerProps
+{
+    map<string, string> controller_props = 1;
+    sint64 full_sync_id = 2;
+    sint64 update_id = 3;
+}

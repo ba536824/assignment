@@ -1,0 +1,54 @@
+#!/usr/bin/make -f
+
+# Uncomment this to turn on verbose mode.
+# export DH_VERBOSE=1
+
+VERSION := $(shell dpkg-parsechangelog | sed -rne 's/^Version: ([0-9]+:)?//p')
+PACKAGE=drbd-module
+DKMSDIR=drbd-dkms
+MODSRCDIR=drbd-module-source
+
+%:
+    dh $@ --with dkms
+
+override_dh_auto_clean:
+    dh_auto_clean
+    -$(MAKE) -C drbd clean
+
+override_dh_auto_build:
+    dh_auto_build
+    $(MAKE) -C drbd KERNEL_SOURCES=$(KSRC) MODVERSIONS=detect KERNEL=linux-$(KVERS) KDIR=$(KSRC) $(extra_make_flags)
+
+override_dh_auto_install:
+    dh_auto_install
+    # dkms
+    dh_install drbd ../$(DKMSDIR)/usr/src/drbd-$(VERSION)/src
+
+    # m-a
+    dh_install drbd ../$(MODSRCDIR)/usr/src/modules/drbd/
+    dh_install debian/changelog ../$(MODSRCDIR)/usr/src/modules/drbd/debian
+    dh_install debian/control ../$(MODSRCDIR)/usr/src/modules/drbd/debian
+    dh_install debian/compat ../$(MODSRCDIR)/usr/src/modules/drbd/debian
+    dh_install debian/copyright ../$(MODSRCDIR)/usr/src/modules/drbd/debian
+    dh_install debian/*modules.in ../$(MODSRCDIR)/usr/src/modules/drbd/debian
+    dh_install debian/rules ../$(MODSRCDIR)/usr/src/modules/drbd/debian
+    cd debian/$(MODSRCDIR)/usr/src ; tar pzfvc drbd.tar.gz modules ; rm -rf modules
+    install -m 755 debian/modass.drbd-module-source ./debian/$(MODSRCDIR)/usr/share/modass/overrides/$(MODSRCDIR)
+
+override_dh_dkms:
+    dh_dkms -V $(VERSION)
+
+binary-modules: override_dh_auto_build
+    dh_testdir
+    dh_testroot
+    dh_clean -k
+    $(MAKE) -C drbd KERNEL_SOURCES=$(KSRC) MODVERSIONS=detect KERNEL=linux-$(KVERS) KDIR=$(KSRC) $(extra_make_flags)
+    $(MAKE) -C $(KSRC) M=$(CURDIR)/drbd/build-current/ modules_install INSTALL_MOD_PATH=$(CURDIR)/debian/$(PACKAGE) INSTALL_MOD_DIR=updates CONFIG_MODULE_SIG_ALL=y CONFIG_MODULE_SIG_KEY=certs/signing_key.pem
+    dh_installdocs
+    dh_installchangelogs
+    dh_compress
+    dh_fixperms
+    dh_installdeb
+    dh_gencontrol -- -v$(VERSION)
+    dh_md5sums
+    dh_builddeb --destdir=$(DEB_DESTDIR)

@@ -1,0 +1,274 @@
+drbd-utils (9.28.0-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Roland Kammerer <roland.kammerer@linbit.com>  Mon, 06 May 2024 09:24:07 +0200
+
+drbd-utils (9.27.0-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Roland Kammerer <roland.kammerer@linbit.com>  Fri, 22 Dec 2023 10:42:48 +0100
+
+drbd-utils (9.26.0-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Roland Kammerer <roland.kammerer@linbit.com>  Mon, 30 Oct 2023 08:51:50 +0100
+
+drbd-utils (9.25.0-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Roland Kammerer <roland.kammerer@linbit.com>  Tue, 25 Jul 2023 13:53:15 +0200
+
+drbd-utils (9.24.0-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Roland Kammerer <roland.kammerer@linbit.com>  Thu, 15 Jun 2023 09:10:00 +0200
+
+drbd-utils (9.23.0-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Roland Kammerer <roland.kammerer@linbit.com>  Tue, 24 Jan 2023 10:04:05 +0100
+
+drbd-utils (9.22.0-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Roland Kammerer <roland.kammerer@linbit.com>  Mon, 19 Sep 2022 13:35:49 +0200
+
+drbd-utils (9.21.0-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Roland Kammerer <roland.kammerer@linbit.com>  Mon, 25 Apr 2022 10:58:38 +0200
+
+drbd-utils (9.20.0-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Roland Kammerer <roland.kammerer@linbit.com>  Thu, 13 Jan 2022 10:03:33 +0100
+
+drbd-utils (9.19.0-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Roland Kammerer <roland.kammerer@linbit.com>  Fri, 01 Oct 2021 13:05:32 +0200
+
+drbd-utils (9.18.0-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Roland Kammerer <roland.kammerer@linbit.com>  Thu, 10 Jun 2021 13:16:30 +0200
+
+drbd-utils (9.17.0-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Roland Kammerer <roland.kammerer@linbit.com>  Mon, 26 Apr 2021 08:15:42 +0200
+
+drbd-utils (9.16.0-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Roland Kammerer <roland.kammerer@linbit.com>  Tue, 09 Feb 2021 09:42:04 +0100
+
+drbd-utils (9.15.0-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Roland Kammerer <roland.kammerer@linbit.com>  Mon, 28 Sep 2020 09:22:24 +0200
+
+drbd-utils (9.14.0-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Roland Kammerer <roland.kammerer@linbit.com>  Wed, 09 Sep 2020 15:44:10 +0200
+
+drbd-utils (9.13.0-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Roland Kammerer <roland.kammerer@linbit.com>  Fri, 08 May 2020 09:18:23 +0200
+
+drbd-utils (9.12.0-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Roland Kammerer <roland.kammerer@linbit.com>  Tue, 18 Feb 2020 10:38:37 +0100
+
+drbd-utils (9.11.0-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Roland Kammerer <roland.kammerer@linbit.com>  Wed, 16 Oct 2019 12:02:03 +0200
+
+drbd-utils (9.10.0-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Roland Kammerer <roland.kammerer@linbit.com>  Thu, 13 Jun 2019 15:41:38 +0200
+
+drbd-utils (9.9.0-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Roland Kammerer <roland.kammerer@linbit.com>  Mon, 27 May 2019 13:47:13 +0200
+
+drbd-utils (9.8.0-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Roland Kammerer <roland.kammerer@linbit.com>  Wed, 16 Jan 2019 11:46:30 +0100
+
+drbd-utils (9.7.0-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Roland Kammerer <roland.kammerer@linbit.com>  Tue, 04 Dec 2018 16:54:52 +0100
+
+drbd-utils (9.6.0-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Roland Kammerer <roland.kammerer@linbit.com>  Mon, 29 Oct 2018 10:34:04 +0100
+
+drbd-utils (9.5.0-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Roland Kammerer <roland.kammerer@linbit.com>  Tue, 26 Jun 2018 14:57:41 +0200
+
+drbd-utils (9.4.0-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Roland Kammerer <roland.kammerer@linbit.com>  Tue, 08 May 2018 15:29:39 +0200
+
+drbd-utils (9.3.1-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Roland Kammerer <roland.kammerer@linbit.com>  Tue, 17 Apr 2018 10:30:20 +0200
+
+drbd-utils (9.3.0-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Roland Kammerer <roland.kammerer@linbit.com>  Wed, 21 Mar 2018 10:13:40 +0100
+
+drbd-utils (9.2.0-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Roland Kammerer <roland.kammerer@linbit.com>  Fri, 22 Dec 2017 08:30:10 +0100
+
+drbd-utils (9.1.0-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Roland Kammerer <roland.kammerer@linbit.com>  Tue, 29 Aug 2017 13:30:10 +0200
+
+drbd-utils (9.0.0-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Lars Ellenberg <lars.ellenberg@linbit.com>  Fri, 02 Jun 2017 10:50:46 +0200
+
+drbd-utils (8.9.11-2) unstable; urgency=medium
+
+  * fix for regression of drbd-8.4 pacemaker integration
+  * fix 8.4 compatibility of shipped global_common.conf
+
+ -- Lars Ellenberg <lars.ellenberg@linbit.com>  Fri, 28 Apr 2017 13:16:39 +0200
+
+drbd-utils (8.9.11-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Philipp Reisner <philipp.reisner@linbit.com>  Fri, 31 Mar 2017 16:20:13 +0100
+
+drbd-utils (8.9.10-1) unstable; urgency=medium
+
+  *  New upstream release
+
+ -- Philipp Reisner <philipp.reisner@linbit.com>  Fri, 23 Dec 2016 12:56:32 +0200
+
+drbd-utils (8.9.9-1) unstable; urgency=medium
+
+  *  New upstream release
+
+ -- Philipp Reisner <philipp.reisner@linbit.com>  Thu, 20 Oct 2016 15:28:23 +0200
+
+drbd-utils (8.9.8-1) unstable; urgency=medium
+
+  *  New upstream release
+
+ -- Philipp Reisner <philipp.reisner@linbit.com>  Tue,  6 Sep 2016 16:33:15 +0200
+
+drbd-utils (8.9.7-1) unstable; urgency=medium
+
+  *  New upstream release
+
+ -- Philipp Reisner <philipp.reisner@linbit.com>  Thu, 14 Jul 2016 09:50:53 +0200
+
+drbd-utils (8.9.6-1) unstable; urgency=medium
+
+  *  New upstream release
+
+ -- Roland Kammerer <roland.kammerer@linbit.com>  Wed, 03 Feb 2016 09:58:09 +0100
+
+drbd-utils (8.9.5-1) unstable; urgency=medium
+
+  * New upstream release candidate
+
+ -- Philipp Reisner <philipp.reisner@linbit.com>  Wed, 16 Dec 2015 15:17:53 +0200
+
+drbd-utils (8.9.4-1) unstable; urgency=medium
+
+  *  New upstream release
+
+ -- Philipp Reisner <philipp.reisner@linbit.com>  Fri, 18 Sep 2015 16:22:46 +0200
+
+drbd-utils (8.9.3+linbit-2) unstable; urgency=medium
+
+  * fixes for regression of drbd-8.4 pacemaker integration
+
+ -- Lars Ellenberg <lars.ellenberg@linbit.com>  Wed, 29 Jul 2015 14:18:33 +0200
+
+drbd-utils (8.9.3-1) unstable; urgency=medium
+
+  *  New upstream release
+
+ -- Philipp Reisner <philipp.reisner@linbit.com>  Tue, 16 Jun 2015 14:10:26 +0200
+
+drbd-utils (8.9.2+linbit-1) unstable; urgency=medium
+
+  *  New upstream release
+
+ -- Lars Ellenberg <lars.ellenberg@linbit.com>  Wed, 08 Apr 2015 14:33:57 +0200
+
+drbd-utils (8.9.1+linbit-4) unstable; urgency=medium
+
+  * some more patches had been only merged into the "9" tools,
+    but unfortunately not the 8.4 tool compat tools
+  * place udev rules into $udevdir/*rules.d*
+  * rebuild: fixed default in case pkg-config does not know about udevdir
+  * fixed udev generated "by-disk" symlinks for drbd 8.4
+
+ -- Lars Ellenberg <lars@linbit.com>  Mon, 11 Aug 2014 14:37:29 +0200
+
+drbd-utils (8.9.1+linbit-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Lars Ellenberg <lars@linbit.com>  Tue, 05 Aug 2014 22:22:38 +0200
+
+drbd-utils (8.9.0+linbit-1) unstable; urgency=medium
+
+  *  New upstream release.
+
+ -- Lars Ellenberg <lars@linbit.com>  Fri, 27 Jun 2014 11:59:41 +0200

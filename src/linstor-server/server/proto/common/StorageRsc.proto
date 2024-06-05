@@ -1,0 +1,111 @@
+syntax = "proto2";
+
+package com.linbit.linstor.proto.common;
+
+import "common/ProviderType.proto";
+import "common/StorPool.proto";
+
+// Storage layer specific properties. See RscLayerData.proto for shared properties
+message StorageRsc
+{
+    repeated StorageVlm   storage_vlms = 1;
+}
+
+message StorageVlm
+{
+    required uint32         vlm_nr = 1;
+
+    optional string         device_path = 2;
+    optional int64          allocated_size = 3;
+    optional int64          usable_size = 4;
+    optional string         disk_state = 5;
+    optional int64          disc_gran = 20;
+    required bool           exists = 23;
+
+    required StorPool            storage_pool = 6;
+    optional DisklessVlm         diskless = 7;
+    optional LvmVlm              lvm = 8;
+    optional LvmThinVlm          lvm_thin = 9;
+    optional ZfsVlm              zfs = 10;
+    optional ZfsThinVlm          zfs_thin = 11;
+    optional FileVlm             file = 14;
+    optional FileThinVlm         file_thin = 15;
+    optional SpdkVlm             spdk = 16;
+    optional ExosVlm             exos = 17;
+    optional RemoteSpdkVlm       remote_spdk = 18;
+    optional EbsVlm              ebs = 19;
+    optional StorageSpacesVlm    storage_spaces = 21;
+    optional StorageSpacesThinVlm    storage_spaces_thin = 22;
+    // next id 24
+}
+
+message StorageVlmDfn
+{
+    required ProviderType    provider_kind = 1;
+}
+
+message DisklessVlm
+{
+    // currently no special payload
+}
+
+message LvmVlm
+{
+    // currently no special payload
+}
+
+message SpdkVlm
+{
+    // currently no special payload
+}
+
+message RemoteSpdkVlm
+{
+    // currently no special payload
+}
+
+message LvmThinVlm
+{
+    // currently no special payload
+}
+
+message ZfsVlm
+{
+    optional int64      extent_size = 1;
+}
+
+message ZfsThinVlm
+{
+    optional int64      extent_size = 1;
+}
+
+message FileVlm
+{
+    // currently no special payload
+}
+
+message FileThinVlm
+{
+    // currently no special payload
+}
+
+message ExosVlm
+{
+    option deprecated = true;
+    // currently no special payload
+}
+
+message EbsVlm
+{
+    optional string ebs_vlm_id = 1;
+}
+
+message StorageSpacesVlm
+{
+    // currently no special payload
+}
+
+message StorageSpacesThinVlm
+{
+    // currently no special payload
+}

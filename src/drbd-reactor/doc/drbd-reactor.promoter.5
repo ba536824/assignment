@@ -1,0 +1,359 @@
+.Dd $Mdocdate$
+.Dt DRBD-REACTOR.PROMOTER 5
+.Os
+.Sh NAME
+.Nm drbd-reactor.promoter
+.Nd drbd-reactor promoter plugin
+.Sh DESCRIPTION
+.Nm
+is the promoter plugin for
+.Xr drbd-reactor 1 .
+.Pp
+The promoter plugin monitors events on resources an executes systemd units.
+This plugin can be used for simple high-availability.
+.Pp
+By default the plugin generates a series of systemd service overrides (i.e.,
+what systemd calls
+.Qq Drop-In )
+and a systemd target unit that contains dependencies on these generated
+services.  The services, and their order, is defined via the list specified in
+.Sy start .
+.Pp
+The plugin generates two implicit extra units:
+.Bl -bullet -compact
+.It
+a
+.Sy drbd-promote@
+override that promotes the DRBD resource (i.e., switches it to Primary). This
+is a dependency for all the other units from
+.Sy start
+(according overrides are generated).
+.It
+a
+.Sy drbd-resource@
+target that subsumes all the generated dependencies from the
+.Sy start
+list.
+.El
+.Pp
+Let's look at a simple example to see which overrides get generated from a
+dummy start list like this:
+.Bd -literal -offset indent
+[[promoter]]
+[promoter.resources.foo]
+start = [ "a.service", "b.service", "c.service" ]
+.Ed
+.Pp
+.Bl -bullet -compact
+.It
+.Pa /var/run/systemd/system/drbd-promote@foo.d/reactor.conf
+containing the necessary pieces to wait for the backing devices of DRBD
+resource
+.Dq foo
+and to promote it to Primary.
+.It
+.Pa /var/run/systemd/system/a.service.d/reactor.conf
+containing a dependency on
+.Sy drbd-promote@foo
+.It
+.Pa /var/run/systemd/system/b.service.d/reactor.conf
+containing dependencies on
+.Sy drbd-promote@foo
+and on
+.Sy a.service .
+.It
+.Pa /var/run/systemd/system/c.service.d/reactor.conf
+containing dependencies on
+.Sy drbd-promote@foo
+and on
+.Sy b.service .
+.It
+.Pa /var/run/systemd/system/drbd-resource@foo.target.d/reactor.conf
+containing dependencies on
+.Sy a.service ,
+.Sy b.service ,
+and
+.Sy c.service .
+.El
+.Pp
+If a DRBD resource changes its state to
+.Dq may promote ,
+the plugin (i.e., all plugins on all nodes in the cluster)
+start the generated systemd target (e.g.,
+.Sy drbd-resource@foo.target
+). All will try to start the
+.Sy drbd-promote@
+unit first, but only one will succeed and continue to start the rest of the
+services. All the others will fail intentionally.
+.Pp
+In order to promote the resource with the best disk state, the plugin
+evaluates its local disk states and waits a short period of time, which might
+give a promoter on another host the chance (i.e., because its sleep time is
+shorter) to promote the resource first. Sleep times are calculated as follows:
+.TS
+allbox tab(:);
+r r .
+DiskState:Sleep time in seconds
+Diskless:6
+Attaching:6
+Detaching:6
+Failed:6
+Negotiating:6
+Unknown:6
+Inconsistent:3
+Outdated:2
+Consistent:1
+UpToDate:0
+.TE
+.Pp
+The actual sleep time is calculated as the worst case of all the volumes in a
+resource and can be scaled by setting
+.Sy sleep-before-promote-factor .
+.Pp
+If a resource loses
+.Dq quorum ,
+it stops the systemd
+.Sy drbd-services@
+target and all the dependencies.
+Stopping services on the node that lost quorum is the standard behavior one
+would expect from a cluster manger. There might be scenarios where it is
+preferable to freeze the started service until quorum is gained again. As this
+requires multiple prerequisites to hold true, freezing a resource on quorum
+loss is described in
+.Sx FREEZING RESOURCES .
+.Pp
+The plugin's configuration can contain an action that is executed if a stop
+action fails (e.g., triggering a reboot). Start actions in
+.Sy start
+are
+interpreted as 
+.Xr systemd.unit 5 .
+and have to have an according postfix like 
+.Sy .service
+or
+.Sy .mount .
+.Sy ocf
+resource agents are supported via the
+.Sy ocf.rs@
+service. Please see
+.Sx OCF RESOURCE AGENTS
+for a detailed overview.
+.Pp
+The configuration can contain a setting that specifies that resources are
+stopped whenever the plugin exits (e.g., on service restart).
+.Pp
+It also contains a
+.Sy runner
+that can be set to
+.Sy shell .
+Then the items in
+.Sy start
+are interpreted as shell scripts and started in order (no explicit targets or
+anything) and stopped in reverse order or as defined via
+.Sy stop .
+This can be used on systems without systemd and might be useful for Windows
+systems in the future. If you can, use the default systemd method, it is the
+preferred one.
+.Pp
+In order for DRBD to use quorum as needed by this plugin, make sure the
+resource file of the DRBD resource contains the following option (this is the
+default for LINSTOR, but your resources needs to qualify for quorum).
+.Bd -literal -offset indent
+options {
+   auto-promote no;
+   quorum majority;
+   on-suspended-primary-outdated force-secondary;
+   on-no-quorum io-error; # for the default drbd-reactor on-quorum-loss policy (i.e., Shutdown)
+   # on-no-quorum suspend-io; # for freezing resources
+   on-no-data-accessible io-error # always set this to the value of on-no-quorum!
+   # on-no-data-accessible suspend-io # for freezing, always set this to the value of on-no-quorum!
+}
+# net { rr-conflict retry-connect; } # for freezing resources
+.Ed
+.Sy drbd-reactor
+itself is pretty relaxed about these settings, don't expect too much hand
+holding or even auto-configuration, you as the admin are the one that should
+understand your system, but it checks properties and writes warnings to the
+log (file/journal) if misconfiguration is detected.
+.Sh SERVICE DEPENDENCIES
+Let's get back to our simple example:
+.Bd -literal -offset indent
+[[promoter]]
+[promoter.resources.foo]
+start = [ "a.service", "b.service", "c.service" ]
+.Ed
+.Pp
+As we noted in previously we generate a dependency chain for these services
+(i.e., all depend on
+.Sy drbd-promote@
+as well as on the previous services). The strictness of these dependencies can
+be set via
+.Sy dependencies-as
+, where the default is
+.Sy Requires
+.Xr systemd.unit 5
+.Pp
+We also generate the mentioned
+.Sy drbd-services@.target
+, which lists all the services from
+.Sy start .
+The dependencies for that are generated via the value set in
+.Sy target-as .
+.Pp
+Especially when one debugs services it might make sense to lower these
+defaults to for example
+.Sy Wants .
+Otherwise a failed service might prohibit a successful start of the
+.Sy drbd-services@.target
+, which then triggers a stop of the target and its dependencies, which might
+again trigger a start because the resource is DRBD promotable again and so on.
+.Pp
+It is really up to you and how strict/hard you want your dependencies and what
+their outcome should be.
+.Sy Requires
+should be a good default, you might lower or increase the strictness
+depending on the scenario.
+.Sh OCF RESOURCE AGENTS
+It is possible to use
+.Lk https://github.com/ClusterLabs/resource-agents "resource agents"
+in the
+.Sy start
+list of
+services via
+.Sy ocf:$vendor:$agent instance-id name=value ...
+The
+.Sy instance-id
+is user defined and gets
+postfixed with
+.Sy _$resourcename .
+For example the generated systemd unit for an
+.Sy instance-id
+of
+.Dq p_iscsi_demo1
+for a DRBD resource
+.Dq foo
+would be
+.Sy ocf.rs@p_iscsi_demo1_foo .
+.Sy name
+/
+.Sy value
+pairs are passed
+to the unit as environment variables prefixed with
+.Sy OCF_RESKEY_ .
+In a concrete example using the
+.Dq heartbeat:IPaddr2
+agent this could look like this:
+.Bd -literal -offset indent
+start = [
+  "foo.service",
+  "ocf:heartbeat:IPaddr2 p_iscsi_demo1_ip ip=10.43.7.223 cidr_netmask=16",
+  "bar.service"
+]
+.Ed
+.Sh FREEZING RESOURCES
+The default behavior when a DRBD Primary loses quorum is to immediately stop
+the generated target unit and hope that other nodes still having quorum will
+successfully start the service. This works well if services can be failed
+over/started on another node in reasonable time. Unfortunately there are
+services that take a very long time to start, for example huge data bases.
+.Pp
+When a DRBD Primary loses its quorum we basically have two possibilities:
+.Bl -bullet -compact
+.It
+the rest of the nodes, or at least parts of it still have quorum: Then these
+have to start the service, they are the only ones with quorum, but still we
+could keep the old Primary in a frozen state. And then, when the nodes with
+quorum come into contact with the old Primary, then it should stop the service
+and its storage should become in sync with the other nodes.
+.It
+the rest of the nodes are not able to form a partition with quorum. In such a
+scenario there are no alternatives anyways, we would need to keep the Primary
+frozen. But if the nodes eventually join the old Primary again, and quorum
+would be restored, we could just unfreeze/thaw the old Primary (which is also
+the new Primary).
+.El
+.Pp
+There are several requirements for this to work properly:
+.Bl -bullet -compact
+.It
+A system with unified cgroups. If the file
+.Pa /sys/fs/cgroup/cgroup.controllers
+exists you should be fine. That requires a relatively
+.Dq new
+kernel. Note that
+.Dq even
+RHEL8 for example needs the addition of
+.Sy systemd.unified_cgroup_hierarchy
+on the kernel command line.
+.It
+a service that can tolerate to be frozen
+.It
+DRBD option
+.Sy on-suspended-primary-outdated
+set to
+.Sy force-secondary
+.It
+DRBD option
+.Sy on-no-quorum
+set to
+.Sy suspend-io
+.It
+DRBD option
+.Sy on-no-data-accessible
+set to
+.Sy suspend-io
+.It
+DRBD net option
+.Sy rr-conflict
+set to
+.Sy retry-connect
+.El
+If these requirements are fulfilled, then one can set the promoter option
+.Sy on-quorum-loss
+to
+.Sy freeze .
+.Sh PREFERRED NODES
+While in a HA cluster that deserves the name every node needs to be able to
+run all services, some users like to add preferences for nodes. This can be
+done by setting a list of 
+.Sy preferred-nodes .
+On resource startup a delay based on the node's position in the list is added.
+Nodes with a lower preference will sleep longer. If a node joins on DRBD
+level, and that peer's disk becomes
+.Sy UpToDate ,
+and the peer has a higher preference, then the active node stops the services
+locally. As it will then have a higher sleep penalty as the preferred node,
+the preferred one will take over the service (if it can).
+.Sh FILES
+.Bl -tag -compact
+.It Pa /usr/lib/ocf/resource.d/
+Path used for for OCF agents.
+.El
+.Sh EXAMPLES
+This configures a promoter for resource
+.Dq foo .
+If the resource might be promoted the
+.Dq foo.mount
+and
+.Dq foo.service
+units get started. On DRBD demote failures a systemd "reboot" is triggered.
+.Bd -literal -offset indent
+[promoter.resources.foo]
+start = ["foo.mount", "foo.service"]
+on-drbd-demote-failure =  "reboot"
+stop-services-on-exit = false
+preferred-nodes = ["nodeA", "nodeB" ]
+.Ed
+.Sh SEE ALSO
+For further design notes and handled failure scenarios see
+.Pa doc/promoter.md
+in the source code. An online version is available at
+.Lk https://github.com/LINBIT/drbd-reactor/blob/master/doc/promoter.md promoter.md
+.Sh AUTHORS
+.An -nosplit
+The
+.Xr drbd-reactor 1
+program was written by the following authors:
+.An -split
+.An Roland Kammerer Aq Mt rck@linbit.com
+.An Moritz Wanzenböck Aq Mt moritz.wanzenboeck@linbit.com

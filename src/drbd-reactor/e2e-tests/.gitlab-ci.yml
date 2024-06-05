@@ -1,0 +1,132 @@
+variables:
+  BUILD_HELPERS_VERSION: c2fe128ed6ed1498314589a0f2e28e509c48c144
+  DRBD_REACTOR_VERSION: 1.0.0.$CI_COMMIT_SHA
+  REACTOR_TEST_IMAGE: $LINBIT_DOCKER_REGISTRY/drbd-reactor-e2e:latest
+  VIRTER_VERSION: v0.25.0
+  VMSHED_VERSION: v0.20.1
+  VMSHED_ARGS: ""
+
+e2e:lint:
+  stage: e2e
+  needs: []
+  rules:
+    - if: $CI_MERGE_REQUEST_ID
+      changes:
+        - e2e-tests/**/*.py
+  image: pipelinecomponents/flake8
+  script:
+    - flake8 --config e2e-tests/.flake8 e2e-tests/
+
+e2e:typing:
+  stage: e2e
+  needs: []
+  rules:
+    - if: $CI_MERGE_REQUEST_ID
+      changes:
+        - e2e-tests/**/*.py
+  image:
+    name: cytopia/mypy:latest-py3.10
+    entrypoint: [""]
+  script:
+    - mkdir -p .pip
+    - python3 -m pip --cache-dir=.pip install types-toml
+    - mypy e2e-tests/drbd_reactor_test.py e2e-tests/tests/*.py --no-warn-no-return --ignore-missing-imports
+  cache:
+    key: $CI_JOB_NAME
+    paths:
+      - .pip
+
+e2e:build_reactor:
+  stage: e2e
+  needs: []
+  rules:
+    - if: $CI_MERGE_REQUEST_ID
+    - if: $CI_PIPELINE_SOURCE == 'api'
+  variables:
+    CARGO_HOME: $CI_PROJECT_DIR/.cargo
+  image: $LINBIT_DOCKER_REGISTRY/build-helpers:$BUILD_HELPERS_VERSION
+  script:
+    - . gitlab-utils.sh
+    - ci_prepare_tools
+    - ci_fetch_lbbuildctl
+
+    - version=$DRBD_REACTOR_VERSION
+    - release=1
+
+    - dummy-release.sh drbd-reactor "$version" "$release" drbd-reactor.spec
+    - git add -u && git -c user.email=invalid@linbit -c user.name=dummy commit -m "dummy release version=$version"
+
+    # lbvers.py does not support our semver incompatible version; skip the check
+    - install /dev/null $(which lbvers.py)
+
+    - make debrelease VERSION="$version"
+    - curl -isSf -u $LINBIT_REGISTRY_USER:$LINBIT_REGISTRY_PASSWORD --upload-file drbd-reactor-*.tar.gz $LINBIT_REGISTRY_URL/repository/lbbuild-upstream/
+    - >-
+      lbbuildctl build drbd-reactor --ci --arch amd64 -v "$version" -d rhel9.0
+      -e LINBIT_REGISTRY_USER=$LINBIT_REGISTRY_USER
+      -e LINBIT_REGISTRY_PASSWORD=$LINBIT_REGISTRY_PASSWORD
+      -e LINBIT_REGISTRY_URL=$LINBIT_REGISTRY_URL
+  cache:
+    key: $CI_JOB_NAME
+    paths:
+      - .cargo
+
+e2e:docker_image:
+  stage: e2e
+  needs: []
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+    - if: $CI_MERGE_REQUEST_ID || $CI_PIPELINE_SOURCE == 'api'
+      changes:
+        - e2e-tests/docker/**/*
+      variables:
+        REACTOR_TEST_IMAGE: $LINBIT_DOCKER_REGISTRY/drbd-reactor-e2e:$CI_COMMIT_SHA
+  tags:
+    - shell
+  script:
+    - ln -snf $DOCKER_AUTH_CONFIG_FILE $HOME/.docker/config.json
+    - make -C e2e-tests REACTOR_TEST_IMAGE=$REACTOR_TEST_IMAGE e2e_docker_image
+    - docker push $REACTOR_TEST_IMAGE
+    - echo "REACTOR_TEST_IMAGE=$REACTOR_TEST_IMAGE" >> build.env
+  artifacts:
+    reports:
+      dotenv: build.env
+
+e2e:test:
+  stage: e2e
+  needs:
+    - job: e2e:build_reactor
+    - job: e2e:docker_image
+      # Use the overridden value of $REACTOR_TEST_IMAGE if an image was built,
+      # keep the default value otherwise.
+      optional: true
+  rules:
+    - if: $CI_MERGE_REQUEST_ID
+    - if: $CI_PIPELINE_SOURCE == 'api'
+  tags:
+    - libvirt
+  script:
+    - curl -sSfL -u gitlab-ci-token:$CI_JOB_TOKEN $CI_SERVER_URL/linbit/build-helpers/-/archive/$BUILD_HELPERS_VERSION/ignored.tar.gz | tar -xvzf -
+    - mv build-helpers-* build-helpers
+    - . build-helpers/gitlab-utils.sh
+
+    - ci_prepare_tools
+    - ci_fetch_binary virter virter-$VIRTER_VERSION https://github.com/LINBIT/virter/releases/download/$VIRTER_VERSION/virter-linux-amd64
+    - ci_fetch_binary vmshed vmshed-$VMSHED_VERSION https://github.com/LINBIT/vmshed/releases/download/$VMSHED_VERSION/vmshed-linux-amd64
+
+    - virter image pull alma-9-drbd-k70 $LINBIT_DOCKER_REGISTRY/vm/drbd9-tests/alma-9-drbd-k70:latest
+
+    - cd e2e-tests
+    - ./virter/drbd-reactor-vmshed.sh --out-dir=../tests-out $VMSHED_ARGS
+  cache:
+    key: bin-$VIRTER_VERSION-$VMSHED_VERSION
+    paths:
+      - download
+  artifacts:
+    # Provide a convenient name so that the downloaded artifacts can be identified
+    name: $CI_PROJECT_NAME-$CI_JOB_ID
+    paths:
+      - tests-out/
+    when: always
+    reports:
+      junit: tests-out/test-results/*.xml

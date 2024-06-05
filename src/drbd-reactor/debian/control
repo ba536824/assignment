@@ -1,0 +1,20 @@
+Source: drbd-reactor
+Maintainer: LINBIT HA Solutions GmbH <drbd-dev@lists.linbit.com>
+Uploaders: Roland Kammerer <roland.kammerer@linbit.com>
+Section: admin
+Priority: optional
+Build-Depends: debhelper (>= 9),
+               cargo,
+               rustc,
+               bash-completion,
+Standards-Version: 3.9.6
+
+Package: drbd-reactor
+Architecture: any
+Depends: drbd-utils (>= 9.28.0),
+         ${shlibs:Depends},
+Description: Monitors DRBD resources via plugins.
+ Daemon monitoring the state of DRBD resources, and executing plugins
+ acting on state changes.
+ .
+ Plugins can for example monitor resources or promote DRBD resources.

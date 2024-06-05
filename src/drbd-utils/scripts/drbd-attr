@@ -1,0 +1,338 @@
+#!/bin/bash
+
+: ${OCF_FUNCTIONS=${OCF_ROOT}/resource.d/heartbeat/.ocf-shellfuncs}
+. ${OCF_FUNCTIONS}
+: ${__OCF_ACTION=$1}
+
+OCF_RESKEY_dampening_delay_default=5
+OCF_RESKEY_attr_name_prefix_default=drbd-promotion-score
+OCF_RESKEY_record_event_details_default=false
+
+# see pacemaker:include/crm/crm.h CRM_SCORE_INFINITY
+MINUS_INFINITY=-1000000
+
+meta-data() {
+    cat <<___
+<?xml version="1.0"?>
+<!DOCTYPE resource-agent SYSTEM "ra-api-1.dtd">
+<resource-agent name="drbd-attr" version="1.0">
+<version>1.0</version>
+
+<longdesc lang="en">
+This listens for DRBD state change events, and sets or deletes transient node
+attributes based on the "promotion_score" and "may_promote" values as presented
+by the DRBD events2 interface.
+
+Optionally using a dampening delay, see attrd_updater for details.
+
+To be used as a clone on all DRBD nodes.  The idea is to start DRBD outside of
+pacemaker, use DRBD auto-promote, and add location constraints for the
+Filesystem or other resource agents which are using DRBD.
+</longdesc>
+<shortdesc lang="en">import DRBD state change events as transient node attributes</shortdesc>
+
+<parameters>
+<parameter name="dampening_delay">
+<longdesc lang="en">
+To be used as dampening delay in attrd_updater.
+</longdesc>
+<shortdesc lang="en">attrd_updater --delay</shortdesc>
+<content type="integer" default="$OCF_RESKEY_dampening_delay_default" />
+</parameter>
+
+<parameter name="attr_name_prefix">
+<longdesc lang="en">
+The attributes will be named "*prefix*-drbd_resource_name".
+You can chose that prefix here.
+</longdesc>
+<shortdesc lang="en">attrd_updater --name *prefix*-drbd_resource_name</shortdesc>
+<content type="string" default="$OCF_RESKEY_attr_name_prefix_default" />
+</parameter>
+
+<parameter name="record_event_details">
+<longdesc lang="en">
+It may be convenient to know which event lead to the current score.
+This setting toggles the recording of the event.
+The attributes will be named "*prefix*:event-details-drbd_resource_name".
+</longdesc>
+<shortdesc lang="en"></shortdesc>
+<content type="boolean" default="$OCF_RESKEY_record_event_details_default" />
+</parameter>
+</parameters>
+
+<actions>
+<action name="start"        timeout="20s" />
+<action name="stop"         timeout="20s" />
+<action name="monitor"      timeout="20s" interval="60s" depth="0"/>
+<action name="validate-all" timeout="20s" />
+<action name="meta-data"    timeout="5s" />
+</actions>
+</resource-agent>
+___
+}
+
+validate-all()
+{
+	check_binary drbdadm
+	check_binary drbdsetup
+
+	# I think we can expect "coreutils"...
+	# check_binary stat
+	# check_binary sort
+	# check_binary join
+
+	# we need at least drbd utils 9.14.1
+	if (( $(drbdadm -V | sed -ne 's/^DRBDADM_VERSION_CODE=\(0x[0-9a-f]*\)$/\1/p') < 0x090e00 )) ; then
+		ocf_exit_reason "need at least drbd-utils 9.14.0"
+		return $OCF_ERR_INSTALLED
+	fi
+
+	# Or do we allow empty prefix? Resulting attribute names would be "-$DRBD_RESOURCE_NAME" ...
+	[[ -n $attr_name_prefix ]] || { ocf_exit_reason "attr_name_prefix must not be empty"; return $OCF_ERR_CONFIGURED; }
+}
+
+monitor()
+{
+	test -e $PIDFILE || return $OCF_NOT_RUNNING
+	test -s $PIDFILE || return $OCF_ERR_GENERIC
+	# could even add a: test $PIDFILE -ef "/proc/$pid/fd/9"
+	read pid < $PIDFILE &> /dev/null && kill -0 "$pid" && return $OCF_SUCCESS
+	if [[ $__OCF_ACTION == monitor ]]; then
+		# try to report the "last words of the previous instance" as exit reason
+		tmp=$(crm_attribute --lifetime reboot --query --name $attr_name_prefix --quiet)
+		[[ $tmp ]] && ocf_exit_reason ":: $tmp"
+	fi
+	return $OCF_ERR_GENERIC
+}
+
+list_existing_attributes()
+{
+	local xpath
+	xpath="/cib/status/node_state[@id='$node_id']/transient_attributes"
+	xpath+="/instance_attributes/nvpair"
+	xpath+="[starts-with(@name,'${attr_name_prefix}-')]"
+	cibadmin -Q --xpath "$xpath" 2>/dev/null | sed -ne 's,^.* name="'"${attr_name_prefix}"'-\([^"]*\)".*,\1,p'
+}
+
+re_init_daemon()
+{
+	resources_with_existing_attributes=$( list_existing_attributes )
+	resources_known_to_drbdadm=$( drbdadm sh-resources )
+	resources_seen_in_initial_dump=''
+	status_delay=''
+	exec 0< <(exec drbdsetup events2 --timestamps 9>&- )
+}
+
+delete_event_details()
+{
+	local name=$1
+	attrd_updater -n $attr_name_prefix:event-details-$name --delete
+}
+
+record_event_details()
+{
+	$record_event_details || return 0
+	local name=$1 ; shift # rest is "message"
+	attrd_updater -n $attr_name_prefix:event-details-$name --delay $dampening_delay --update-both "$*"
+}
+
+delete_name()
+{
+	local name=$1
+	# at the time of writing, there is only --update-both (delay and value),
+	# but no --update-delay-and-delete...
+	attrd_updater -n $attr_name_prefix-$name --delete
+	attrd_updater -n $attr_name_prefix-$name --update-delay --delay 0
+	delete_event_details $name
+}
+
+update_name_to_minus_inf()
+{
+	local name=$1
+	attrd_updater -n $attr_name_prefix-$name --update-both $MINUS_INFINITY --delay 0
+}
+
+update_name_to_score()
+{
+	local name=$1 score=$2
+	case $score in
+	""|*[!0-9]*)
+		delete_name $name ;;
+	0)
+		update_name_to_minus_inf $name ;;
+	*)
+		attrd_updater -n $attr_name_prefix-$name --update-both $score --delay $dampening_delay
+	esac
+}
+
+handle_stale_attributes()
+{
+	local stale_and_unknown stale_but_known
+	stale_but_known=$(
+		join -v 2 <(printf "%s\n" $resources_seen_in_initial_dump | sort -u ) \
+			<(printf "%s\n" $resources_known_to_drbdadm | sort -u )
+		)
+	stale_and_unknown=$(
+		join -v 2 <(printf "%s\n" $resources_seen_in_initial_dump $resources_known_to_drbdadm | sort -u ) \
+			<(printf "%s\n" $resources_with_existing_attributes | sort )
+		)
+	for r in $stale_and_unknown ; do delete_name $r;  done
+	for r in $stale_but_known ; do update_name_to_minus_inf $r ; done
+	unset resources_with_existing_attributes
+	unset resources_seen_in_initial_dump
+	unset resources_known_to_drbdadm
+}
+
+remove_all_event_details()
+{
+	# !! NOT --delete --force --xpath,
+	# that would only manipulate the CIB,
+	# but the ATTRD would still remember.
+	local attr xpath
+	xpath="/cib/status/node_state[@id='$node_id']/transient_attributes"
+	xpath+="/instance_attributes/nvpair"
+	xpath+="[starts-with(@name,'${attr_name_prefix}:event-details-')]"
+	for attr in $(
+		cibadmin -Q --xpath "$xpath" 2>/dev/null |
+			sed -ne 's,^.* name="\([^"]*\)".*,\1,p'
+		)
+	do
+		attrd_updater -n $attr --delete
+	done
+}
+
+toggle_event_details()
+{
+	if $record_event_details ; then
+		record_event_details=false
+		remove_all_event_details
+	else
+		record_event_details=true
+	fi
+}
+
+the-daemon()
+{
+	node_id=$(crm_node -i)
+	event=()
+
+	trap toggle_event_details USR1
+
+	re_init_daemon
+	trap "re_init_daemon" HUP
+	while prev=( "${event[@]}" ); read -a event; do
+		# Is this still *our* pidfile?
+		test $PIDFILE -ef /proc/self/fd/9 || { event="lost PIDFILE"; break; }
+
+		# handle end of initial state dump
+		if [[ "${event[1]} ${event[2]}" == "exists -" ]]; then
+			handle_stale_attributes
+			attrd_updater -n $attr_name_prefix --update-both "(re)init completed at $(date "+%F %T") by $OCF_RESOURCE_INSTANCE [$BASHPID]" --delay 0
+			[[ $dampening_delay != 0 ]] && status_delay=$dampening_delay || status_delay=$OCF_RESKEY_dampening_delay_default
+			continue
+		fi
+
+		# ignore non-resource events for now
+		[[ ${event[2]} == resource ]] || continue
+
+		# parse the events line
+		name=''
+		promotion_score=''
+		for f in ${event[@]:3}; do
+			k=${f%%:*}; v=${f#*:}
+			[[ $k == name ]]		&& name=$v
+			[[ $k == promotion_score ]]	&& promotion_score=$v
+		done
+
+		# events lines must always contain the resource name
+		[[ -n $name ]] || break
+
+		# record name, if still in initial state dump
+		[[ ${event[1]} == exists ]] && resources_seen_in_initial_dump+=" $name"
+
+		# either this was a "destroy" event (and we remove the attribute),
+		# or the event contained a promotion_score,
+	        # or we ignore this line.
+		[[ ${event[1]} == destroy ]] || [[ $promotion_score ]] || continue
+
+		update_name_to_score $name $promotion_score || {
+			event+=( "// attrd_updater failed with exit code $?" )
+			break
+		}
+		record_event_details $name "${event[*]}"
+
+		# let them know when we saw the last event, unless still within the initial state dump
+		$record_event_details && [[ $status_delay ]] &&
+		attrd_updater -n $attr_name_prefix --update-both "Last event at $(date "+%F %T") by $OCF_RESOURCE_INSTANCE [$BASHPID]" --delay $status_delay
+	done
+
+	# some means of "error reporting" ...
+	attrd_updater -n $attr_name_prefix --update-both "FAILED at $(date "+%F %T") as $OCF_RESOURCE_INSTANCE, inactive; last input: '${prev[*]}' // '${event[*]}'" --delay 0
+
+	# Let them know we failed, but only do this if this script survived for
+	# a minute already, using the bash magic SECONDS variable.
+	# If we did not make it that long, don't immediately report that failure,
+	# I want to avoid a potentially "tight" recovery loop.
+	# Pacemaker will notice on the next monitoring interval,
+	(( $SECONDS >= 60 )) && crm_resource --fail --resource $OCF_RESOURCE_INSTANCE
+}
+
+start()
+{
+	validate-all || return
+	monitor && return $OCF_SUCCESS
+	test -e $PIDFILE && return $OCF_GENERIC
+
+	exec 9> $PIDFILE || return $OCF_GENERIC
+	(
+		echo $BASHPID >&9
+		handle_SIGTERM() {
+			attrd_updater -n $attr_name_prefix --update-both "STOPPED at $(date "+%F %T") as $OCF_RESOURCE_INSTANCE, inactive" --delay 0
+			rm -f $PIDFILE
+			exit
+		}
+		trap "handle_SIGTERM" TERM
+
+		attrd_updater -n $attr_name_prefix --update-both "STARTED at $(date "+%F %T") as $OCF_RESOURCE_INSTANCE, initializing" --delay 0
+
+		the-daemon
+	) </dev/null >/dev/null 2>&1 &
+
+	test -e $PIDFILE || return $OCF_ERR_GENERIC
+	while ! monitor ; do sleep 1; done
+	return $OCF_SUCCESS
+}
+
+stop()
+{
+	if monitor; then
+		read pid < $PIDFILE && kill -TERM "$pid"
+		while test -e $PIDFILE ; do sleep 1; done
+	else
+		rm -f $PIDFILE
+	fi
+	return $OCF_SUCCESS
+}
+
+dampening_delay=${OCF_RESKEY_dampening_delay:=$OCF_RESKEY_dampening_delay_default}
+attr_name_prefix=${OCF_RESKEY_attr_name_prefix:=$OCF_RESKEY_attr_name_prefix_default}
+if ocf_is_true ${OCF_RESKEY_record_event_details:=$OCF_RESKEY_record_event_details_default} ; then
+	record_event_details=true
+else
+	record_event_details=false
+	case $__OCF_ACTION in start|stop) remove_all_event_details;; esac
+fi
+
+PIDFILE=${HA_VARRUN%%/}/drbd-attr-${OCF_RESOURCE_INSTANCE}.pid
+
+
+case $__OCF_ACTION in
+	validate-all|meta-data|start|stop|monitor)
+		$__OCF_ACTION
+		;;
+	*)
+		ocf_exit_reason "'$__OCF_ACTION' not implemented"
+		exit $OCF_ERR_UNIMPLEMENTED
+esac
+
+exit $? # that would happen implicitly anyways

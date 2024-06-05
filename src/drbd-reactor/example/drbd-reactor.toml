@@ -1,0 +1,97 @@
+##########################
+## GLOBAL CONFIGURATION ##
+##########################
+
+# Extra configuration snippets
+# Path names in this directory matching *.toml get alphabetically sorted and appended to this configuration
+# If the path does not exist, or is not a directory, or is not absolute this setting is ingnored
+# IMPORTANT: this path gets path-joined with "*.toml" and the result is then subject to glob expansion
+snippets = "/etc/drbd-reactor.d"
+
+# DRBD statistcs (bytes written, out-of-sync,...) are recalculated every given seconds.
+# Note that this applies to statistics only, main events like resource/disk/connection states get updated
+# whenever such an event occurs. The default should be fine for most situations, but if you decide for very
+# fast updates in for example your Prometheus setup, you might want to decrease that interval as well.
+statistics-poll-interval = 60
+
+#######################
+## LOG CONFIGURATION ##
+#######################
+
+# If not configured, defaults to "info" level on stdout/stderr
+[[log]]
+## debugger plugin needs debug log level, default is "info"
+# level = "info" # trace, debug, info, warn, error, off
+## Path to a log file
+# file = "/var/log/drbd-reactor.log"
+
+########################################
+## PLUGIN CONFIGURATION DOCUMENTATION ##
+########################################
+# IMPORTANT: This is for documentation only!
+# Plugins should be stored in the "snippets" directory
+# use "drbd-reactorctl edit" to create and edit such snippets
+
+## Enable the debugger
+# [[debugger]]
+
+# Configure a promoter
+# [[promoter]]
+## Specify which resource should be watched. For example resource 'foo':
+# [promoter.resources.foo]
+## what should be used to execute services. systemd is the default.
+## 'shell' should only be used on non systemd/Windows systems.
+# runner = "systemd"
+## if the runner is systemd, generate inter service dependencies as this:
+# dependencies-as = "Requires"
+## if the runner is systemd, generate service dependencies in the final target unit as this:
+# target-as = "Requires"
+## What should be started when the resource is promotable.
+## the promoter assumes the item is a systemd unit if the runner is "systemd" (the default)
+## if the runner is "shell", the start list is exected via a shell (e.g., sh -c).
+# start = ["foo.mount", "foo.service"]
+## if unset/empty, services from 'start' will be stopped in reverse order if the runner is "shell".
+## if the runner is "systemd", it always starts and stops the auto-generated implicit target unit.
+# stop = []
+## systemd OnFailure action that is executed on DRBD demote failures
+## if unset, or set to "none", then no action is executed
+# on-stop-failure = "reboot"
+## if set (the default), "secondary --force" is used for demotion
+# secondary-force = true
+## if set, resources are started on preferred nodes if possible
+# preferred-nodes = ["nodeA", "nodeB"]
+## on-quorum-loss policy
+## what to do if a the currentl DRBD Primary node loses quorum
+## by default we shutdown the services (and maybe trigger a demote failure action).
+## if the DRBD resource has the DRBD option on-suspended-primary-outdated set to force-secondary
+## AND the DRBD option on-no-quorum set to suspend-io
+## AND the DRBD option on-no-data-accessible set to suspend-io
+## AND the DRBD net option rr-conflict set to retry-connect
+## AND you have a system with unified cgroups (i.e., the file /sys/fs/cgroup/cgroup.controllers exists)
+## AND your service can handle to be frozen, setting on-quorum-loss to "freeze" might be an option.
+# on-quorum-loss = "shutdown"
+
+# Configure a user mode helper filter
+# [[umh]]
+## Filter type
+# [[umh.resource]]
+# command = "drbd-reactor-role-change.sh"
+# event-type = "Change"
+## everything not Primary
+# old.role = { operator = "NotEquals", value = "Primary" }
+# new.role = "Primary"
+
+# Configure a prometheus exporter
+#[[prometheus]]
+## generate enum types which generates considerably more data, defaults to false
+# enums = false
+## address and port combination, 9942 is the registered port for that exporter
+# address = ":9942"
+
+# Configure a AgentX subagent
+#[[agentx]]
+## adress of the main SNMP daemon AgentX TCP socket
+# address = "localhost:705"
+# cache-max = 60 # seconds
+# agent-timeout = 60 # seconds snmpd waits for an answer
+# peer-states = true # include peer connection and disk states

@@ -1,0 +1,63 @@
+#!/usr/bin/make -f
+
+JAVA_HOME=/usr/lib/jvm/default-java
+
+GRADLE_TASKS = installdist
+GRADLE_FLAGS = --offline --gradle-user-home debian/.gradlehome --no-daemon --exclude-task generateJava
+LS_PREFIX=/usr/share/linstor-server
+
+%:
+	dh $@ --with systemd
+
+override_dh_auto_build:
+	rm -rf $(CURDIR)/build/install
+	rm -rf $(CURDIR)/server/build
+	rm -rf $(CURDIR)/satellite/build
+	rm -rf $(CURDIR)/controller/build
+	gradle $(GRADLE_TASKS) $(GRADLE_FLAGS)
+
+override_dh_install:
+	# common
+	mkdir -p $(CURDIR)/debian/linstor-common/$(LS_PREFIX)
+	mkdir -p $(CURDIR)/debian/linstor-common/$(LS_PREFIX)/lib
+	mkdir -p $(CURDIR)/debian/linstor-common/$(LS_PREFIX)/lib/conf
+	cp $(CURDIR)/server/libs/runtimeClasspath/* $(CURDIR)/debian/linstor-common/$(LS_PREFIX)/lib
+	cp $(CURDIR)/server/logback.xml $(CURDIR)/debian/linstor-common/$(LS_PREFIX)/lib/conf
+	cp $(CURDIR)/server/build/libs/server-*.jar $(CURDIR)/debian/linstor-common/$(LS_PREFIX)/lib
+	cp -r $(CURDIR)/jclcrypto/build/libs/jclcrypto-*.jar $(CURDIR)/debian/linstor-common/$(LS_PREFIX)/lib
+	if [ -f "$(CURDIR)/libs/server-st.jar" ]; then cp "$(CURDIR)/libs/server-st.jar" $(CURDIR)/debian/linstor-common/$(LS_PREFIX)/lib; fi
+	# controller
+	cp $(CURDIR)/scripts/linstor-controller.service $(CURDIR)/debian/
+	mkdir -p $(CURDIR)/debian/linstor-controller/$(LS_PREFIX)/bin
+	mkdir -p $(CURDIR)/debian/linstor-controller/$(LS_PREFIX)/lib
+	cp $(CURDIR)/build/install/linstor-server/bin/Controller $(CURDIR)/debian/linstor-controller/$(LS_PREFIX)/bin
+	cp $(CURDIR)/build/install/linstor-server/bin/linstor-config $(CURDIR)/debian/linstor-controller/$(LS_PREFIX)/bin
+	cp $(CURDIR)/build/install/linstor-server/bin/linstor-database $(CURDIR)/debian/linstor-controller/$(LS_PREFIX)/bin
+	cp $(CURDIR)/controller/build/libs/* $(CURDIR)/debian/linstor-controller/$(LS_PREFIX)/lib
+	if [ -f "$(CURDIR)/libs/controller-st.jar" ]; then cp "$(CURDIR)/libs/controller-st.jar" $(CURDIR)/debian/linstor-controller/$(LS_PREFIX)/lib; fi
+	mkdir -p $(CURDIR)/debian/linstor-controller/etc/linstor
+	cp $(CURDIR)/docs/linstor.toml-example $(CURDIR)/debian/linstor-controller/etc/linstor/
+	# diff and copy additional controller jars
+	rm $(CURDIR)/controller/build/install/controller/lib/jclcrypto*.jar $(CURDIR)/controller/build/install/controller/lib/server-*.jar # comes already in linstor-common
+	# for some reason install/lib/*.jars are 755
+	chmod 644 $(CURDIR)/controller/build/install/controller/lib/*.jar
+	$(CURDIR)/scripts/diffcopy.py $(CURDIR)/controller/build/install/controller/lib $(CURDIR)/server/libs/runtimeClasspath/ $(CURDIR)/debian/linstor-controller/$(LS_PREFIX)/lib
+	cp $(CURDIR)/scripts/postinstall.sh $(CURDIR)/debian/linstor-controller.postinst
+	# satellite
+	cp $(CURDIR)/scripts/linstor-satellite.service $(CURDIR)/debian/
+	install -d $(CURDIR)/debian/linstor-satellite/etc/drbd.d/
+	install -m644  $(CURDIR)/scripts/linstor-resources.res $(CURDIR)/debian/linstor-satellite/etc/drbd.d/
+	mkdir -p $(CURDIR)/debian/linstor-satellite/$(LS_PREFIX)/bin
+	mkdir -p $(CURDIR)/debian/linstor-satellite/$(LS_PREFIX)/lib
+	cp $(CURDIR)/build/install/linstor-server/bin/Satellite $(CURDIR)/debian/linstor-satellite/$(LS_PREFIX)/bin
+	cp $(CURDIR)/satellite/build/libs/* $(CURDIR)/debian/linstor-satellite/$(LS_PREFIX)/lib
+	if [ -f "$(CURDIR)/libs/satellite-st.jar" ]; then cp "$(CURDIR)/libs/satellite-st.jar" $(CURDIR)/debian/linstor-satellite/$(LS_PREFIX)/lib; fi
+	# diff and copy additional satellite jars
+	rm $(CURDIR)/satellite/build/install/satellite/lib/jclcrypto*.jar $(CURDIR)/satellite/build/install/satellite/lib/server-*.jar # comes already in linstor-common
+	# for some reason install/lib/*.jars are 755
+	chmod 644 $(CURDIR)/controller/build/install/controller/lib/*.jar
+	$(CURDIR)/scripts/diffcopy.py $(CURDIR)/satellite/build/install/satellite/lib $(CURDIR)/server/libs/runtimeClasspath/ $(CURDIR)/debian/linstor-satellite/$(LS_PREFIX)/lib
+	# dh_install
+	dh_install
+
+.PHONY: override_jh_depends

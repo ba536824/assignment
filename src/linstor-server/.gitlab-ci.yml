@@ -1,0 +1,243 @@
+image: $LINBIT_DOCKER_REGISTRY/build-helpers:latest
+
+before_script:
+  - export GRADLE_USER_HOME=`pwd`/.gradle
+  - ./gradlew -PoverrideVersion= getProtoc
+
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+  VIRTER_VERSION: v0.24.0
+  VMSHED_VERSION: v0.19.0
+  BUILD_HELPERS_VERSION: cd83ef398a7748c4660c3f2db29241973bd1c897
+  VMSHED_TORUN:
+    value: all
+    description: list of named tests to run, `all` means all :D
+  VMSHED_VARIANTS:
+    value: --variant default
+    description: "which variant to run: [standard, default, crd, etcd]; e.g. `--variant crd --variant etcd`"
+  LINSTOR_TEST_REPEATS:
+    value: "1"
+    description: How often to repeat each run
+
+cache:
+  paths:
+    - .gradle/wrapper
+    - .gradle/caches
+    - tools
+
+stages:
+  - build
+  - test
+  - deploy
+  - integration
+  - integration-all
+
+.upload_nexus:
+  script:
+# build spacetracking
+    - |
+      ST_BRANCH="master"
+      if git ls-remote https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.at.linbit.com/linstor/linstor-server-spacetracking.git | grep refs/heads/${CI_COMMIT_REF_NAME} ; then
+        ST_BRANCH=${CI_COMMIT_REF_NAME}
+      fi
+    - echo "Using ST-Branch ${ST_BRANCH}"
+    - git clone --single-branch --branch ${ST_BRANCH} --recursive https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.at.linbit.com/linstor/linstor-server-spacetracking.git linstor-spacetracking
+    - cd linstor-spacetracking
+    - git remote add linstor https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.at.linbit.com/linstor/linstor-server.git
+    - git fetch linstor
+    - git config --global user.email "fake@example.com"
+    - git config --global user.name "Faker"
+    - git rebase $CI_COMMIT_SHORT_SHA
+    - git submodule update
+    - ./gradlew getProtoc && ./gradlew installdist
+    - ./gradlew getproguard
+    - make obfuscate-spacetracking
+    - mkdir ../libs
+    - cp satellite-st/build/libs/satellite-st.jar ../libs/
+    - cp controller-st/build/libs/controller-st.jar ../libs/
+    - cp server-st/build/libs/server-st.jar ../libs/
+    - cd ..
+    - rm -Rf linstor-spacetracking
+# normal linstor build
+    - LINSTOR_VERSION=1.99.0.$CI_COMMIT_SHORT_SHA
+    - dummy-release.sh linstor-server $LINSTOR_VERSION 1 linstor.spec
+    - FORCE=1 VERSION=$LINSTOR_VERSION make debrelease
+    - curl -isSf -u $LINBIT_REGISTRY_USER:$LINBIT_REGISTRY_PASSWORD --upload-file linstor-server-$LINSTOR_VERSION.tar.gz $LINBIT_REGISTRY_URL/repository/lbbuild-upstream/
+# workaround a nexus bug not regenerating metadata
+    - curl -X DELETE -u $LINBIT_REGISTRY_USER:$LINBIT_REGISTRY_PASSWORD $LINBIT_REGISTRY_URL/repository/ci-yum/rhel8/x86_64/linstor-controller-$LINSTOR_VERSION-1.noarch.rpm
+    - curl -X DELETE -u $LINBIT_REGISTRY_USER:$LINBIT_REGISTRY_PASSWORD $LINBIT_REGISTRY_URL/repository/ci-yum/rhel8/x86_64/linstor-common-$LINSTOR_VERSION-1.noarch.rpm
+    - curl -X DELETE -u $LINBIT_REGISTRY_USER:$LINBIT_REGISTRY_PASSWORD $LINBIT_REGISTRY_URL/repository/ci-yum/rhel8/x86_64/linstor-satellite-$LINSTOR_VERSION-1.noarch.rpm
+    - curl -X DELETE -u $LINBIT_REGISTRY_USER:$LINBIT_REGISTRY_PASSWORD $LINBIT_REGISTRY_URL/repository/ci-yum/rhel7/x86_64/linstor-controller-$LINSTOR_VERSION-1.noarch.rpm
+    - curl -X DELETE -u $LINBIT_REGISTRY_USER:$LINBIT_REGISTRY_PASSWORD $LINBIT_REGISTRY_URL/repository/ci-yum/rhel7/x86_64/linstor-common-$LINSTOR_VERSION-1.noarch.rpm
+    - curl -X DELETE -u $LINBIT_REGISTRY_USER:$LINBIT_REGISTRY_PASSWORD $LINBIT_REGISTRY_URL/repository/ci-yum/rhel7/x86_64/linstor-satellite-$LINSTOR_VERSION-1.noarch.rpm
+    - lbbuildctl build linstor-server --arch amd64 --ci -v "$LINSTOR_VERSION"
+      -e LINBIT_REGISTRY_USER=$LINBIT_REGISTRY_USER
+      -e LINBIT_REGISTRY_PASSWORD=$LINBIT_REGISTRY_PASSWORD
+      -e LINBIT_REGISTRY_URL=$LINBIT_REGISTRY_URL
+      -d ubuntu-bionic,ubuntu-focal,ubuntu-noble,rhel7.0,rhel8.0,debian-bookworm
+    - rm linstor-server-$LINSTOR_VERSION.tar.gz
+
+.common_e2e:
+  script:
+    - |
+      SAFE_REF_NAME=${CI_COMMIT_REF_SLUG}
+      if docker image pull $LINBIT_DOCKER_REGISTRY/linstor-tests:$SAFE_REF_NAME ; then
+          TEST_BRANCH=$SAFE_REF_NAME
+          TEST_BUNDLE_BRANCH=$SAFE_REF_NAME
+      else
+          docker image pull $LINBIT_DOCKER_REGISTRY/linstor-tests:latest
+      fi
+    - mkdir -p linstor-test-bundle
+    - curl -sSL $LINBIT_REGISTRY_URL/repository/test-suite/linstor-test-bundle-$TEST_BUNDLE_BRANCH.tgz | tar -C linstor-test-bundle -xvzf -
+    - |
+      mkdir build-helpers
+      curl -sSfL $LINBIT_REGISTRY_URL/repository/test-suite/build-helpers-$BUILD_HELPERS_VERSION.tar.gz | tar -xvz -C ./build-helpers
+      . build-helpers/gitlab-utils.sh
+    - |
+      ci_prepare_tools
+      ci_fetch_rq
+      ci_fetch_binary virter virter-$VIRTER_VERSION https://github.com/LINBIT/virter/releases/download/$VIRTER_VERSION/virter-linux-amd64
+      ci_fetch_binary vmshed vmshed-$VMSHED_VERSION https://github.com/LINBIT/vmshed/releases/download/$VMSHED_VERSION/vmshed-linux-amd64
+    - |
+      case "$CI_COMMIT_BRANCH" in
+       "jenkins") VARIANTS="--variant default --variant etcd --variant crd" ;;
+       "master") VARIANTS=${TMP_VARIANTS:---variant default} ;;
+       *) VARIANTS=${TMP_VARIANTS:---variant standard} ;;
+      esac
+# --- is used because of bash
+    - echo "Running variants $VARIANTS"
+    - echo "LINSTOR-TEST BRANCH = $TEST_BRANCH"
+    - export LINSTOR_VERSION=1.99.0.$CI_COMMIT_SHORT_SHA
+    - export LINSTOR_TESTS_VERSION=$TEST_BRANCH
+    - export LINBIT_CI_JOB_ID=$CI_JOB_ID
+    - ./linstor-test-bundle/virter/run-test.py $VARIANTS --torun $VMSHED_TORUN --repeats="$LINSTOR_TEST_REPEATS"
+
+check-openapi:
+  stage: build
+  interruptible: true
+  image:
+    name: jamescooke/openapi-validator:0.51.3
+    entrypoint: [""] # force empty entrypoint to workaround a gitlab issue
+  rules:
+    - changes:
+        - docs/rest_v1_openapi.yaml
+        - docs/.spectral.yaml
+        - docs/.validaterc
+  before_script:
+    - echo default before disabled
+  script:
+    - cd docs
+    - lint-openapi -e rest_v1_openapi.yaml
+
+test:
+  stage: test
+  interruptible: true
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event" || $CI_PIPELINE_SOURCE == "web"'
+    - if: '$CI_COMMIT_BRANCH == "master"'
+    - if: $CI_COMMIT_BRANCH == 'jenkins'
+  script:
+    - ./gradlew -PversionOverride= checkstyleMain
+    - ./gradlew -PversionOverride= assemble
+    - JAVA_OPTS="-ea" ./gradlew -PversionOverride= -PCoverageReport=true test
+    - awk -F"," '{ instructions += $4 + $5; covered += $5 } END { print "Total", 100*covered/instructions, "% covered" }' build/reports/jacoco/test/jacocoTestReport.csv
+  coverage: '/Total (\d+.\d+) % covered/'
+  artifacts:
+    reports:
+      junit: build/test-results/test/TEST-*.xml
+      coverage_report:
+        coverage_format: cobertura
+        path: build/reports/jacoco/test/jacocoTestReport.xml
+    paths:
+      - build/distributions/linstor-server.tar
+    expire_in: 4 days
+
+deploy:
+  stage: deploy
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "master"'
+  before_script:
+    - echo "DEPLOY"
+  script:
+    - cp Dockerfile.test-controller Dockerfile
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker build -t $CI_REGISTRY/linstor/linstor-server/controller:latest .
+    - docker push $CI_REGISTRY/linstor/linstor-server/controller:latest
+  tags:
+    - shell
+
+deploy-nexus-master:
+  stage: deploy
+  rules:
+    - if: $CI_COMMIT_BRANCH == 'master'
+  before_script:
+    - curl -sSL $LINBIT_REGISTRY_URL/repository/lbbuild/lbbuildctl-latest -o /usr/local/bin/lbbuildctl
+    - chmod +x /usr/local/bin/lbbuildctl
+  extends: .upload_nexus
+  script:
+    - !reference [.upload_nexus, script]
+    - LINSTOR_VERSION=1.99.0.latest
+    - dummy-release.sh linstor-server $LINSTOR_VERSION 1 linstor.spec
+    - FORCE=1 VERSION=$LINSTOR_VERSION make debrelease
+    - curl -isSf -u $LINBIT_REGISTRY_USER:$LINBIT_REGISTRY_PASSWORD --upload-file linstor-server-$LINSTOR_VERSION.tar.gz $LINBIT_REGISTRY_URL/repository/lbbuild-upstream/
+    - lbbuildctl build linstor-server --arch amd64 --ci -v "$LINSTOR_VERSION" -l -e LINBIT_REGISTRY_USER=$LINBIT_REGISTRY_USER -e LINBIT_REGISTRY_PASSWORD=$LINBIT_REGISTRY_PASSWORD -e LINBIT_REGISTRY_URL=$LINBIT_REGISTRY_URL -d ubuntu-bionic,ubuntu-focal,ubuntu-noble,rhel7.0,rhel8.0
+
+deploy-nexus:
+  stage: deploy
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event" || $CI_PIPELINE_SOURCE == "web"'
+    - if: $CI_COMMIT_BRANCH == 'jenkins'
+  before_script:
+    - curl -sSL $LINBIT_REGISTRY_URL/repository/lbbuild/lbbuildctl-latest -o /usr/local/bin/lbbuildctl
+    - chmod +x /usr/local/bin/lbbuildctl
+  extends: .upload_nexus
+
+test-e2e-all:
+  stage: integration-all
+  interruptible: true
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+      when: manual
+    - if: $CI_PIPELINE_SOURCE == 'schedule'
+  tags:
+    - libvirt
+  before_script:
+    - echo "no before"
+  script:
+    - TEST_BRANCH=latest
+    - TEST_BUNDLE_BRANCH=master
+    - TMP_VARIANTS="--variant nonstandard"
+    - !reference [.common_e2e, script]
+  artifacts:
+    # provide a convenient name so that the downloaded artifacts can be identified
+    name: $CI_PROJECT_NAME-$CI_JOB_ID
+    paths:
+      - tests-out/
+    when: always
+    reports:
+      junit: tests-out/test-results/*.xml
+
+test-e2e:
+  stage: integration
+  interruptible: true
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event" || $CI_PIPELINE_SOURCE == "web"'
+    - if: $CI_COMMIT_BRANCH == 'jenkins'
+    - if: $CI_COMMIT_BRANCH == 'master'
+  tags:
+    - libvirt
+  before_script:
+    - echo "no before"
+  script:
+    - TEST_BRANCH=latest
+    - TEST_BUNDLE_BRANCH=master
+    - if [[ "$CI_PIPELINE_SOURCE" == "web" ]]; then TMP_VARIANTS=$VMSHED_VARIANTS; fi
+    - !reference [.common_e2e, script]
+  artifacts:
+    # provide a convenient name so that the downloaded artifacts can be identified
+    name: $CI_PROJECT_NAME-$CI_JOB_ID
+    paths:
+      - tests-out/
+    when: always
+    reports:
+      junit: tests-out/test-results/*.xml

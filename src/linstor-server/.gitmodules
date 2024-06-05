@@ -1,0 +1,4 @@
+[submodule "linstor-common"]
+	path = linstor-common
+	url = https://github.com/LINBIT/linstor-common.git
+	fetchRecurseSubmodules = true

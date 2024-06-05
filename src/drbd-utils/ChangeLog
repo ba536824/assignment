@@ -1,0 +1,545 @@
+Latest:
+------
+ For even more detail, use "git log" or visit
+ https://github.com/linbit/drbd-utils
+
+9.28.0
+-----------
+ * events2: set may_promote:no promotion_score:0 while
+   force-io-failure:yes
+ * drbdsetup,v9: show TLS in connection status
+ * drbdsetup,v9: add udev command
+ * 8.3: remove
+ * crm-fence-peer.9.sh: fixes for pacemaker 2.1.7
+ * events2: improved out of order message handling
+
+9.27.0
+-----------
+ * adjust,v9: retry for diskless primaries
+ * tests: sanitize env (e.g., TZ)
+ * drbdmeta: dump and restore the members field
+
+9.26.0
+-----------
+ * config,v9: new config option load-balance-paths
+ * config,v9: new config options rdma-ctrls-(snd|rcv)buf-size
+ * drbdadm,v9: fix segfault if proxy has no path
+ * drbd: increase maximum CPU mask size
+ * systemd: introduce drbd-graceful-shutdown.service
+ * drbdmeta,v9: fix regression, allow attach after offline resize
+ * drbdsetup,v9: add path established information to JSON status
+ * events2: terminate on module unload even under --poll
+ * events2: specif exit code if module unload
+ * docs: add spdx license file
+ * drbdmon: various smaller improvements
+ * drbdsetup,v9: support for TLS/kTLS
+
+9.25.0
+-----------
+ * drbdsetup,v9,show: fix meta disk format for json
+ * drbdmon: various updates
+ * build: fix RHEL6 spec builds
+ * drbdmeta: {hex,}dump superblock
+ * drbdmon: major rewrite
+ * build: gcc v12 cleanups
+ * misc: put locks into separate dir
+ * selinux: add fowner fsetsid, they dropped a global noaudit rule
+
+9.24.0
+-----------
+ * windrbd: various fixes
+ * v9: Support user-defined block-size
+ * doc,v9: improvements all over the place
+ * drbdadm,v9: implement drbdadm role <res:peer>
+ * drbdadm,v9: pass --verbose/--statistics to drbdsetup status
+ * drbd{adm,meta}: add repair-md subcommand
+
+9.23.1
+-----------
+ * drbdadm,v9,resync-after: fix too strict check
+
+9.23.0
+-----------
+ * drbdadm,v9,floating: fixup fake uname for 9.2.x strict_names=1
+ * drbdadm,v9,parser: fixup globs, also rm GNU libc specific extensions
+ * drbdadm,v9,parser: allow via outside-address for NATed peers
+
+9.22.0
+-----------
+ * parser,v9: deprecate named connections
+ * drbd-selinux: add sub package, minor packaging/spec changes
+ * drbdadm: allow files from expanded glob to vanish
+
+9.21.4
+-----------
+ * drbdadm,v9: fix potential segfault in postparse
+ * drbdadm,v9: fix sh-ip when set on connection/path
+
+9.21.3
+-----------
+ * drbdmeta: fix apply-al for bitmap sizes > 4GiB
+
+9.21.2
+-----------
+ * drbd-service-shim.sh: add secondary --force
+
+9.21.1
+-----------
+ * ocf: fix for dropped --peer option
+
+9.21.0
+-----------
+ * drbdsetup,v9: show susupend reason in json output
+ * drbdsetup,v9: add secondary --force
+ * drbdsetup,v9: fix *susp_str() for events2 diff mode
+ * drdbdadm,v9: fix sh-resource
+ * drdbdadm,v9: rm --peer=connect_to_host
+ * doc: various improvements
+ * windrbd: ask user if for admin if access denied
+ * ocf: deal with situation where PM node name and actual node name do not
+   match
+ * notify.sh: deal with unset DRBD_PEER env variable
+
+9.20.2
+-----------
+ * crm-fence-peer: fix timeout with Pacemaker 2.0.5
+
+9.20.1
+-----------
+ * drbdmeta: don't wait for confirmation if not a TTY
+ * drbdadm,v9: Pass '--force' to certain drbdmeta commands
+
+9.20.0
+-----------
+ * drbdmeta: do init in chunks; allow different methods
+ * build: various minor fixes (udev detection, POSIX,
+   compiler flags, allow doc building with asciidoctor,...)
+ * drbd.ocf: fix type (relevant for certain pcs versions)
+ * drbd-attr: fix typo "drbadm" -> "drbdadm"
+ * crm-fence-peer: fix timeout with Pacemaker 2.1
+
+9.19.1
+-----------
+ * v9,proxy: allow multiple sharing a proxy node
+ * v9,drbdsetup: quote resource name in "show"
+ * build: allow building for RHEL9.0, minor cleanups
+ * reactor/systemd: allow proper actions (e.g., reboot) if
+   demotion fails.
+
+9.19.0
+-----------
+ * v9,events2: show changes of peer-client
+ * v9: rr-conflict strategy auto-discard for protocol A
+ * windrbd: various fixes including setting the systemd root
+ * containers: switch to UBI8
+ * v9,wait-*: fix segfault
+
+9.18.2
+-----------
+ * systemd: fix SELinux for drbd-promote@.service
+ * drbdadm: allow 4096 chars for concatenated host names
+ * drbdadm: enforce max length of fields for drbdsetup
+ * build: fix redefinition of __swab{16,32,64}
+
+9.18.1
+-----------
+ * systemd: drbd@.service: pull in network-online.target
+ * systemd: fix SELinux for recent systemd templates
+ * doc: updated Japanese translation
+
+9.18.0
+-----------
+ * build: remove rpm related targets
+ * drbdsetup,v84: fix minor compile warnings
+ * systemd: resource specific activation
+ * systemd: drbd-reactor promoter templates
+ * doc: fix maximum ping timeout
+ * doc: add man pages for the systemd templates
+
+9.17.0
+--------
+ * drbdadm,v9: fix dstate for diskless volumes
+ * build/release: use lbvers.py
+ * drbd-attr: don't leak fd to drbdsetup
+ * doc: various fixes and additions
+ * drbdsetup,events2,v9: add backing_device
+ * build,Debian: rm dh-systemd dependency
+ * drbdsetup,events2,v9: fix --poll regression
+ * drbdmeta: fix bug with ALs with small final extents
+ * build,Debian: rm mail recommends
+ * drbdsetup,events2,v9: allow --poll without --now
+ * drbdsetup,invalidate: allow bitmap based resync after verify
+ * drbdadm,sh-ll-dev: change output to "none" if diskless
+
+9.16.0
+--------
+ * drbd-attr/may_promote: fixes from 9.15.1
+ * drbdadm,v9: allow set-gi in single node clusters
+ * drbsetup,events2,v9: diff(erential) output
+ * drbsetup,events2,v9: add --full output
+ * v9: allow resource rename, also in drbdmon
+ * drbdadm,v9: allow c-max-rate to be disabled
+
+9.15.0
+--------
+ * New drbd-attr Pacemaker RA
+ * events2: handle mixed initial state and multicast events
+ * events2: fix regression to always print resync done
+
+9.14.0
+--------
+ * pacemaker: various fixes/improvements for PM >=1.1.15
+   including the 2 series; crm-fence-peer.9.sh
+ * systemd dependency for drbd-proxy
+ * containers: multi-arch support, especially for s390x
+ * multipathd: blacklist drbd
+ * drbdsetup: code refactoring and improvements,
+   as well as tests for events2!
+   add "may_promote", "promotion_score". See man page.
+ * build: compile fixes for gcc-10; CI pipeline
+ * handlers: add "disconnected"
+
+9.13.0
+--------
+ * crm-fence-peer{,.9}.sh: detect Pacemaker 2 promotable clones
+ * submodules: switch to https, which makes it easier to clone
+   if you are behind some weird company firewalls.
+ * drbd.service: start pacemaker before drbd-proxy
+ * windrbd: various new commands including create-resource-from-url,
+   set-syslog-ip, scan-partitions-for-minor, install-bus-device,
+   remove-bus-device
+
+9.12.0
+--------
+ * drbd.ocf: new wrc_timeout param, fail on attach failure,
+   remove_master_score_if_peer_primary param,
+   fail_promote_early_if_peer_primary param, improved helper logging
+   no error if wait-connect fails
+ * drbdadm,v9: fix dumping meta-disk in corner case
+ * crm-fence-peer.9.sh: fix Pacemaker 2 compat
+ * drbdsetup,v9: fixes for various json output corner cases
+
+9.11.0
+--------
+ * drbdsetup,all: prepare for netlink changes (linux v5.2+)
+ * drbdadm,v9: fix a check for setting up connections multiple times
+ * init: setup file backed loop devices (mapping from LINSTOR)
+ * rr-conflict: add retry-connect option (>=drbd 9.0.20)
+ * drbdmon: 256/16 colors; events2 handler improvements
+ * drbdsetup,v9: new flag: force-resync (>=drbd 9.0.21)
+
+9.10.0
+--------
+ * drbdmon: limit desplay lenght, minor fixes
+ * drbdsetup,v9: avoid underflow when resync regresses
+ * drbdmeta,v9: allow huge (~1PB volumes)
+ * drbdsetup,v9: add allow-remote-read flag
+ * docker: switch to UBI images
+ * doc: update JA doc
+
+9.9.0
+--------
+ * drbdadm,v9: do not ignore stacked/upper implicit paths.
+ * docker: provide initial integration.
+ * doc,v9: document transport keyword
+ * drbdmeta,v9: support for PMEM activity log format
+ * drbdadm: allow faking of drbdsetup show output
+ * drbdmeta,v9: fix forget-peer
+
+9.8.0
+--------
+ * i18n: use propper po files
+ * v9,stacked: allow node-id in stacked section
+   but one should not use stacked with v9 anyways
+ * dry run: remove trailing white space
+   This eases test integration.
+   Mentioned here because strictly speaking output changed.
+ * regression tests: if at ./configure time "clitest" is detected,
+  one can run tests via "make test". Target is a noop otherwise.
+ * drbdsetup,v9: fix wait-for (same patch as in 9.7.1)
+ * doc,v9:  require-drbd-module-version-*, events2 --now --poll
+ * drbdadm,v9: allow stacked-on-top-of sections without address
+ * drbdadm,v9: bring up only the correct paths in multi-site scenaios.
+ * drbdadm,v9: fix parser segfault if node-id is missing.
+ * tests: require that they pass on release.
+ * drbdsetup,v9: fix key collision in show --json.
+
+9.7.1
+--------
+ * drbdsetup,v9: partially revert commit that broke wait-for
+
+9.7.0
+--------
+ * drbdadm,v9,v84: fix resync-after
+ * drbd.ocf: connect_only_after_promote, require kernel version
+ * drbdmon: display resync progress
+ * parser,v9: require-drbd-module-version
+ * windrbd: add WinDRBD support
+
+9.6.0
+--------
+ * usage-count: also count notty users if possible.
+ * drbd-overview: remove it, we have drbdtop/drbdmon. saves all the Perl deps.
+ * drbdmon: update frequency limiting, debug log for drbdevents, use
+   altbuffer,...
+ * drbdsetup show: on 9 allow json output.
+   mainly used in our CI, don't expect a stable field names yet.
+ * drbdsetup satus: on 9 fix json output to not include NaN/Infinity
+ * allow higher resync rates: first customers hit a limit. this requires an
+   updated kernel module as well (e.g., 9.0.16)
+ * init: fix some 8-only leftovers (sh-b-pri), sanitize the retry logic
+ * doc: document various 9 features that got forgotten (e.g., quorum-lost)
+ * build: various small fixes that popped up while playing with meson
+
+9.5.0
+--------
+ * drbdmon: allow to start in problems view (--problems)
+ * drbdadm,v9: fix always failing stacked handlers from kernel
+ * drbdadm,v9: adjust now hands over the information that a diskfull->diskless
+   change was intentional. Now shown as "green diskless"
+ * drbdadm,v9: adjust verifies now IPs
+
+9.4.0
+--------
+ * drbdmeta: don't exit with negative return codes
+ * usage counts: only register if we know driver version
+ * drbdsetup,v9: expose detailed verify/resync statistics
+ * drbdsetup,v9,json: saner types for client/peer-client/quorum on --json
+ * drbdsetup,v9: expose client/peer-client in status if !isatty()
+
+9.3.1
+--------
+ * drbdadm v84: fixup for disable-write-same
+ * Fix IPv4 & IPv6 address comparisons for 'drbdadm adjust'
+
+9.3.0
+--------
+ * update to Japanese man pages
+ * fixes for stacking in drbd-9.0
+ * fixes for proxy support in drbd-9.0
+ * fix adjusting --bitmap=no peer to diskfull
+ * VCS: typos and fixes for stacked resources
+
+9.2.2
+--------
+ * support to pass force option to dump md
+ * fix setting peers/disks in v9 stacked setups
+ * fix rpm build bug when built without 8.4 support
+ * retrofit rpm release date
+ * fix v9 adjust that converts permanent diskless to diskfull
+ * allow stacked setups in VCS clusters
+
+9.2.1
+--------
+ * fix drbdadm adjust when proxy is not local
+
+9.2.0
+--------
+ * Japanese man pages
+ * initial vertias cluster agent support
+ * quorum integration (including agents)
+ * improve drbd9 (mesh)/drbd-proxy integration
+ * pull fixups from 9.1.1 branch
+ * switch to github
+ * drbdmon: page naviagation/quorum
+ * debian: add mount as dependency
+
+9.1.0
+--------
+ * allow events2 --now polling
+ * fix ambiguous inheritance for peer-device-options
+ * fixup fallback path for BLKZEROOUT for older kernels
+ * fix v9 proxy support
+ * modernized XEN scripts
+ * reproducible builds support
+ * create-md --force for v8.4 (for compat to v9)
+ * fix cstate output
+ * resize: give resize more time (same as attach)
+ * drbdmon: peer-device status, version info, node name
+ * "drbdadm status" for v8.4
+ * set peer-device-options only once
+
+9.0.0
+--------
+ * drbd udev: fix inconsistent inheritance of implicit volumes
+   To keep previous udev /dev/drbd/by-resource/... behavior,
+   you may need to set or unset/comment "global { udev-always-use-vnr; }",
+   see the shipped example global_common.conf
+ * Fix regressions of the out-of-the-box DRBD 8.4 experience
+   with our pacemaker DRBD Resource Agent and shipped example config files
+ * debian: don't "stop" drbd on upgrade of utils package
+ * DrbdMon: can now focus on "problem" resources by filtering-out "ok" ones
+ * v9: support new option on_no_quorum
+ * drbdadm: fix segfaults, improve error reporting
+ * adjust: fix deleting unrelated peer(s) on "adjust resource:specific-peer"
+ * drbdmeta create-md/convert: fix check for existing external meta-data
+
+8.9.11
+--------
+ * better integration of drbd-proxy in drbd9 scenarios
+ * OCF resource agent and crm-fence-peer for drbd9
+ * introduce quorum support
+ * expose information if node is intentionally diskless
+ * do not set peer-device-options twice
+ * various JSON output fixes
+ * udev fixes for newer ubuntu releases
+ * set bitmap to 0 on metadata creation
+
+8.9.10
+--------
+ * new drbdmon tool, which provides a compact overview about resources.
+   In contrast to drbdsetup status it provides live monitoring.
+   This requires a C++11 compiler.
+ * drbdadm parser got substantially faster for thousands of resources
+ * send SIGKILL to childs if parent (drbdadm) dies.
+
+8.9.9
+--------
+ * fix --skip-disk/--skip-net when used with more than one resource
+ * events2 of v8.4: Fake peer-node-ids to make it in-line with  v9
+ * fix drbdadm crashes in set-gi and new-current-uuid
+ * new peer_device option (--bitmap=no) to indicate that for this peer
+   no bitmap slot should be allocated in the meta-data; This is used
+   by all peers of a (configured) diskless node; saves bitmap-slots,
+   thus allows you to use smaller max-peers numbers, thus saves memory
+   and CPU resources
+ * removed sh-status from v9
+
+8.9.8
+--------
+ * fix a lot of regressions from allowing to pass command options
+   on the drbdadm adjust commandline. (filtering of backend options)
+ * wait-for-* return success if there are no peers
+ * naturally align 64 bit attributes in gennetlink packets
+ * improve systemd unit-file to wait for network-online.target
+ * return success for a resize to the same size even if a resync
+   does not allow as resize at this point in time
+ * improve sh-nop with --config-to-test with new --config-to-exclude
+   and correct exit code
+ * implemented --json for drbdsetup status
+
+8.9.7
+--------
+ * allow to pass peer device options on the drbdadm command-line
+ * fix drbdadm net-options by not passing the transport
+   (the transport of a connection can not be changed while the connection is
+    online)
+ * options passed on the drbdadm command-line now overrule settings from
+   the configuration file when calling drbdsetup
+ * new resource option max-io-depth (v9 only)
+ * allow partial adjust by --skip-disk and/or --skip-net
+ * support for a new meta-data flag that helps resize operations
+ * workaround for sysfs entries and del_gendisk and add_disk;
+   in case drbdsetup sees those sysfs entries it exits immediately,
+   that prevents half initialized drbd devices that can not be removed
+ * drbdadm resize waits until new new size is user visible
+ * support for the reload operation in the OCF resource agent
+ * drbdadm's parser now reports too long strings with a meaningful
+   error message
+ * increased the size of the uniqueness hash-table, to support up to
+   to 1000 resources
+
+8.9.6
+--------
+ * Call "drbdsetup resize" only as often as necessary on "drbdadm resize"
+ * Disconnect connection first on single path deletion from connection
+ * Add unfence-peer handler
+ * Fix "drbdadm adjust" for proxy configurations
+
+8.9.5
+--------
+ * add support for new disk option 'rs-discard-granularity' (module v8.4.7)
+ * add support for new disk option 'discard-zeroes-if-aligned' (module v8.4.7)
+ * add support for v9 "path" commands
+ * doc improvements/corrections
+ * improvements to drbd ocf resource agent
+   and pacemaker "constraint based fencing" (crm-fence-peer.sh)
+ * drbd-overview improvements
+
+8.9.4
+--------
+  * Add an autoconf switch for building without man pages
+  * Fix compatibility with the musl C library
+  * Introduce the concept of paths within a connection to the config file;
+    add support for paths to drbdadm adjust
+  * Allow multiple connection-mesh statements within one resource
+  * Document peer-device-options on the drbd-9.0 man pages
+  * increase the lower boundary for al-extents from 7 to 67; drbdadm clamps
+    al-extents to 67 implicitly if you configures something lower than 67
+  * Document the events2 command on the drbd-8.4 man page
+  * Fix environment variables for handlers
+
+8.9.3
+--------
+  * Support for the new new-peer, add-path, connect, del-path, disconnect
+    and del-peer commands of drbd-9.0.0; drbdadm support for the new
+    commands
+  * New configuration file directive template-file; with that a dedicated
+    file for the common section of a resource can be specified
+  * Rewrite the parser for configure options; reuse the data structures
+    describing drbdsetup options
+  * No longer try to set peer-device-options with the connect or attach
+    commands; Only do it with the up and attach commands
+  * Fixed issues with stderr messages might go into arbitrary FDs
+  * Allow recursive includes; drbdadm includes each config file only once
+  * Fix parsing cut-off proxy sections
+  * When converting 8.4 to 9.0 meta-data produce meta-data the drbd9
+    kernel driver will accept
+  * Obey max-peers for all volumes when creating meta-data
+  * Do not re-register at usage.drbd.org when the module is not loaded
+    when drbdadm is invoked
+
+8.9.2
+--------
+  * change systemd unit file: basically just call the init script
+  * make some previously hardcoded timeouts configurable
+  * drbdadm: New command peer-device-options
+  * drbd 9: Move max_buffers to net_conf
+  * drbd 9: Log errors to syslog if stderr is not available
+  * init script: fixes for stacked resources
+  * fix regression corner cases in bitmap size calculation
+  * allow create-md to initialize peer-max-bio-size to 1M
+  * drbd 9: make transport selectable
+  * fix aggregating drbdsetup / drbdmeta exit statii
+  * some documentation fixes (content and build)
+  * added direct-connect command
+  * incompatible drbd-9 metadata format change. use: node_id as index for
+    peer_md instead of the bitmap_index
+  * drbdadm/meta/usage_cnt: ensure output is visible
+  * drbdsetup: fix arguments for all commands expecting a peer_device
+  * exit codes: redefine E_USAGE to 1 (not 3)
+  * some build changes
+  * init script: on start, first try to load the module
+  * drbdsetup events2: Improve how timestamps are assigned
+  * udev rules (symlinks in /dev/by-res and by-disk) got fixed
+  * Fixed upper limit for drbd-8.4 activity log entries
+  * many fixes to drbdadm adjust and proxy commands for drbd-9
+  * rhcs_fence: Do not invoke fence agents in parallel, rewrite in bash
+  * drbdsetup events2 is now also available in drbd-8.4 (backported from drbd-9)
+  * reorganized the repository have common code for drbd-9, drbd-8.4
+    and drbd-8.3 only once
+  * Fix drbd.ocf for resources without volume 0
+
+8.9.1
+--------
+  * add DRBD systemd service
+  * new configuration options socket-check-timeout and csums-after-crash-only
+  * update xen block-drbd helper: allow for type "phy"
+  * update udev rules and move from /etc/ to /lib/
+  * fix various regressions/fallout from the kernel/userland package split,
+    re-add scripts drbddisk and drbdupper,
+    re-add "become-on-primary" feature to init script
+  * crm-fence-peer.sh: improve detection of "clean down"
+  * updated fencing scripts stonith_admin-fence-peer.sh and rhcs_fence
+  * improved "proxy" configuration section parsing
+  * added manpage for drbd-overview, minor review of man pages
+  * build: various changes in configure.ac, makefiles, debian/* and spec file
+
+8.9.0
+--------
+  * Initial release of unified drbd-utils
+  * Supports drbd drivers 8.3, 8.4 and 9.0
+  * Ships with man page links defaulting to 8.4
+  * Fixed offline resizing in drbdmeta; A regression that causes
+    data loss, since meta-data was written with wrong offset.
+    The regression was introduced with 8.4.3

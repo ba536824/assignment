@@ -1,0 +1,55 @@
+# ide files/folders
+.gradle/
+.idea/
+.nb-gradle-properties
+.classpath
+.project
+.settings/
+nbproject/
+nbproject/build-impl.xml
+bin/
+.externalToolBuilders/
+controller/.externalToolBuilders/
+server/.externalToolBuilders/
+linstor-server/.externalToolBuilders/
+satellite/.externalToolBuilders/
+
+# build output
+server/generated-src/*
+!server/generated-src/com
+server/generated-src/com/*
+!server/generated-src/com/linbit
+server/generated-src/com/linbit/*
+!server/generated-src/com/linbit/linstor
+server/generated-src/com/linbit/linstor/*
+!server/generated-src/com/linbit/linstor/dbdrivers
+server/generated-resources/*
+build/
+out/
+/tools/
+/libs/
+.filelist
+/satellite/libs
+/satellite/jar.deps
+/controller/libs
+/controller/jar.deps
+/server/libs
+/server/jar.deps
+
+
+# config/runtime files
+database.cfg
+linstor.toml
+/logs/
+/ssl/
+
+# database
+linstordb.mv.db
+linstordb.trace.db
+
+# test output
+test-support/TestOutput
+test-support/TestProcess
+deploy_satellite.sh
+controller/rest-access.log
+/.DS_Store

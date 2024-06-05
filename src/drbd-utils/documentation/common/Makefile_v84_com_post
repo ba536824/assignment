@@ -1,0 +1,155 @@
+# Makefile in documentation directory
+#
+# This file is part of DRBD by Philipp Reisner and Lars Ellenberg.
+#
+# drbd is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2, or (at your option)
+# any later version.
+#
+# drbd is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with drbd; see the file COPYING.  If not, write to
+# the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+
+
+ifeq ($(make_doc),doc)
+all: doc
+else
+all:
+	@echo "To (re)make the documentation: make doc"
+endif
+
+clean:
+	@echo "To clean the documentation: make doc-clean"
+
+.PHONY: all clean doc man doc-clean distclean
+.PHONY: install uninstall html pdf ps
+ifeq ($(WITH_84_SUPPORT),yes)
+doc:	man
+else
+doc:
+endif
+
+
+doc-clean: distclean
+
+####### Implicit rules
+
+.SUFFIXES: .sgml .5 .8 .html .pdf .ps
+
+ifeq ($(WITH_PREBUILTMAN),yes)
+%.5 %.8:
+	test -f $@
+else
+%.5 %.8: %.xml
+	$(XSLTPROC) \
+	$(XSLTPROC_MANPAGES_OPTIONS) \
+	$(MANPAGES_STYLESHEET) $<
+endif
+
+%.html: %.xml
+	$(XSLTPROC) -o $@ \
+	$(XSLTPROC_HTML_OPTIONS) \
+	$(HTML_STYLESHEET) $<
+
+%.fo: %.xml
+	$(XSLTPROC) -o $@ \
+	$(XSLTPROC_FO_OPTIONS) \
+	$(FO_STYLESHEET) $<
+
+$(TOPDIR)/user/v84/drbdsetup.o: FORCE
+	$(MAKE) -C $(@D) drbdsetup-84
+
+%.xml.in: %.xml.in.po
+	$(PO4A_TRANSLATE) $(PO4A_TRANSLATE_OPTIONS) -m ../../v84/$@ -p $< -l $@
+
+%.xml: %.xml.po
+	$(PO4A_TRANSLATE) $(PO4A_TRANSLATE_OPTIONS) -m ../../v84/$@ -p $< -l $@
+
+%.xml.in.pot: %.xml.in
+	$(PO4A_GETTEXTIZE) $(PO4A_GETTEXTIZE_OPTIONS) -m $< -p $@
+
+%.xml.pot: %.xml
+	$(PO4A_GETTEXTIZE) $(PO4A_GETTEXTIZE_OPTIONS) -m $< -p $@
+
+
+.PHONY: FORCE
+FORCE:
+
+# Don't try to re-make files tracked in git
+FILES_IN_GIT_ := # $(shell git ls-files)
+FILES_IN_GIT  += $(FILES_IN_GIT_)
+FILES_IN_GIT  += Makefile.in xml-usage-to-docbook.xsl
+FILES_IN_GIT  += $(FILES_IN_GIT_ADD)
+
+$(FILES_IN_GIT): ;
+
+
+drbdsetup_X.xml := $(patsubst %,drbdsetup_%.xml,$(DRBDSETUP_CMDS))
+drbdsetup_xml-help_X.xml := $(patsubst %,drbdsetup_xml-help_%.xml,$(DRBDSETUP_CMDS))
+
+$(drbdsetup_xml-help_X.xml): $(TOPDIR)/user/v84/drbdsetup.o
+$(drbdsetup_X.xml): xml-usage-to-docbook.xsl
+
+drbdsetup_xml-help_%.xml:
+	$(TOPDIR)/user/v84/drbdsetup-84 xml-help $* > $@
+
+drbdsetup_%.xml: drbdsetup_xml-help_%.xml
+	$(XSLTPROC) -o $@ xml-usage-to-docbook.xsl $<
+
+distclean:
+ifeq ($(make_doc),doc)
+	rm -f *.[58] manpage.links manpage.refs *~ manpage.log
+endif
+	rm -f *.ps.gz *.pdf *.ps *.html pod2htm*
+	rm -f $(FILES_REMOVE_ADD)
+
+#######
+
+man: $(MANPAGES)
+pot: $(FILES_POT)
+
+install:
+ifeq ($(WITH_84_SUPPORT),yes)
+	@ok=true; for f in $(MANPAGES) ; \
+		do [ -e $$f ] || { echo $$f missing ; ok=false; } ; \
+	done ; $$ok
+	set -e; for f in $(MANPAGES) ; do \
+		s=$${f##*.}; \
+		b=$${f%.[0-9]}; \
+		install -v -D -m 644 $$f $(DESTDIR)$(mandir)/$(MANLANG)/man$$s/$$b-8.4.$$s ; \
+	done
+endif
+
+uninstall:
+ifeq ($(WITH_84_SUPPORT),yes)
+	@ set -e; for f in $(MANPAGES) ; do \
+		s=$${f##*.}; \
+		b=$${f%.[0-9]}; \
+		rm -vf $(DESTDIR)$(mandir)/$(MANLANG)/man$$s/$$b-8.4.$$s ; \
+	done
+endif
+
+html:	$(addsuffix .html,$(basename $(MANPAGES)))
+pdf:	$(addsuffix .pdf,$(basename $(MANPAGES)))
+ps:	$(addsuffix .ps,$(basename $(MANPAGES)))
+
+ifeq ($(WITH_PREBUILTMAN),yes)
+drbdsetup.8:
+	test -f $@
+else
+drbdsetup.8: drbdsetup.xml $(drbdsetup_X.xml)
+endif
+
+.PHONY: install uninstall clean distclean
+$(TOPDIR)/configure:
+	@echo "please (re-)run ./autogen.sh with appropriate arguments"; exit 1
+$(TOPDIR)/config.status: $(TOPDIR)/configure
+	@echo "please (re-)run ./configure with appropriate arguments"; exit 1
+$(TOPDIR)/documentation/Makefile_v84_com: $(TOPDIR)/documentation/Makefile_v84_com.in $(TOPDIR)/config.status
+	cd $(TOPDIR) && ./config.status documentation/Makefile_v84_com

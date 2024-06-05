@@ -1,0 +1,106 @@
+/* user/shared/config.h.in.  Generated from configure.ac by autoheader.  */
+
+/* Installation directory. Commonly /usr/bin */
+#undef DRBD_BIN_DIR
+
+/* Local configuration directory. Commonly /etc or /usr/local/etc */
+#undef DRBD_CONFIG_DIR
+
+/* Include support for drbd-8.4 kernel code */
+#undef DRBD_LEGACY_84
+
+/* Local state directory. Commonly /var/lib/drbd or /usr/local/var/lib/drbd */
+#undef DRBD_LIB_DIR
+
+/* Local lock directory. Typically DRBD_RUN_DIR/lock */
+#undef DRBD_LOCK_DIR
+
+/* Runtime state directory. Commonly /var/run/drbd or /usr/local/var/run/drbd
+   */
+#undef DRBD_RUN_DIR
+
+/* CTRL_ATTR_HDRSIZE defined in linux/genetlink.h */
+#undef HAVE_CTRL_ATTR_HDRSIZE
+
+/* CTRL_ATTR_MCAST_GROUPS defined in linux/genetlink.h */
+#undef HAVE_CTRL_ATTR_MCAST_GROUPS
+
+/* CTRL_ATTR_VERSION defined in linux/genetlink.h */
+#undef HAVE_CTRL_ATTR_VERSION
+
+/* Does genetlink provide CTRL_CMD_DELMCAST_GRP already */
+#undef HAVE_CTRL_CMD_DELMCAST_GRP
+
+/* define if the compiler supports basic C++11 syntax */
+#undef HAVE_CXX11
+
+/* Define to 1 if you have the 'getentropy' function. */
+#undef HAVE_GETENTROPY
+
+/* Define to 1 if you have the 'gethostbyname_r' function. */
+#undef HAVE_GETHOSTBYNAME_R
+
+/* Define to 1 if you have the <inttypes.h> header file. */
+#undef HAVE_INTTYPES_H
+
+/* Define to 1 if you have the 'pthread' library (-lpthread). */
+#undef HAVE_LIBPTHREAD
+
+/* Define to 1 if you have the 'rt' library (-lrt). */
+#undef HAVE_LIBRT
+
+/* Define to 1 if you have the <linux/genetlink.h> header file. */
+#undef HAVE_LINUX_GENETLINK_H
+
+/* Define to 1 if you have the <stdint.h> header file. */
+#undef HAVE_STDINT_H
+
+/* Define to 1 if you have the <stdio.h> header file. */
+#undef HAVE_STDIO_H
+
+/* Define to 1 if you have the <stdlib.h> header file. */
+#undef HAVE_STDLIB_H
+
+/* Define to 1 if you have the <strings.h> header file. */
+#undef HAVE_STRINGS_H
+
+/* Define to 1 if you have the <string.h> header file. */
+#undef HAVE_STRING_H
+
+/* Define to 1 if you have the <sys/stat.h> header file. */
+#undef HAVE_SYS_STAT_H
+
+/* Define to 1 if you have the <sys/types.h> header file. */
+#undef HAVE_SYS_TYPES_H
+
+/* Define to 1 if you have the <unistd.h> header file. */
+#undef HAVE_UNISTD_H
+
+/* Define to 1 if the system has the type '__free_fn_t'. */
+#undef HAVE___FREE_FN_T
+
+/* Define to the address where bug reports for this package should be sent. */
+#undef PACKAGE_BUGREPORT
+
+/* Define to the full name of this package. */
+#undef PACKAGE_NAME
+
+/* Define to the full name and version of this package. */
+#undef PACKAGE_STRING
+
+/* Define to the one symbol short name of this package. */
+#undef PACKAGE_TARNAME
+
+/* Define to the home page for this package. */
+#undef PACKAGE_URL
+
+/* Define to the version of this package. */
+#undef PACKAGE_VERSION
+
+/* Define to 1 if all of the C89 standard headers exist (not just the ones
+   required in a freestanding environment). This macro is provided for
+   backward compatibility; new code need not use it. */
+#undef STDC_HEADERS
+
+/* Include support for windrbd (do not use this under Linux) */
+#undef WINDRBD

@@ -1,0 +1,22 @@
+package com.linbit.linstor.storage.kinds;
+
+public enum ExtTools
+{
+    DRBD9_KERNEL, DRBD9_UTILS, DRBD_PROXY,
+    CRYPT_SETUP,
+    LVM, LVM_THIN, THIN_SEND_RECV,
+    ZFS_KMOD, ZFS_UTILS,
+    NVME,
+    SPDK,
+    DM_WRITECACHE,
+    DM_CACHE,
+    LOSETUP,
+    ZSTD,
+    SOCAT,
+    COREUTILS_LINUX,
+    UDEVADM,
+    LSSCSI, SAS_PHY, SAS_DEVICE,
+    BCACHE_TOOLS,
+    EBS_INIT, EBS_TARGET,
+    STORAGE_SPACES
+}

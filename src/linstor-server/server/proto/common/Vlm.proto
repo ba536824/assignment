@@ -1,0 +1,21 @@
+syntax = "proto2";
+
+package com.linbit.linstor.proto.common;
+
+// Volume
+message Vlm
+{
+    optional string vlm_uuid = 1;
+    optional string vlm_dfn_uuid = 2;
+    required sint32 vlm_nr = 3;
+    repeated string vlm_flags = 4;
+    map<string, string> vlm_props = 5;
+
+    optional string device_path = 6;
+
+    // Allocated size of the deployed volume reported by the backing device (in KiB)
+    optional uint64 allocated_size = 7;
+
+    // Usable size, has to be greater or equal the volume definition's size
+    optional uint64 usable_size = 8;
+}

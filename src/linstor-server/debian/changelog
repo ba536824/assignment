@@ -1,0 +1,4463 @@
+linstor-server (1.27.1-1) experimental; urgency=medium
+
+  [ Moritz Wanzenböck ]
+  * docker: fix udev sync in containers
+  * spec: also depend on python3 for rhel8
+
+  [ Rene Peinthor ]
+  * debian: include #DEBHELPER# token in postinst script
+  * freespace: calculate snapshot reserved size by allocated and not volume size
+  * rscdfn-modify: Only warn if a satellite is offline
+  * MakeAvail: update satellite if only the DELETE flags changed
+  * gitlab-ci: build for ubuntu-noble
+  * autoplacer: remove DummySecurityManager and Preselector
+  * drbd: add auto-closable drbd primary
+  * Rsc/delete: don't check verify algorithm on last resource delete
+  * AutoVerifyAlgo: use driver names instead of implementation name
+  * auto-verify-alg: Improve disabled check
+  * gitlab: build for ubuntu-noble also on master
+
+  [ Johanna Kucera ]
+  * Schedule: fix schedule delete after restore
+  * Schedule: prevent NPE while adding schedule-tasks
+  * Backups: only delete remote when not in use
+
+  [ Bernard Gütermann ]
+  * Talos support: Do not mount default on zpool create
+
+  [ Gabor Hernadi ]
+  * Zfs: Query volBlockSize during zfs list
+  * Zfs: Added check for extent size
+  * MixSpHelper: Fixed incorrect calculation of LCM
+  * StltExtToolsChecker: Unified logging
+  * MixedSpHelper: Fix possible 0 for LCM
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Thu, 25 Apr 2024 11:09:06 +0000
+
+linstor-server (1.27.0-1) experimental; urgency=medium
+
+  [ Rene Peinthor ]
+  * openapi: move changelog into own markdown file
+  * encryption: Allow users to provide their own encryption keys for volumes
+  * rscdfninternal: fix clone method naming
+  * cloning/encrypted: Allow to specify a new passhrase after cloning
+  * vlmdfn: add modify luks passphrase api
+  * snapshot/rollback: fix rollback after first attempt
+  * controller: info log client responses from ResponseUtils
+  * ctrlapihandler: cleanup useless code
+  * ctrlerrorlist: add loginfo
+  * ctrlnode: add loginfo
+  * ctrlrscdfn: add loginfo
+  * ctrlstorpool: added loginfo
+  * ctrlvlmdfnmodify: added loginfo
+  * rest/reqhelper: log apircexceptions as errors
+  * satellite: add more info logging
+  * external-files: Improve error message and info logging
+  * response-utils: improve logging ACR messages
+  * response-utils: concat extra responses instead of replacing them
+  * make-available: only warn if an involved node is offline
+
+  [ Gabor Hernadi ]
+  * linstor-db: Changed dflt cfg path to "/etc/linstor"
+  * Backup,rst: Only reset RD props if we actually restore the backup
+  * AutoSnapTask: Fix rescheduling issue
+  * Backup,restore: Fix invalid negative number when restoring from old LINSTOR
+  * K8sTxMgr: Iterate over correct ALL_TABLES
+  * K8s,SpaceHistory: Fix incorrect dates
+  * Rsc,del: Rerun tiebreaker-check after migration
+  * SysFs: Only show missing cgroup warning if property is set
+  * ExactSize: Add property to render the size entry
+  * Rsc,undelete: Also remove flags from volume
+
+  [ Johanna Kucera ]
+  * Backup: Add force-restore
+  * Backups: allow multi-restore
+  * SnapDfn: don't allow empty snapDfns to exist
+
+  [ Robert Altnoeder ]
+  * Report SocketChannel without an attached Peer object
+  * Fix power-of-2 calculations
+  * Update MathUtilsTest
+  * Add change log entries
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Tue, 02 Apr 2024 07:10:58 +0000
+
+linstor-server (1.26.2-1) experimental; urgency=medium
+
+  [ Gabor Hernadi ]
+  * Luks: Recalculate ignore-reasons when deleting RD or R
+  * AbsStorProvider: Delete unnecessary volumesLut
+  * DevHandler: Split processing of resources and snapshots
+
+  [ Robert Altnoeder ]
+  * Handle read-only buffers in debug code that dumps buffer contents
+  * Add some error handling code to SatelliteNetComInitializer
+  * HexViewer: Fix special characters initialization
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Wed, 28 Feb 2024 11:18:44 +0000
+
+linstor-server (1.26.1-1) experimental; urgency=medium
+
+  [ Gabor Hernadi ]
+  * LvmCommands: Remove the trailing "accept everything else" from filter
+  * Luks: Allow deletion without master passphrase
+  * SysFs: Reworked processing
+  * RscGrp,spawn: Hide "TransactionList" in client response
+  * Sp,Props: Do not run DevMgrRun for certain prop-changes
+  * Checkstyle: Ignore 100 as magic number
+  * MathUtils: Add longCeilingPowerTwo and longFloorPowerTwo methods.
+  * DrbdRscData: Moved method isSkipDiskEnabled into DrbdRscData
+  * VlmProviderObj: Added get/setExpectedSize
+  * Layers: Extract LayerSizeCalculator
+  * Remove unused method from interface
+  * Backup,restore: Recalculate missing AllocationGranularity
+  * Tiebreaker: also allow for 4 diskful + tiebreaker
+  * ApiCallRcEntry: Only append obj descr to details if wanted
+  * Rsc,td: Add peerSlot check
+  * DrbdLayer: Extract skipInitSync to DrbdLayerUtils
+  * SpMixing: Do not consider ZFS<->ZFSTHIN as mixed setup
+  * FullSync: Improve error message when ext tool is missing
+  * ErrRep: Unified Error and Problem Report rendering
+  * Rs-discard-gran: Deleted old prop handler
+
+  [ Rene Peinthor ]
+  * satelliteupdater: Do not update satellites that are in deleting or evicted
+  * evict/restore: recalculateVolatileRscData on node restore
+  * evict/restore: Do not error because evict node not connected yet
+  * devmgr: info log devmanager cycles
+  * drbdlayer: only write and check res file if it actually changed
+  * drbdlayer: partially revert f71551e1b6bb08c3289a1ab96b6e778e4d60b775
+  * sos-report: fix missing io exception stack trace
+  * sos-report: code cleanup
+  * sos-report: add more commands for info output
+  * sos-report: Gather additional json data of current state
+  * space-report: do not http 503 error if space-tracking not installed
+  * snapshot: allow to create snapshots if at least one diskfull node online
+  * encryption: Fix error messages and skip error-reports on user errors
+  * VolumeDefinitionWithCreationPayload: Fix Typo
+
+  [ Moritz Wanzenböck ]
+  * evacuate/migrate: wait until resource is not InUse before removal
+  * docker: update k8s-await-election
+  * docker: add option to force hostname for linstor
+
+  [ Robert Altnoeder ]
+  * Update test problem log command name, description, report text
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Thu, 22 Feb 2024 05:26:28 +0000
+
+linstor-server (1.26.0-1) experimental; urgency=medium
+
+  [ Gabor Hernadi ]
+  * Exos: Deprecate APIs and add changelog entry
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Mon, 29 Jan 2024 08:14:06 +0000
+
+linstor-server (1.26.0~rc.1-1) experimental; urgency=medium
+
+  [ Rene Peinthor ]
+  * resource-groups: Do not allow setting resource-groups with place-count 0
+  * metrics: add rscDfn and vlmDfn metrics
+  * metrics: add storage_pool to the volume labels
+  * autplace: Add node/storpool objrefs to autoplace api answer
+  * PeerTask: fix incorrect toString method
+  * virter/manage: allow start index to be specified
+  * autoplacer: null safe autounplace
+  * RscCrtApiHelper: factor out getOnlineNodeIds map
+  * ResourceDefinition: fix missing DRBD_DELETE flag in getNotDeletedDiskful
+  * balanceresourcestask: Add task that keeps the resource-group place-count
+  * make-avail: Retry auto-place with no restrictions on diskless resources
+  * dbconnectionpool: fix a small resource leak in health check method
+  * add /metrics/scrape-target endpoint
+
+  [ Gabor Hernadi ]
+  * GenCrd: Copied GeneratedDatabaseTables
+  * GenCrd*: Fixed double-checked locking in deriveKey method
+  * DbConstsGen: Fixed incorrect import order
+  * DbConstGen: Removed unnecessary super() call
+  * GenCrd*: Added copy of GenDbTables to GenCrd* classes
+  * OpenFlex: Drop support
+  * Db,migration: added k8s delete crd functionality
+  * DevMgr: Fixed typo
+  * RscGrp: Added peer_slots column to rscGrp
+  * OpenFlex: delete leftover interfaces
+  * Exos: Added deprecation warnings and annotations
+  * K8s: Fixed migration bug
+  * SnapShip: Added deprecation warnings and annotations
+  * QSI: Use sysCtx for privileged access
+  * Overprovision: Added new calculation
+  * SpApi: Add new oversubscription ratios
+  * PropType: Introduce new type: range-float
+  * StorPool: Allow mixing of lvm <-> zfs and thin<->thick
+  * VlmCrt: Treat thin volume as thick when mixing
+  * MkFsUtils: Moved to server project
+  * LayerRscUtils: Renamed method
+  * SpMixing: First version
+  * SpMixing: Added version check and enabling property
+  * Storage: Set default AllocGran to 1
+  * SpMixing: Allow mixing if rscDfn is missing
+  * DrbdLayer: Removed failed flag if disk was attached
+  * SpMixing: Fixed toggle-disk bug
+  * Zfs,blocksize: deduplicated method
+  * SpMixing: Deleted obsolete SpMixing feature
+  * SpMixing: Prepare compatibilty-code for restoring old backups
+  * SpMixing: Add Changelog entry
+  * SpMixing: Prohibit spMixing with gross flag
+  * Snap,Rollback: Fixed unrecoverable state with failed rollback and dele [...]
+  * Drbd: Check metadata after disk-failure
+  * SpMixing: Fixed incorrect property check
+  * ZFS: Fixed reported allocation size
+  * SpMixing: Fixed error-text and ctrl-prop
+  * Drbd,skipDisk: Do not process anything disk-related during skipDisk
+  * Drbd,forget-peer: Rework deleting resource
+
+  [ Moritz Wanzenböck ]
+  * ExtCmd: log commands using shell-quoting
+  * docker: remove dmeventd dependency
+  * docker: exec LINSTOR commands
+  * snapshots: fix string builder exception
+
+  [ Robert Altnoeder ]
+  * Add least common multiple calculation
+  * Add greatest common divisor (GCD) calculation
+  * MathUtils: Update JavaDoc
+  * MathUtils: Add exponent range check
+  * Unit tests for MathUtils
+  * Simplify constants (L suffix vs. Long.valueOf)
+  * productOfFactors: optimized powers-of-2 case
+  * Support prime factorization of 0 as a simple no-op
+  * Disallow zero as one of multiple input numbers for LCM
+  * Handle 0 as an input number for GCD calculation
+  * Update MathUtilsTest
+  * Update CHANGELOG.md
+  * Quorum property update: Avoid string representation of null pointers,  [...]
+  * Log the satellite name & peer ID instead of the address upon disconnec [...]
+  * New implementation of the SSL/TLS connector
+  * Standardize naming for I/O operation interest methods
+  * Delete SslTcpConnectorHandshaker (implemented in SslTcpConnectorPeer now)
+  * Do not close inbound SSL on end of stream while receiving
+  * Fix locking, use name instead of ordinal in unknown enum message
+  * Add flux error handler for PeerClosingConnectionException
+  * Update CHANGELOG.md
+  * Update field comments for use with javadoc
+  * Handle NOT_HANDSHAKING in sslHandshake, state can be entered from sslT [...]
+  * Update ping/pong timestamp after finishing connect & SSL handshake
+  * Add getErrorReporter method
+  * Log SSL error messages for easier diagnostics in case of SSL-related p [...]
+  * Loop over sslHandshake in sslTasksCompleted
+  * SslTcpConnectorPeer: Add logging for SSL and I/O debugging
+  * SslTcpConnectorService: Add debug logging
+  * SslTcpConnectorService: Remove code that does nothing in onSelectorWakeup
+  * Change threadId to getId, so the code compiles on Java versions earlie [...]
+
+  [ Johanna Kucera ]
+  * ExtFiles: added check-API
+  * Backups: use dstStorPoolName as fallback storpool
+  * PrioProps: ensure renderRelativeMap properly handles trailing slash
+  * Schedules: allow storpool-rename on schedule enable
+  * Snapshots: add exists field to SnapVlmLayerData
+  * Snapshots: allow renaming storpools during snapshot restore
+  * Schedules: prevent NPE while adding schedule
+  * Make review changes
+  * NodeLost: prevent race condition
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Mon, 22 Jan 2024 06:59:02 +0000
+
+linstor-server (1.25.1-1) experimental; urgency=medium
+
+  [ Gabor Hernadi ]
+  * K8s,migration: Fixed incorrect description
+  * Stlt,Auth: Fix version-mismatch check
+  * Node,restore: Recreate tiebreaker if needed
+  * autoTiebreaker: do not takeover evacuating diskless resource
+  * sp,l: Fix offline DfltDisklessStorPool
+  * gitlab-ci: Fix ST rebase
+  * Rsc,c: allow diskless rsc creation even if all peer-slots are occupied
+  * DRBD: Only report error if DRBD is installed
+  * DRBD: attempt to (re-) start events2 on "node reconnect"
+  * File,Snap: Fix finding existing snapshots
+
+  [ Rene Peinthor ]
+  * make-avalaible: don't produce error report
+  * virter: update to ubuntu jammy and fix provision files
+  * autodiskfultask: Fix potential NPE if no state for a resource
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Mon, 20 Nov 2023 10:06:38 +0000
+
+linstor-server (1.25.0-1) experimental; urgency=medium
+
+  [ Rene Peinthor ]
+  * rscGrp/modify: Run AutoQuorumHelper.manage on auto-quorum prop change
+  * rscDfn/modify: Run helper.manager also on auto-quorum prop change
+  * error-report-list: Use paging for retrieving and default limit
+  * auto-place-adjust: only warn about resource needs to be deleted
+  * linstor-common: update drbdsetup.xml to drbd-utils 9.26.0.rc2
+
+  [ Moritz "WanzenBug" Wanzenböck ]
+  * containers: add ktls-utils
+
+  [ Gabor Hernadi ]
+  * Ping: Report exception during ping
+  * PingTask: Added Javadoc
+  * Sos: Remove --verbose from tar command
+  * Gitlab: Add default MR template
+  * AutoDiskful: Fix Access to deleted Resource
+  * AutoDiskful: Also check ctrlProps for prioProps
+
+  [ Johanna Kucera ]
+  * ErrorReporter: remove unused return value of setLogLevel
+  * ErrorReporter: reworked checks to prevent misleading error message
+  * ErrorReporter: add javadoc and annotations
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Wed, 25 Oct 2023 04:02:02 +0000
+
+linstor-server (1.25.0~rc.1-1) experimental; urgency=medium
+
+  [ Gabor Hernadi ]
+  * Reconnect: Attempt to fix spurious OtherController msgs
+  * FileWatch: Unregister if no longer needed
+  * ToggleDisk: Set resolved StorPoolName property
+  * NodeCon: Delete nodeCon when deleting last property
+  * NetIf,Db: Use null-safe method
+  * Db,update: Treat second parameter as oldElement
+  * Rsc,Del: Improve responses when taking over as tiebreaker
+  * Rsc,Crt: always disable DELETE and DRBD_DELETE flags
+  * dmsetup ls: Fix pattern for parsing
+  * Net: Set socket option IP_TOS to LOW_DELAY
+  * Schedule,DB: Fix typemapper
+  * updated changelog
+
+  [ Rene Peinthor ]
+  * json-serialize: use same ApiCallRc to JSON impl for all cases
+  * apicallrc: Add easier parsable fields
+  * ApiCallRc interface now extends List<ApiCallRc.RcEntry>
+  * openapi: fix incorrect storagepool params
+  * rest-gen: allow referencing allOf objects
+  * openapi: fix typo in actions path
+  * openapi: fix incorrect multi/snapshot return type
+
+  [ Johanna Kucera ]
+  * FetchThinSpaces: Do not send request to diskless nodes
+  * Props: make instanceName final
+  * Props: add description and type
+  * DrbdVlm: move DiskState and ReplState to server package
+  * Drbd: add skip-disk in case of disk failure
+  * RestApi: report skipDisk back to client
+  * gitlab-ci: add missing submodule update
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Wed, 11 Oct 2023 07:24:16 +0000
+
+linstor-server (1.24.2-1) experimental; urgency=medium
+
+  [ Rene Peinthor ]
+  * gradle: set correct dir on sles systems
+  * fix node reconnect scope already entered
+  * Do not create error-report on no connection to satellite errors
+  * sos-report: wait 4 minutes for the tar command to finish
+  * update changelog
+
+  [ Gabor Hernadi ]
+  * Stlt,coreMaps: Properly clear all core maps on new connection
+  * Stlt: Properly update resource-group reassignment
+  * Db,Node: init nodes with offlinePeers
+  * Backup: Replace setsid -w with timeout 0
+  * Backup: Fix possible NPE
+  * AutoEvict: Only warn about offline node
+  * MultiSnap: Fix hanging controller with multiple client
+  * Logging: Distinguish between volume and snapshot when deleting
+  * ETCD,export: Skip empty tables
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Wed, 30 Aug 2023 05:13:59 +0000
+
+linstor-server (1.24.1-1) experimental; urgency=medium
+
+  [ Moritz "WanzenBug" Wanzenböck ]
+  * K8s,Crd: limit number of entries in rollback resource
+
+  [ Rene Peinthor ]
+  * gradle: on rhel based systems force to use java-11 jre
+
+  [ Gabor Hernadi ]
+  * ETCD,import: Convert Date to long
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Thu, 10 Aug 2023 09:12:41 +0000
+
+linstor-server (1.24.0-1) experimental; urgency=medium
+
+  [ Moritz "WanzenBug" Wanzenböck ]
+  * pkg: add tzdata-java dependencies for RPMs
+
+  [ Gabor Hernadi ]
+  * ObjProt: Delete FSM key builder
+  * Db: Restore invisible KVS
+  * Db: Cleanup orphaned ACLs
+  * BCache: Wait for bcache device to be created
+  * BCache: Disable suspend-support
+  * Reconnect: Add node name to log message
+  * Schedule: Use correct maxRetry driver
+  * Drbd: Fix incorrect peer-slots cast
+
+  [ Rene Peinthor ]
+  * gradle: remove javax.xml.bind dependencies
+  * changelog: update for 1.24.0
+  * metrics: fix checkstyle
+  * metrics: error-report fetching exceptions always handled as timeouts
+  * volume: Fix NPE on getApiData if vlmProvider is null
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Mon, 07 Aug 2023 11:50:26 +0000
+
+linstor-server (1.24.0~rc.2-1) experimental; urgency=medium
+
+  [ Gabor Hernadi ]
+  * SpaceTracking: Make AggregateCapacityInfo comparable
+  * Db: Force DATA to implement comparable
+
+  [ Rene Peinthor ]
+  * gradle: fix getprotoc fail if it is already installed
+  * gitlab-ci: fetch spacetracking from a separate repo with branch ref
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Mon, 24 Jul 2023 07:48:35 +0000
+
+linstor-server (1.24.0~rc.1-1) experimental; urgency=medium
+
+  [ Gabor Hernadi ]
+  * QASI: Added openapi entry
+  * Rg,sp: Wait satellite responses
+  * K8s: Fix rollback-replace
+  * LINSTOR For Windows: Added ETCD and K8s migrations
+  * Writecache,suspend: Send flush_on_suspend before suspending
+  * SuspendMgr: Add new suspend-io manager class
+  * IgnoreReasons: Fix recursion
+  * Stlt,allocatedSize: Ignore intentionally non existent devices
+  * RscLayerHelper: Add predicate for setting ignoreReason
+  * Clone: skip cloning of unnecessary devices
+  * Luks,ignoreReason: Do not skip self when key missing
+  * RscReady: Fix expected online node ids
+  * DB,Layer: Added abstract base class for LayerDbDrivers
+  * Db,LayerRscId: Reworked driver
+  * DB,Drbd: Reworked DRBD layers
+  * Db,Storage: Reworked storage db drivers
+  * Db,Luks: Reworked LUKS layer
+  * Db,Nvme: Reworked Nvme layer
+  * Db,Openflex: Reworked OpenFlex Layer
+  * Db,Writecache: Reworked Writecache Layer
+  * Db,Cache: Reworked Cache Layer
+  * Db,BCache: Reworked BCache Layer
+  * Sp,d: Add rscSuffix to error message
+  * LayerData,cmpTo: Allow comparing rsc with snap
+  * DBLoader: Fix loading vlmData
+  * Db,Props: Reworked PropsDbDriver
+  * Db: moved persistance classes
+  * SecDb: Reworked security database drivers
+  * SecDb: Reworked DbAccessor
+  * AbsDbDriver: change getLoadedCount
+  * StltObjProtFactory: return singleton instance
+  * ObjProtInit: Only addAclEntry if needed
+  * NodeDb: Merged ETCD special delete into generic DbDriver
+  * DbLoader: use Set instead of List while loading
+  * EtcdEngine: Improve type handling
+  * Db,luks: Changed encryptedPassword format in SQL
+  * ETCD,Lri: Add missing snap names
+  * ETCD,K8s,PropInstance: Upper cased instance name
+  * Tests: Fixing unit tests
+  * ObjProt: Remove entry from objProtMap on delete
+  * SQL: special case SMALLINT to return short instead of integer
+  * ETCD: Disable ranged delete requests
+  * ETCD,StltRemote: Changed delimiter
+  * Db: Fix FSM name
+  * DB: Extracted RawParameters class
+  * DB: Added basic export support
+  * DbExporter: Added dedicated tool
+  * PropsDb: Fixed getLoadedCount method
+  * Layer,ignoreReason: Only run postRootSuspend if layer is not ignored
+  * SQL: Added import db support
+  * ETCD: Added import db support
+  * K8s,Crd: Added import db support
+  * DbExport: Generate scripts with gradle
+  * K8s,Crd: Added migration for snapshot name
+  * Stlt,Db: Introduced AbsSatelliteDriver
+  * Db: Add truncate method
+  * Db: Add upsert method
+  * SpaceTracking: Migrate and update structure
+  * ETCD,export: Add export support for no-PK-tables
+  * Db: Add handler for DATE datatype
+  * SpaceTracking: ApiCall must start a transaction
+  * DbExport: Add dynamic loader for space tracking
+  * S3: Fix s3Key parsing
+  * S3: Fix snapshot filtering
+  * SecIdDriver: Fix incorrect loading
+  * SSL: Fix missing enum case
+
+  [ Rene Peinthor ]
+  * gradle-wrapper: use latest stable 6.x version
+  * gradle: use java-11 for building and expect gradle 6.8.3
+  * gradle: do not force to run with jdk-11
+  * preselector: remove usage of jdk.nashorn.api
+  * gradle: remove jvm GC freeratio options
+  * gitlab-ci: add debian-bookworm to ci builds
+  * gradle: syntax updates and task configuration avoidance
+  * make: fix missing jclcrypto jar.deps logic
+  * packaging: update linstor-common source lib paths
+  * gradle: move deps into server project
+  * debian: gradle install jars are 755, chmod them to 644
+  * gradle: switch to 7.3.3
+  * gradle: update protobuf
+  * gradle: guice 5.1.0 update
+  * gradle: update picocli
+  * gradle: update com.amazonaws:aws-java-sdk-bom platform
+  * gradle: update REST libaries (grizzly, jersey)
+  * gradle: update to flyway 7.15.0
+  * gradle: update mariadb and postgresql connectors
+  * gradle: use latest prometheus simpleclient
+  * gradle: remove javax.xml.bind dependency
+  * gradle: update apache httpclient
+  * gradle: update logback and slf4j
+  * gradle: update kubernetes-client
+  * gradle: project-reactor latest PATCH version
+  * resp-api: increase version for next release
+  * Revert "gradle: update kubernetes-client"
+  * gradle: update project-reactor to current release
+  * gradle: update kubernetes-client to 6.7.2
+  * vlmdfn/delete: update resync-after properties
+  * resync-after: ignore diskless pools
+  * linstor-common: allow node-conn drbd options
+  * conffilebuilder: node-conn props were never used for connections
+  * Improve default INFO logging
+  * linstordbtool: correclty name command
+  * pkging: include linstor-database tool
+  * update changelog
+
+  [ Johanna Kucera ]
+  * BackupShipping: put NODE_IDS_TO_RESET on snapDfn instead of snap
+  * Resource: merge getDefinition() and getResourceDefinition()
+  * BackupShipping: also reset nodeIds of external metadata
+  * Layer: prevent NPE when copying .meta
+  * BackupShipping: change process of choosing node for shipping
+  * BackupShipping: l2l shipping rework
+  * BackupShipping: do not allow rsc-creation in restoring rscDfn
+  * Snapshots: prevent creating a snap during evacuation
+  * BackupShipping: rename S3Consts to BackupConsts
+  * BackupShipping: create BackupNodeFinder
+  * BackupShipping: make shippingSent more readable
+  * BackupShipping: clear queues on delete
+  * BackupShipping: clear shipping queue in other cases
+  * Utils: add BidirectionalMultiMap
+  * BackupShipping: use BidirectionalMultiMap instead of two seperate Maps
+  * BackupShipping: add new method because checkstyle
+  * BackupShipping: small bugfixes
+  * Node: prevent storpool delete if it still has snaps
+  * BackupShipping: prevent NPE
+  * BackupShipping: only abort the snapDfn, not the full node
+  * BackupShipping: prevent NPE
+  * BackupShipping: prevent choosing nodes with 0 free shipping slots
+  * BackupShipping: make shippingReceived more readable
+  * BackupShipping: prevent supplier from removing too many items
+  * BackupShipping: make queues work with l2l-shipping
+  * BackupShipping: limit luks to one node
+  * BackupShipping: add QueueList
+  * BackupShipping: make inc shippings work with queue
+  * BackupShipping: remove redundant parameters
+  * BackupShipping: add additional node-finder test
+  * BackupShipping: tell user if dstNodeName was invalid
+  * BackupShipping: ensure clearing a node queue works correctly
+  * BackupShipping: improve flux-loops
+  * BackupShipping: include vlmNr in threadname
+  * BackupShipping: do not send abort twice
+  * BackupShipping: prevent endless flux loop
+  * BackupShipping: refactor shippingSent into new class
+  * BackupShipping: refactor handleShippingQueue into new class
+  * BackupShipping: move all queue methods into same class
+  * BackupShipping: add new receiveDoneRequest to l2l-shipping
+  * BackupShipping: add task to cleanup StltRemote
+  * BackupShipping: prevent access to deleted Schedule
+  * BackupShipping: enforce correct remotes for different backup cmds
+
+  [ Johannes Thoma ]
+  * LINSTOR For Windows: make tgz also when we are a submodule
+  * LINSTOR For Windows: Bump virter and vmshed versions
+  * LINSTOR For Windows: Helper class to run LINSTOR Wmi Helper
+  * LINSTOR For Windows: Platform helper classes
+  * LINSTOR For Windows: Open and Close Windows Firewall ports as needed.
+  * LINSTOR For Windows: Handle Windows path names
+  * LINSTOR For Windows: Check for available Windows tools.
+  * LINSTOR For Windows: wipefs is a no-op on Windows
+  * LINSTOR For Windows: Make reading DRBD metadata work on Windows.
+  * LINSTOR For Windows: Get Hostname using hostname utility.
+  * LINSTOR For Windows: extra check for null in udev handler
+  * LINSTOR For Windows: update sysfs settings only on Linux
+  * LINSTOR For Windows: Extra long timeout for drbdadm
+  * LINSTOR For Windows: special case verify-alg and cram-hmac-alg settings
+  * LINSTOR For Windows: StorageSpaces and StorageSpacesThin providers
+  * LINSTOR For Windows: getFreeSpacesImpl implementation.
+  * LINSTOR For Windows: Add non-existing tools implicitly.
+  * LINSTOR For Windows: Reworked a diagnostic message
+  * LINSTOR For Windows: Added some missing switch labels.
+
+  [ Moritz "WanzenBug" Wanzenböck ]
+  * config-tool: ensure DB shutdown after migration checks
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Thu, 20 Jul 2023 09:35:12 +0000
+
+linstor-server (1.23.0-1) experimental; urgency=medium
+
+  [ Moritz "WanzenBug" Wanzenböck ]
+  * docker: fix migration script
+  * drbd: quote hostnames
+
+  [ Joel Colledge ]
+  * containers: add basic administrative tools to the satellite image
+
+  [ Gabor Hernadi ]
+  * NodeCon: Fix NPE on stlt startup
+  * MkAvail: Fix incorrect deletion of TIE_BREAKER flags
+  * Sos,Log: Fixed logging and collecting logs
+  * K8s,Etcd: Synchronize commit and rollback
+  * ApiCall,offline: Fix offline handling
+  * SharedSPName: Allow digits as first character
+  * Rsc,Delete: Prevent possible NPE
+  * Rsc,del: Fix tiebreaker-takeover issue
+  * QueryAllSizeInfo: New API to run qsi for all existing RGs
+  * Qsi,Qasi: Add cache
+  * DevMgr: Reduce disc_gran retry count to 10
+  * Clone: Disable layers when cloning
+  * SpaceInfo: throw exception if sp is broken
+
+  [ Rene Peinthor ]
+  * sos-report: have a parent directory for the tar.gz file
+  * ctrlconfapih: wait for satellite property updates (flux)
+  * auto-verify-algo: remove/ignore auto-verify-algo prop if disabled
+
+  [ Johanna Kucera ]
+  * Transactions: prevent AccessToDeletedDataException in transMgr
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Tue, 23 May 2023 06:25:30 +0000
+
+linstor-server (1.22.1-1) experimental; urgency=medium
+
+  [ Franciosi ]
+  * Update README.md
+
+  [ Rene Peinthor ]
+  * make-available: upgrade a tiebreaker into a real diskless resource
+  * gitlab-ci: fix unittest coverage report
+
+  [ Johanna Kucera ]
+  * LinstorScope: ensure enter and exit are executed correctly
+  * LinstorScope: use AutoCloseable to ensure exit is called
+
+  [ Gabor Hernadi ]
+  * NodeCon: Fixed compareTo
+
+  [ Moritz "WanzenBug" Wanzenböck ]
+  * docker: include migration script for k8s DB
+  * docker: use ARCH build argument
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Thu, 27 Apr 2023 11:58:24 +0000
+
+linstor-server (1.22.0-1) experimental; urgency=medium
+
+  [ Gabor Hernadi ]
+  * Exc context: Add new ErrorContextSupplier interface
+  * Exc context: Also print errCtx on stdErr if printstacktraces is enabled
+  * ETCD,Migration: remove dependency on GeneratedDatabaseTables
+  * QSI: Fixed available size calculation
+  * MultiSnap: Add support for multiple snapshots
+  * MultiSnap: get suspend-ios closer together
+  * Snap,Abort: Ensure resume-io
+  * Lvm: Throw StorageExc if volumeGroupe does not exist
+  * Autoplacer: Ignore evacuating / evicting nodes
+  * NodeCon: Fix nodeCon only existing on one side
+  * Added LvcreateSnapshotOptions and ZfsSnapshotOptions
+  * Mkfs: Add optional user and group
+  * Drbd,DbLoader: Fix database loading issue
+  * DrbdLayer: Skip children in DRBD_DELETE state
+
+  [ Moritz "WanzenBug" Wanzenböck ]
+  * add migration tools to linstor-config
+
+  [ Johanna Kucera ]
+  * BackupShipping: allow listing of more than 1000 objects
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Mon, 17 Apr 2023 11:20:52 +0000
+
+linstor-server (1.21.1-1) experimental; urgency=medium
+
+  [ Rene Peinthor ]
+  * gitlab: run nonstandard suite in last MR step
+  * openapi: fix query-size-info using GET (-> POST)
+  * disable auto-resync-after if prop not already set
+
+  [ Gabor Hernadi ]
+  * QSI: Fixed available size calculation
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Wed, 22 Mar 2023 14:05:01 +0000
+
+linstor-server (1.21.0-1) experimental; urgency=medium
+
+  [ Gabor Hernadi ]
+  * Auto-rs-disc-gran: Add changelog entry
+  * ExtTools: use zfs -? instead of zfs list
+  * QSI: Specify required fields
+  * ETCD,Layer: Fix broken key calculation
+  * DB: Add PK to exception / error report on failure
+  * QSI: Collect ApiCallRcExc in "reports"
+
+  [ Rene Peinthor ]
+  * resync-after: use sysctx for all operations
+  * controller: run resync-after algorithm on controller start
+  * drbdres/resync-after: only write peer option if utils >= 9.23.1
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Tue, 14 Mar 2023 10:51:31 +0000
+
+linstor-server (1.21.0~rc.1-1) experimental; urgency=medium
+
+  [ Gabor Hernadi ]
+  * Drbd: Fix peerSlots
+  * Layer,size: Fixed calculating sizes
+  * Snap,abort: Fixed abort procedure
+  * AutoSnap: Fixed schedule bug
+  * Changelog: Add missing entries
+  * ExtTools: Add check for zfs utils
+  * Props,Rollback: Fix caching entries before clearing
+  * QSI: Add query-size-info API
+  * AbsVlmData: Pulled up devicePath
+  * DevPath: Unify devicePath naming conventions
+  * VlmDfn,discGran: Add automatic rs-discard-granularity calculation
+  * Stlt,DynamicProp: Stlt reports dynamic props to ctrl
+  * Props: Add specialHandlers
+  * Auto-rs-disc-gran: Add auto disable if actual prop is modified
+  * AutoSnap,BackupSchedule: Serialize multi-snapshots
+  * Snap,create: Also serialize snapshots from API
+  * Rsc,Crt,Shared: Automatically deactivate rsc in shared SP
+
+  [ Roland Kammerer ]
+  * containers: add zfs "tools"
+  * containers: fix semantic by using an if
+
+  [ Rene Peinthor ]
+  * sed: use supermicro recommended setup commands
+  * sed: revert SED if some command failed as we didn't store any password yet
+  * sedutils: use static arrays
+  * sedutils: create extcmd for each command
+  * Fix typo: CtrlRscDfnAutoVerfiyAlgoHelper -> CtrlRscDfnAutoVerifyAlgoHelper
+  * ctrlrscdfndelete: improve method name
+  * Add automatic DRBD resync-after setting, as long as not disabled
+  * changelog: update
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Tue, 28 Feb 2023 08:33:44 +0000
+
+linstor-server (1.20.3-1) experimental; urgency=medium
+
+  [ Rene Peinthor ]
+  * devcepoolhandler: Fix typo in vdo slab size argument
+  * checkPeerSlotsForNewPeer: don't count diskless resources
+  * gitlab/virter: use latest virter/vmshed versions
+  * changelog: update
+
+  [ Moritz "WanzenBug" Wanzenböck ]
+  * docker: use losetup-container shim
+
+  [ Gabor Hernadi ]
+  * Lvm,pvdisplay: Ignore DRBD devices
+  * Sp,d: Do not delete SPD unconditionally
+  * RscDfn,c: Prevent NPE shadowing other Exception
+  * StltConnTracker: Fix unnecessary "OtherController" messages
+  * VlmDfn,setSize: Add sizeCheck
+  * DrbdRscFlags: Fix resetting to rsc flags
+  * VlmDfn,setSize: Add sizeCheck for non-DRBD
+
+  [ Johanna Kucera ]
+  * CoreObjects: add hashCode and equals to all core objects
+  * Layers: refactoring *VlmData classes
+  * CoreObjects: introduced AbsCoreObject
+  * CoreObjects: make sure toStringImpl doesn't trigger checkDeleted
+  * TransactionMgr: add isDirty flag
+  * Rsc,delete: add delete hook
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Thu, 26 Jan 2023 08:39:17 +0000
+
+linstor-server (1.20.2-1) experimental; urgency=medium
+
+  [ Johanna Kucera ]
+  * Backups: fix normal snap restore
+
+  [ Gabor Hernadi ]
+  * Db,migration: Fix orphan cleanup
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Wed, 14 Dec 2022 14:20:05 +0000
+
+linstor-server (1.20.1-1) experimental; urgency=medium
+
+  [ Johanna Kucera ]
+  * Remotes: add null-checks for required params
+  * StorPool: move isSnapshotSupported check into StorPool class
+  * Backups: clear cache if needed
+  * DevMgr: actually delete nodes
+
+  [ Moritz "WanzenBug" Wanzenböck ]
+  * gradle: upgrade okhttp to fix IPv6 TLS certs
+
+  [ Gabor Hernadi ]
+  * NodeCon,Path: Added openapi entries
+  * NodeCon: Changed Proto serialization
+  * NodeCon: adding nodeConnection API
+  * NodeCon: Reworked / fixed node connections
+  * Node,reconnect: Avoid "only one initialConnectSink allowed" error
+  * Drbd: Change ready-condition
+  * Rsc ready: Changed from Error to Warning
+  * DRBD: also call forget-peer for diskless resources
+  * SnapDfn: Fix orphan DB entries
+  * StorPoolDfn: Delete with last StorPool
+  * KVS: Delete when empty
+  * Stlt,Symlinks: sort Symlinks
+  * Layers: Fixed gross -> net size calculation
+  * Migrations: Prefixed crd migrations with leading 0
+  * DB: Cleanup orphaned objects
+  * Drbd,clone: Fix changed ready-condition
+  * toml,example: fix dflt plain stlt port
+  * DRBD: only delete .res files after full-sync
+
+  [ Rene Peinthor ]
+  * rest/rg: cleanup
+  * rscGrpApiHndl: autoPlaceConfig is never null
+  * RscRgApiHndl: automatically assume partial mode if rg has no vgs
+  * gitlab-ci: update new rhel ci url and trigger build
+  * gitlab: allow to repeat tests
+  * gitlab-ci: add environment for log-viewer
+  * gitlab: remove environments again
+  * mkfs: always skip discard on ZFS
+  * CHANGELOG.md: update
+  * changelog: update
+  * error-report: delete didn't check for empty since parameter
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Tue, 13 Dec 2022 11:59:57 +0000
+
+linstor-server (1.20.0-1) experimental; urgency=medium
+
+  [ Moritz "WanzenBug" Wanzenböck ]
+  * crd: make crd caching lazy
+  * docker: don't force binding REST-API on ipv4
+
+  [ Johanna Kucera ]
+  * BackupShipping: make sure filters are applied
+  * BackupShipping: prevent concurrent usage of DateFormat
+  * BackupShipping: force backups to do initial full sync
+  * BackupShipping: allow users to set forceInitialSync
+
+  [ Gabor Hernadi ]
+  * Snap,Props: Delete props of Snap and SnapVlm on delete
+  * EBS: Fix make-available support
+  * Ebs: Prohibit deletion of EBS Target SP
+  * Ebs: Add support for Tags
+  * Ebs: Add support for VolumeTypes
+  * Ebs: Added EbsStatusManager
+  * Ebs: Prevent snap rollback/restore while pending
+  * AllUpToDateCheck: Add null check
+  * EBS: Prevent EBS modifications during cooldown
+  * Crd: Randomized Cluster/LocalId
+  * Drbd: Fix mkfs without quorum
+
+  [ Michael Troutman ]
+  * DOCS: corrects sihpped misspelling
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Tue, 18 Oct 2022 07:17:30 +0000
+
+linstor-server (1.20.0~rc.1-1) experimental; urgency=medium
+
+  [ Gabor Hernadi ]
+  * DrbdVersion: Changed default version to undertermined
+  * AutoSnap: Also start AutoSnap for spawned resources
+  * AutoSnap: run after ctrl restart
+  * AutoSnap: Read AutoSnapshot/Keep from PrioProps
+  * PropsCon: fixed ConcurrentModExc
+  * BackupShipL2L: Fixed NullPointerException
+  * Layer: Add IgnoreReason
+  * EncryptionHelper: reevaluate volatile rscdata after setCryptKey
+  * EncryptionHelper: Fixed tests
+  * Drbd,extMd: Fixed mixing internal and external metadata
+  * Zfs: list only necessary datasets
+  * CrtVlm: Fix size-check for storage pools
+  * SpecStlt: use correct --option
+  * SpecStlt: Changed conf dir
+  * SpecStlt: shutdown specStltProcess on node delete
+  * SpecStlt: Deallocate port on node delete
+  * SpecStlt: refactored "openflex" variable names and strings
+  * RemoteName: Introducing prefix
+  * Remote: Moved into dedicated package
+  * Remote: Add EbsRemote
+  * AbsStorProv: Added SPName to asLvIdentifier method
+  * EbsProvider: Added EbsTarget- and EbsInitiatorProvider
+  * EBS: fixed reported allocated size
+  * EBS: Added resize support
+  * FreeCapacityUtils: Fix overflow
+  * EBS: Add snapshot support
+  * AbsRscData: Add suspend and ignoreReason to txObjs
+  * Db,EbsRemote: Fix loading EBS resources
+  * EbsTarget: Do not wait until snapshot is complete
+  * Storage: do not wipefs on initiator
+  * Auto-diskful: only cleanup auto-diskful resources
+  * Auto-diskful: only cleanup auto-diskful or make-available resources
+  * Sos: Do not fail if satellite is offline.
+
+  [ Michael Troutman ]
+  * corrects "LinStor" misspellings in help message
+
+  [ Johanna Kucera ]
+  * BackupShipping: simplify and fix abort
+  * BackupShipping: fix backup schedule delete
+  * BackupShipping: treat restore-abort-maps atomically
+  * BackupShipping: return copy instead of actual map
+  * BackupShipping: abort failed shippings after ctrl-restart
+  * BackupShipping: Allow shipping of rsc to several remotes at once
+  * DB: Improve DB-update-logging
+
+  [ Moritz "WanzenBug" Wanzenböck ]
+  * physical-storage: set VG during thin pool creation
+  * crd: implement local caching of resources
+
+  [ Rene Peinthor ]
+  * storpool/getApiData: clone props map, so we don't expose the real props
+  * DecryptionHelper: add base64ToString variant
+  * LsBlkUtils: reuse blkid to check device access
+  * Add Self Encrypting Drive (SED) support
+  * gitlab-ci: mark stages interruptible
+  * Add a changelog file
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Tue, 20 Sep 2022 12:43:10 +0000
+
+linstor-server (1.19.1-1) experimental; urgency=medium
+
+  [ Johanna Kucera ]
+  * BackupShipping: Refactoring of CtrlBackupApiCallHandler
+  * Cleanup: Removed unnecessary TODOs
+  * Remotes, DB: fix ETCD bug
+  * RscDfn: replace diskfullCount method
+  * ExtTools: Add DRBD utils as dependency for DRBD layer
+
+  [ Gabor Hernadi ]
+  * DrbdVersion: Set 8.9.10 as minimum DrbdUtils
+  * DrbdVersion: Simplyfied version check
+  * AutoSnap: Allowed on RG and C
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Wed, 27 Jul 2022 06:35:40 +0000
+
+linstor-server (1.19.0-1) experimental; urgency=medium
+
+  [ Johanna Kucera ]
+  * BackupShipping: fix support for Google and DigitalOcean remotes
+
+  [ Moritz "WanzenBug" Wanzenböck ]
+  * autoplace: make SelectionManager public
+  * autoplace: add tests for SelectionManager
+  * autoplace: only migrate tiebreaker to eligible diskless
+  * autoplace: filter OnSame:prop=val in SelectionManager
+
+  [ Gabor Hernadi ]
+  * Exos,port: Correctly unset 'Connected' if necessary
+
+  [ Rene Peinthor ]
+  * grizzlyservice: improve error logging and show exception
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Wed, 20 Jul 2022 06:39:03 +0000
+
+linstor-server (1.19.0~rc.1-1) experimental; urgency=medium
+
+  [ Moritz "WanzenBug" Wanzenböck ]
+  * crd: prevent version conflicts on rollback
+  * crds: remove redundant get during rollback
+  * crds: wait for CR api using actual API
+  * docker: manually start lvm daemon
+  * add GET /v1/physical-storage/{node}
+
+  [ Robert Altnoeder ]
+  * Load identity information from the database for LDAP sign-ins
+  * PBKDF2 password hashing
+  * Add class UnicodeConversion
+  * Adjust UnicodeConversion call to the actual method parameters
+  * Fix createSignInEntry in EmptySecurityDbDriver
+  * Fix initializeAuthentication in ControllerSecurityModule
+  * Fix HASH_LENGTH, it's in bits, not bytes
+  * Extract password hash generation from the sign-in check
+  * Adjust AuthenticationTest to the new cryptographic methods
+  * Foundations for creating LINSTOR identities
+  * Add interface ModularCryptoProvider
+  * Adjust SymmetricKeyCipher parameters for ModularCryptoProvider compatibility
+  * SslTcpCommons: Remove key/certificate management methods
+  * SslTcpConnectorService: Use ModularCryptoProvider for SSL initialization
+  * SatelliteNetComInitializer: Use ModularCryptoProvider
+  * ControllerNetComInitializer: Use ModularCryptoProvider
+  * EncryptionHelper, DecryptionHelper: Use cipher from ModularCryptoProvider
+  * Transform SecretGenerator into an interface
+  * Move class SecretGenerator to com.linbit.linstor.modularcrypto
+  * Add implementation SecretGeneratorImpl
+  * Adjust LINSTOR code to new SecretGenerator
+  * Adjust LINSTOR code to ModularCryptoProvider cipher creation
+  * Moved class LengthPaddingImpl to modularcrypto
+  * LengthPaddingImpl: Adjust constructor for modularcrypto integration
+  * Adjust LINSTOR code to LengthPadding changes
+  * Add interface KeyDerivation
+  * Add class JclKeyDerivationImpl
+  * Changed sign-in process to use ModularCryptoProvider
+  * EncryptionHelper: Modified control flow
+  * Add startup information about which crypto provider is in use
+  * Add class JclCryptoProvider
+  * Add class JclCryptoModule: Injector configuration
+  * Move interface SecretGenerator to com.linbit.crypto
+  * AuthenticationTest: Adjust test to the modular cryptography architecture
+  * Add comment about the use of the UnicodeConversion class
+  * Remove unused class SslTcpCommons
+  * Dynamic loading of modular cryptography providers
+  * Provide ModularCryptoProvider to migrations
+  * Change migration from 2019-04-10 to use ModularCryptoProvider
+  * Move & rename class SymmetricKeyCipher
+  * Move JCL crypto implementation
+  * Modified build.gradle, settings.gradle
+  * SymmetricKeyCipherTest fixes
+  * AuthenticationTest fixes
+  * GenericDbBase fixes (tests)
+  * Add class CryptoProviderLoader - Dynamic loader for use by unit tests
+  * Modify tests to use CryptoProviderLoader
+  * Move/Fix typo: SymmetricKeyCiperTest -> SymmetricKeyCipherTest
+
+  [ Gabor Hernadi ]
+  * Crypto: Fixed guice modules for junit tests
+  * Crypt: Fixed Unit tests
+  * JCLCrypto: Fixed build.gradle, debian/rules and linstor.spec
+  * GitLab: Fix replaced keyword.
+  * ScopeRunner: Do not release locks before rollback
+  * ScopeRunner: Properly handle exceptions
+  * Auth: Start pinging earlier
+  * GenSql: Load and inject JclCrypto to migrations
+  * K8sGen: Fix generating the changed constructor
+  * OutputProxy: Added undelimited reader
+  * CONFIG_PATH: Unified constant
+  * Sos: First iteration of rework
+  * Sos: second iteration
+  * Sos: Do not request 0 byte files
+  * Sos: Do not ignore errors from satellite
+  * Sos: Cleanup satellites
+  * Sos: Do not copy ErrorReports
+  * Sos: Cleanup and bugfixes
+  * Sos: Moved content of sos-report folder to stlt-root
+  * Sos: Use java-version of 'rm -rf' for cleanup
+  * CRD: Fix migrations with new tables
+  * Resize: Attempt to fix stuck resize
+  * PSQL,ExtFiles: Fix update of ext-file-content
+
+  [ Rene Peinthor ]
+  * gitlab-ci: only run standard tests on MR's
+  * gitlab-ci: use prefilled variables
+  * gitlab-ci: add manual run all step for MR's
+  * gitlab-ci: add extra integration-all stage
+  * gitlab-ci: only run build/test stage on MR and manual pipelines
+  * gitlab: test stage should be included on master branch
+  * ctrlconfapi: fix unreachable code
+  * ctrlconfapi: code cleanup
+  * ctrlconfapi: don't commit() on each prop update
+  * gradle: fix running controller/satellite from gradle
+  * ctrl-verify-algo: fix setting/reading of verify algo list
+  * physical-storage/vdo: switch to lvcreate vdo syntax
+  * linstor.spec: fix python dependency for rhel9
+
+  [ Roland Kammerer ]
+  * pve: add before pvedaemon ordering
+
+  [ Johanna Kucera ]
+  * Schedule: add new core object Schedule
+  * BackupShipping: add scheduled backup shipping
+  * BackupShipping: add keepSnaps-flag to backup-delete
+  * BackupShipping: fix various scheduled shipping bugs
+  * BackupShipping: actually use keepLocal and keepRemote
+  * BackupShipping: move endpoints to avoid name conflicts
+  * BackupShipping: add maxRetries to Schedule
+  * BackupShipping: fix scheduled shipping to l2l remote
+  * BackupShipping: small scheduled shipping fixes
+  * SosReport: filter by list of nodes and add includeCtrl flag
+  * SosReport: add filter by rscs
+  * SosReport: add exclude-nodes filter and query-params file
+  * Schedule,DB: fix loading of Schedules with ETCD
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Wed, 06 Jul 2022 10:58:20 +0000
+
+linstor-server (1.18.2-1) experimental; urgency=medium
+
+  [ Moritz "WanzenBug" Wanzenböck ]
+  * docker: fix lvm config manipulation
+
+  [ Rene Peinthor ]
+  * zfs: check if a quota is set on a DS and use it
+  * linstor.spec: controller use %posttrans instead of %post
+
+  [ Gabor Hernadi ]
+  * Node,reconnect: Fix out-of-scope bug
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Mon, 23 May 2022 06:47:31 +0000
+
+linstor-server (1.18.1-1) experimental; urgency=medium
+
+  [ Gabor Hernadi ]
+  * LocalIP: Fix finding the local IP
+  * zfs,snap-restore: Fix duplicate zpool
+  * VlmGrp: Add to RG on Stlt
+  * VG,Stlt: Update properties properly
+  * Extend checks for automatic rs-discard-granularity and discard-zeroes- [...]
+  * ConfFileBuilder: Add Vlm-props to prioProps
+  * Node,modify: also update port if nodeType changes
+  * Node,Modify: Make reconnect asynchron
+  * TaskScheduler: Add reschedule method
+  * TaskScheduleService: Fixed possible concurrentModExc
+  * TaskScheduler: Changed returned long from relative to absolute timestamp
+  * TaskSchedule: Added new next execution-time-calculation
+  * TaskScheduleService: fixed new execution-time-calculation
+
+  [ Matt Kereczman ]
+  * docs: add prometheus metrics to docs
+
+  [ Robert Altnoeder ]
+  * Experimental/review: New main loop, supposed to fix synchronization is [...]
+
+  [ Rene Peinthor ]
+  * rest: update rest-api-version
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Thu, 12 May 2022 05:39:55 +0000
+
+linstor-server (1.18.1~rc.2-1) experimental; urgency=medium
+
+  [ Aiden Grossman ]
+  * Fix s3 multipart upload bug involving unit mismatch
+
+  [ Gabor Hernadi ]
+  * BackupShipping: Fix correct allocatedSize parameter
+
+  [ Moritz "WanzenBug" Wanzenböck ]
+  * update drbd-options for drbd-utils 9.21.1
+
+ -- Gabor Hernadi <gabor.hernadi@linbit.com>  Mon, 02 May 2022 09:56:17 +0000
+
+linstor-server (1.18.1~rc.1-1) experimental; urgency=medium
+
+  [ Johanna Kucera ]
+  * Layer: prevent possible ConcurrentModificationException
+  * BackupShipping: actually execute this cleanup-flux
+  * BackupShipping: add locking to postShipping
+  * BackupShipping: Use correct flux order
+  * DrbdOptions/AutoEvictAllowEviction: clarify prop description
+
+  [ Rene Peinthor ]
+  * git: use https for linstor-common
+  * applifecycle: per default exit, if unhandled exception occurred
+  * storage: Allow mixing storage pools with a property
+
+  [ Gabor Hernadi ]
+  * SpaceTrackingV2: Add annotation for ETCD migration
+  * NetCom: Renamed namespace and whitelisted
+  * Gitlab: Fix fetch depth for spacetracking rebase
+  * Migration: Remove debug prints
+
+  [ Robert Altnoeder ]
+  * Print which configuration file is being loaded
+  * Log the database type on startup
+  * Log persistence layer information
+  * Print generic startup information before doing anything else
+  * Supply an ErrorReporter instance to class TestDbConnectionPoolLoader
+  * SpaceTracking: Migrate existing etcd data to prefixed path
+
+  [ Moritz "WanzenBug" Wanzenböck ]
+  * crds: fix check for updated CRDs on upgrades
+  * crd: set request retries for client
+  * update swagger docs + fix generated json types
+
+ -- Moritz Wanzenböck <moritz.wanzenboeck@linbit.com>  Mon, 25 Apr 2022 10:06:47 +0000
+
+linstor-server (1.18.0-1) experimental; urgency=medium
+
+  [ Moritz "WanzenBug" Wanzenböck ]
+  * docker: fix lbbuild excludes
+  * autoplacer: account for over-provisioning
+  * docker: clean keystore before import
+
+  [ Rene Peinthor ]
+  * gitlab: use CI_COMMIT_REF_SLUG as in linstor-tests
+  * grade/sentry: upgrade library to work with java11
+  * gitlab: build spacetracking for CI builds
+  * gitlab: default image should use build-helpers
+  * gitlab-st: use git short SHA
+  * gitlab-st: reset to latest spacetracking branch
+
+  [ Gabor Hernadi ]
+  * Autoplacer: Added property to manually disqualify nodes as autoplacer-target
+  * MakeAvailable: Fix return null;
+  * K8s: Fixed migration nr from -> to
+
+  [ Robert Altnoeder ]
+  * Add SpaceTrackingV2 migration for Kubernetes CRD
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Tue, 15 Mar 2022 08:09:48 +0000
+
+linstor-server (1.18.0~rc.3-1) experimental; urgency=medium
+
+  [ Robert Altnoeder ]
+  * Remove message field for usable capacity
+  * K8s CRD driver: adjust constructor
+  * Add checksum field to SpaceTracking protocol message
+  * Add tracking date field to SpaceTracking protocol message
+  * Extend SpaceTrackingService interface method receiveSpaceTrackingReport
+  * Fix type in protobuf message
+  * Add SQL database migrations
+  * Add etcd key/value-store migrations
+  * Fix SpaceTracking SQL migration
+  * Update generated resources
+
+  [ Gabor Hernadi ]
+  * SpaceTracking: Foundations for allocated/usable tracking
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Wed, 23 Feb 2022 09:05:18 +0000
+
+linstor-server (1.18.0~rc.1-1) experimental; urgency=medium
+
+  [ Gabor Hernadi ]
+  * Autoplacer: Respect DevProvKind.isMixingAllowed
+  * DevProvKind: Allow mixing of LVM <-> EXOS
+  * Shipping: do not grep with -E
+  * Nvme,Tiebreaker: Fix counting of drbd diskful resources
+  * CRD,ToggleDisk: Fixed deleting and creating objects in same TX
+  * CRD,Flags: Fixed updating flags
+  * Sp,list: Add ?cached=true
+  * NVMe: Allow deleting volumedefinitions
+  * DB: Drop not null constraint from *Cache tables
+  * NVMe: Fixed needsCacheDevice check
+  * Nvme,*Cache: Fixed deletion check
+  * ExtToolsChecker: Add log message for NVMe
+  * Tiebreaker: fix reenable auto-tiebreaker
+  * Rsc,td,multi-vol: Fix ConcurrentModificationException
+  * Crd: Changed tx.get to tx.getSpec and added tx.getCrd method
+  * Crd: Split getKey into getK8sKey and getLinstorKey
+  * Crd,MigrationBase: Add null- and dirty-check
+  * Crd,Rollback: Fix broken rollback spec
+  * Crd: Changed base32 keys to sha256 keys
+  * CRD: fixing Rollback
+  * gitlab-nexus: also remove rhel7 packages before reupload
+  * Node,evac: Removed debug sysouts
+  * CRD: Added upsert method
+  * Rd,LayerStack: First resource should set RD's layer stack
+  * ErrorReporter: Print details of ApiCallRcExceptions
+  * DevMgr,Flux: Add response for noop
+  * Rsc,del: Add new DRBD_DELETE flag
+
+  [ Rene Peinthor ]
+  * clone: allow a new zfs-clone mode with zfs storage
+  * make/gitlab: improve openapi validator usage
+  * postinst: create var lib linstor dir non world readable
+  * cryptsetup: limit PBDKF algorithms max memory usage to 256MiB
+  * gitlab: use new python runner script
+  * node-events: Rework eventhandlerbridge and add node events
+  * rest-api: generate types, up API version
+  * h2-backup: allow the user to trigger a h2 online db backup
+  * gitlab: default variants to default if not set
+  * docs: add/update toml config examples
+  * gitlab/gradle: add support for unittest code coverage
+  * rsc-dfn-sync: Add endpoint if resources are uptodate
+  * gitlab-nexus: remove rhel8 packages before reupload
+  * rsc-dfn: fix wait-synced with diskless
+  * controller-backupdb: add backup location to apirc
+  * zfs-list: use refer for allocated size
+
+  [ Johanna Kucera ]
+  * BackupShipping: add pipefail to backup create and ship
+  * BackupShipping: only abort if ctrl-connection closes
+  * BackupShipping: remove unneccessary error-reports
+  * BackupShipping: fix deletion of linstor-remotes
+  * BackupShipping: make l2l abort work + some minor bugfixes
+  * BackupShipping: fix getting correct BackupShippingMgr
+  * BackupShipping: fix race condition if backup is faster than devMgr
+  * Satellite: add TRACE-logs when sending message
+  * BackupShipping: have restoreBackup and restoreSnap behave the same
+  * BackupShipping: make sure only the right prop is set
+  * BackupShipping: use only Base64 for remote keys in ETCD
+  * CRD: applying dirty tx when querying k8s
+
+  [ Yusuf Yildiz ]
+  * Readme: Adding soda eco description
+
+  [ Moritz "WanzenBug" Wanzenböck ]
+  * backups: allow customizing the snapshot name
+  * Crd,Rollback: only create rollback when required
+  * docker: try to convert PEM keys/certs on startup
+  * props: pass update information to db drivers
+  * ObjProt: explicitly delete ACLs on protection deletion
+  * Crd: fix NPE when deleting ACLs
+  * Crd: have separate create/replace operations
+  * Crd: ensure rollback is in known state
+  * toggle-disk: fix inconsistent DB state
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Tue, 22 Feb 2022 09:25:22 +0000
+
+linstor-server (1.17.0-1) experimental; urgency=medium
+
+  [ Moritz "WanzenBug" Wanzenböck ]
+  * docker: add "ps" to satellite container
+
+  [ Rene Peinthor ]
+  * extfiles: Fix incorrect undeployed message
+  * rpm: support rhel9
+  * gitlab: update virter and vmshed
+  * grizzlyservice: simplify and fix feature enabling
+  * http-index: redirect to /ui/ if installed otherwise show instructions
+  * gradle: add checkstyle plugin
+  * gitlab: remove gradle assemble step and use check instead of test
+  * checkstyle: fix errors
+  * gitlab: fix master build
+  * resize: Check that all DRBD resources are UpToDate before starting resize
+  * checkstyle: exclude most generated files
+  * gitlab: use build-helpers from nexus
+  * gitlab: use specific deploy step for nexus master upload
+  * gitlab: use vmshed v0.14.5
+  * rpm: fix spec file for suse linux
+
+  [ Gabor Hernadi ]
+  * Reconnector: Take node read lock
+  * Db,CRD: Fix DB load error when missing VlmDfn
+  * Auth: Do not send cryptKey before authentication
+  * Peer: renamed isConnected() to isOnline()
+  * Db,all: Generated column drivers now use the typeMapper
+  * NetIf,CRD: Fixed NPE
+  * Node,evacuate: First version
+  * Rsc,create: Prohibit creating rsc on evacuating node
+  * Autoplacer: Do not select evacuating node
+  * Autoplacer: Add trace-log for node evacuate filter
+  * Node,evac: Allow toggle disk
+  * Node,evac: Only evacuate DRBD resources
+  * Autoplacer,Selector: return null if no candidate to choose from
+  * Node,evac: Added fetch free spaces
+  * Node,evac: Keep current replCount if placeCount cannot be met
+  * Node,restore: also remove EVACUATE flag
+  * Node,evac: Delete diskless immediately
+  * Node,evac: Also delete overreplicated resources
+  * Node,evac: Also delete non-uptodate resources
+  * Checkstyle: Reworked rules
+  * BackupShipping: Do not ignore changable successRef
+  * Checkstyle: Resolved return within for
+  * Checkstyle: Extracted method to avoid return within a loop
+  * Checkstyle: Fixed generated code
+  * Writecache,suspend: Fix check if layerstack contains DRBD
+  * Autoplace: do not count evicted resources
+  * Node,Evacuate: Add entry in rest_v1_openapi.yaml
+  * Drbd: Improve check if metadata is new
+
+  [ Robert Altnoeder ]
+  * Style fixes
+  * Fix equals style
+  * Fix various sanitization and arithmetic problems
+  * Fix control flow
+  * Fix assignment to parameter
+  * Code cleanup
+  * Use for instead of while for assignment
+  * Style fixes & avoid shadowing member fields
+  * Style fixes & removed dead code (commented out)
+  * Fix control flow, style, shadowing, parameter assignment, tighten scope
+  * Refactor LINSTOR_PREFIX -> linstorPrefix (not a static constant)
+  * Refactor method ExternalFileUpdateApplied -> externalFileUpdateApplied
+  * getSharedName: Fix control flow
+  * AbsStorageProvider: Fix control flow, style fixes
+  * LsBlkUtils: Fix control flow in parentIsVDO, slightly faster lookups
+  * DeviceManageImpl: Fix error output
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Thu, 09 Dec 2021 07:25:57 +0000
+
+linstor-server (1.16.0-1) experimental; urgency=medium
+
+  [ Rene Peinthor ]
+  * gitlab: use newer vmshed version
+
+  [ Gabor Hernadi ]
+  * ErrorReport: Fix compareTo method
+  * TxSimpleObj: Fixed persistence
+  * ErrorReport: fixed missing time
+
+  [ Johanna Kucera ]
+  * BackupShipping: Fix l2l being unable to ship multiple volumes
+  * BackupShipping: deallocate ports after l2l-shipping is done
+  * BackupShipping: allocate a new port if it is already in use
+  * BackupShipping: return snapName on backup create
+  * BackupShipping: fix NPE for backup info
+  * BackupShipping: prevent possible NPE for l2l shipping
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Thu, 11 Nov 2021 12:46:28 +0000
+
+linstor-server (1.16.0~rc.3-1) experimental; urgency=medium
+
+  [ Rene Peinthor ]
+  * clone-status: only check rsc status for involved nodes
+
+  [ Gabor Hernadi ]
+  * ExtFiles: Clean cache on FullSync
+  * CRD: Fixed possible NPE
+  * CRD: Ignore null values in yaml
+  * KVStore: Throw exception on error
+  * RscCreate: auto toggle disk diskless->diskful
+  * Stlt,Drbd: Wait for kmod if needed
+  * LvmThin: Added check if thin pool exists
+  * LvmThin: Enable zeroing mode if not active
+  * Lvm,-Thin: Added metadata_percent and chunk_size columns to lvs
+  * Proto: Added changed/deleted StorPool props to update
+  * LvmThin: enable DRBD's discard-zeroes-if-aligned
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Thu, 04 Nov 2021 06:29:49 +0000
+
+linstor-server (1.16.0~rc.2-1) experimental; urgency=medium
+
+  [ Gabor Hernadi ]
+  * GenSql: Only render CRD classes when structure changed
+  * DbConstGen: Fixed Spacetracking related issues
+  * ETCD: increase max inbound msg size
+
+  [ Rene Peinthor ]
+  * controller: notify systemd after init
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Thu, 14 Oct 2021 09:05:11 +0000
+
+linstor-server (1.16.0~rc.1-1) experimental; urgency=medium
+
+  [ Rene Peinthor ]
+  * gitlab: build 1.99.0.latest on master push
+  * rest-openapi-doc: fix incorrect method type
+  * rest-api-doc: fix SnapshotShippingStatus enums
+  * rest-api-doc: add missing connection_status enums
+  * absstorprov: increase device created timeout to 5000ms
+  * gitlab: run variant crd on jenkins
+  * k8s-crd: fix yaml resource paths
+  * K8s,Migration: Wait until all CRDs are updated
+  * logback: disable okhttp3 logging
+  * k8scrdmigration: use txFrom and txTo
+  * rest-gen: create required fields as primitives
+  * rest-api: add stats endpoints for nodes,rscdfn,rscgrp,rsc,storpool,errors
+
+  [ Robert Altnoeder ]
+  * Fix NullPointerException & some small code cleanup
+  * Fix for incorrect fix of NullPointerException in GrizzlyHttpService
+
+  [ Roland Kammerer ]
+  * containers: switch to ubi8
+  * containers: unset LC_ALL for client
+
+  [ Gabor Hernadi ]
+  * RscGrp,adjust,adjustall: Allow empty jsonData
+  * RscLayerIdDriver: Also log nodeName
+  * RscGrp.adjustAll: run the adjustAll-flux
+  * DRBD: become primary for fs-creation
+  * SPDK,snapshot First version
+  * RscStorLayerHelper: Fixed possible NPE
+  * RemoteSPDK: Allow snapshots
+  * Stlt,S3Remote: Actually delete the S3Remote if flag is set
+  * ExtFiles: Add whitelisting
+  * StltExtFileHandler: removed unused variables
+  * StltExtFileHandler: prevent NPE
+  * DB: persist Cache-,Writecache- and BCacheVlmData
+  * Gen: generating classes and yaml files for K8s CRD
+  * ETCD: Fixed neglected PK when loading LAYER* data
+  * SQL,ETCD: Pulled up getId methods to interface
+  * ETCD,Luks: Small cleanup
+  * DB: Fixed some wrong type mapping
+  * DB: Add fetchForLoad and clearCache methods to all layer drivers
+  * ETCD,DRBD: Small cleanup
+  * TxMgrModule: throw implError on unknown DB type
+  * CRD: First version of driver
+  * CRD: Removed unnecessary generic Rollback type
+  * K8s,Drbd: Fixed incorrect PK
+  * K8s,Tx: Also rollback LinstorTxObjects
+  * K8s,BCache: Added missing null check
+  * CRD: Fixed minor migration issues
+  * Autoplacer: Enable DummySecurityManager
+  * DummySecMgr: Deleted deprecated methods
+
+  [ Moritz "WanzenBug" Wanzenböck ]
+  * openapi: fix description of make-available
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Tue, 12 Oct 2021 11:55:55 +0000
+
+linstor-server (1.15.0-1) experimental; urgency=medium
+
+  [ Rene Peinthor ]
+  * devmgr: force updatenotification flag on fullsync applied
+  * eventhandler: do not fail on unknown resource updates
+  * bcache-clone: fix cloning for bcache devices
+  * vlmdfn: update satellites if necessary
+  * rscdfn: remove from auto-snapshotting on delete
+  * rsc-create: fix drbd data corruption on initial syncs
+  * BackupShipping: use .equals for non primitive compare
+  * backupinfomgr: cleanup
+
+  [ Gabor Hernadi ]
+  * BCache: Fix snapshot support
+  * ETCD: Fixed incorrect rollback/delete namespace
+  * BackupShipping: Added SnapAllocatedSize to VlmLayerData
+  * LvmThin: updateAllocatedSize after determined allocation-percent
+  * PropsConEtcdDriver: Fixed removeAll method
+
+  [ Roland Kammerer ]
+  * containers: document packages
+  * containers: remove unnecessary mkdir
+  * containers: install linstor-gui in customer containers
+  * containers: pin satellite to utils 9.18.2
+
+  [ Johanna Kucera ]
+  * BackupShipping: implemented backup info
+  * BackupShipping: add download-only option to restore
+  * Snapshot: prevent snapDfn from getting removed from the rscDfn without [...]
+  * Stlt: do not delete rscDfn if it still has snapDfns
+  * BackupShipping: declare required fields in rest_v1_openapi.yaml
+  * BackupShipping: fix backup abort for incremental restore
+  * BackupShipping: check if storpools have enough free space for restore
+  * BackupShipping: remove unused code
+  * BackupShipping: prevent some NPEs
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Thu, 23 Sep 2021 06:20:13 +0000
+
+linstor-server (1.15.0~rc.2-1) experimental; urgency=medium
+
+  [ Rene Peinthor ]
+  * openapi: fix warning
+  * gitlab: update virter/vmshed
+  * virter: use version 0.14.1
+  * clone: improved error reporting on failed clone
+  * clone: copy metadata instead of creating fresh drbd md
+  * clone: generalize tmp clone snapshot naming and reduce length
+
+  [ Gabor Hernadi ]
+  * AutoEvict: Fetch thin space before autoplacer
+  * AutoEvict: also mark volumes as deleted
+  * Evict: Do not delete last non-deleting diskful resource
+  * Snapshot,delete: Allow deletion of single snapshots
+  * AutoEvict: Add evictionTimestamp to 'node list' response
+  * AutoEvict: Fixed "scope has already been entered"
+  * AutoEvict: Inactivate resource instead of delete
+  * Snapshot,delete: Also delete snapDfn if last snap is deleted
+  * ReconnectorTask: Ignore deleted nodes during add
+  * BackupShipping: Add error msg when extTools are missing
+  * BackupShipping: fail fast without encryption set up
+  * Revert "BackupShipping,DrbdLayer: Recreate MD after restore"
+  * BackupShipping: Only collect diskfull node-ids
+  * BackupShipping: Also backup DRBD's external metadata
+  * SnapshotShipping: Fixed NPE
+  * BackupShipping: Commit tx before updating satellites
+  * SnapBCacheLayerHelper: Fixed incorrect cast
+
+  [ Johanna Kucera ]
+  * BackupShipping: Do not start shipment again if it finished too fast
+  * BackupShipping: add success-message to backup abort
+  * BackupShipping: check for BACKUP-flag before aborting backups
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Tue, 07 Sep 2021 09:13:06 +0000
+
+linstor-server (1.15.0~rc.1-1) experimental; urgency=medium
+
+  [ Rene Peinthor ]
+  * rscdata-merger: merge suspendIO for writecache and bcache
+  * write-cache: suspend and resume IO if requested
+  * fix missing OK returns for make-available/activate/deactivate
+  * writecache: send flush_on_suspend before suspend
+  * rsccrthelper: add deployResources waitForReady variant
+  * checkstorpool: only update storage pool info on notify calls
+  * generalize create Resource/Volume from layerdata
+  * clone-api: Introduce a way of cloning complete rscdfn + data
+  * error-reporter: fix dateformat for error-report query
+  * stlt: log rscdfn flags setter
+  * lvmthin-clone: delay lvmthin clone action to allow device manager to finish
+  * rsc-dfn: fix npe while deleting
+  * rest-api-doc: fix BackupList usage
+  * debian: update description
+
+  [ Gabor Hernadi ]
+  * Autoplacer: Fixed MinReservedSpace strategy
+  * ExtFilesApi: Fixed single obj return
+  * ReconnectorTask: Added check to detect race condition
+  * Snapshot: Reject snapshots if not all DRBD peers are uptodate
+  * RscGrp: Added adjust
+  * RscGrp: Added adjustall
+  * AutoReplace: Ignore evicted resources
+  * RscDfn,delete: Restore original bahavior when node is offline
+  * RestClient: Added support for response arrays
+  * Added LinstorRemote
+  * backup-shipping: return remoteName when starting upload
+  * backup-shipping: set ABORT flag when aborting all backups
+  * BackupShipping: Fixed ext metadata restore
+  * BackupShipping: Clear DrbdPrimarySetOn property before restore
+  * BackupShipping: Prevent UnsupportedOperationException
+  * BackupShipping: Choose proper node for sending
+  * BackupShipping: Added cluster id
+  * BackupShipping: Add status booleans to response
+  * BackupShipping: Add in progress snapshots to backup list response
+  * BackupShipping: Added cache for s3 list
+  * BackupShipping: fixed incorrect "basedOn" property
+  * BackupShipping: Removed s3KeyForce
+  * BackupShipping: Fixed NPE
+  * Proto: Added default message for ApiRcResponses
+  * RemoteName: Allow internally bypass nodename-check
+  * EncryptionHelper: Add method to use remote key
+  * SatelliteFlagDriver: Renamed to NoOpFlagDriver
+  * Added StltRemote objects
+  * BackupInfoMgr: Add support for L2L backups
+  * BackupShippingUtils: Extracted fillPojo method
+  * BackupShippingService: Split into abstract class
+  * BackupShipping: Linstor2Linstor, first version
+  * backup-shipping,l2l: Return ApiCallRc instead of String-list
+  * backup-shipping: Allow download only in used RscDfn
+  * backup-shipping: Use same backupname in src and dst cluster
+  * backup-shipping: Added cluster ID to snapshot name
+  * LvmThin: Changed allocated size calculation
+  * BackupShipping: Added support for incremental l2l
+  * Added AutoSelectFilterBuilder
+  * BackupShipping: add checks for socat and zstd
+  * BackupShipping,l2l: Fixed DB loading
+  * BackupShipping: Fixed some NPEs
+  * BackupShipping: Moved DATE_FORMAT to BackupShippingConsts
+  * BackupShipping: Removed unnecessary parameter
+  * BackupShipping: Refactored consts class
+  * BackupShipping: Added optional s3 name suffix
+  * LUKS: fixed sending keys on fullsync
+  * BackupShipping: Added L2L support for LUKS
+  * BackupShipping: l2l cleanup of tmp stltRemote
+  * BackupShipping: Force full backup after resize
+  * BackupShipping: Only reset data based on last Backup
+  * BackupShipping: Choose remote from correct property
+  * BackupShipping: Read the suffix from the snapshot
+  * BackupShipping,DrbdLayer: Recreate MD after restore
+  * BackupShipping: Fix hidden Access to deleted SnapDfn bug
+  * BackupShipping: Kill all shipping on FullSyncApplied
+  * BackupShipping: Do not rebuild snapName on restore
+  * BackupShipping: Do not parse time from snapName
+  * BackupShipping: only enforce masterkey + s3Remote for s3 backups
+  * BackupShipping: Add usePathStyle for S3Remotes
+
+  [ Johanna Kucera ]
+  * backupShipping: ship full backups to s3
+  * backup-shipping: implement backup list
+  * rscDfn: creating a rscDfn now needs a LayerPayload
+  * vlm: creating a vlm now needs a LayerPayload
+  * backup-shipping: implement backup delete
+  * backup-shipping: change meta-file format
+  * backup-shipping: implement first version backup restore
+  * backup-shipping: add support for luks
+  * backup-shipping: add support for drbd with external metadata
+  * TxMap: implement transaction map with primitive values
+  * backup-shipping: don't allow access to target-rsc-dfn (and children) w [...]
+  * backup-shipping: use multipart uploads for creating backups
+  * backup-shipping: correctly abort in-progress-shippings
+  * backup-shipping: allow DELETE-requests with json-data
+  * backup-shipping: add endpoint for manual abort
+  * backup-shipping: change entrypoints urls
+  * backup-shipping: add support for requester-pays-buckets
+  * backup-shipping: add new remote object
+  * backup-shipping: use remotes instead of properties
+  * Encryption: add DecryptionHelper class
+  * backup-shipping: encrypt s3 access-key and secret-key
+  * backup-shipping: implement incremential backups
+  * backup-shipping: add changes from review
+  * BackupShipping: Implemented review
+  * BackupShipping: fix wrong snapshot-names when timezones differ
+  * BackupShipping: remove unneccessary ImplementationError
+  * backup-shipping: change some error-messages
+  * BackupShipping: fail remote creation if remote is not reachable
+  * BackupShipping: add info-message to tell user shipping/restoring is in [...]
+  * BackupShipping: add missing null-check
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Fri, 27 Aug 2021 08:30:00 +0000
+
+linstor-server (1.14.0-1) experimental; urgency=medium
+
+  [ Gabor Hernadi ]
+  * ToggleDisk: Reuse node-id if possible
+  * Autoplacer: fixed small typo
+  * AutoSnapshotShipping: properly call finish method
+  * ToggleDisk: Fixed missing layerstack bug
+  * LoopDev: Change folder
+  * BCache: Check if registered before registering
+  * JsonGenTypes: Regenerated
+  * Luks: Fixed resize with newer cryptsetup version
+  * BCache: Ignore exception in race-condition
+  * Satellite: Removed creation of unnecessary /var/lib/linstor
+
+  [ Moritz "WanzenBug" Wanzenböck ]
+  * rest-api-doc: add missing parameter for external files api
+
+  [ Christoph Böhmwalder ]
+  * rest-api-doc: fix docs regarding external files
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Tue, 03 Aug 2021 07:26:46 +0000
+
+linstor-server (1.14.0~rc.1-1) experimental; urgency=medium
+
+  * Spdk: Various fixes
+  * Nvme+Spdk: Whitespace fixes
+  * Spdk: Extracted commands
+  * Remote-Spdk: First version
+  * ToggleDisk: Improved check for existing jsonData
+
+ -- Gabor Hernadi <gabor.hernadi@linbit.com>  Mon, 19 Jul 2021 07:26:25 +0000
+
+linstor-server (1.13.1-1) experimental; urgency=medium
+
+  [ Matt Kereczman ]
+  * subdomain update for download URLs from www to pkg
+
+  [ Gabor Hernadi ]
+  * BCache: Always register devices
+  * ToggleDisk: Recreate correct layerData
+
+  [ Rene Peinthor ]
+  * grizzly: add a /ui static web handler for a configurable dir
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Mon, 12 Jul 2021 08:13:41 +0000
+
+linstor-server (1.13.0-1) experimental; urgency=medium
+
+  [ Rene Peinthor ]
+  * update reported REST-API version
+  * rest-api-doc: fix $ref with props warnings
+
+  [ Gabor Hernadi ]
+  * BCache: Allow BCache as topmost layer
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Mon, 21 Jun 2021 07:53:23 +0000
+
+linstor-server (1.13.0~rc.1-1) experimental; urgency=medium
+
+  [ Gabor Hernadi ]
+  * Revert "Luks: Fixed reserving correct size for header"
+  * Revert "Mixed SPs: Allow more combinations"
+  * Revert "DRBD: Fixed shrinking"
+  * StltRscApiCallHandler: Added trace logs
+  * Drbd: Fixed new resize method
+  * DrbdLayer: Fixed sizeState calculation
+  * DrbdLayer: Fixed resize conditions
+  * BCache: First version
+  * Bcache: Added check for loaded module
+  * MakeRscAvailable: Fixed finding active resource
+  * SharedStorageUtils: Added null check
+  * AbsLayerRscDataMerger: Delete local removed secondary children
+  * RscLayerMerger: Added support for partial subtree restructuring
+
+  [ Rene Peinthor ]
+  * drbdlayer-shrink: for now hope shrink on other peers finishes within 1s
+  * gradle: update to guice 5.0.1
+  * fullsync: log retrieved crypto entries
+  * Revert "drbdlayer-shrink: for now hope shrink on other peers finishes  [...]
+  * metrics: add device path as label for volume stats
+
+ -- Gabor Hernadi <gabor.hernadi@linbit.com>  Mon, 14 Jun 2021 13:57:53 +0000
+
+linstor-server (1.12.6-1) experimental; urgency=medium
+
+  * DB: Skip mixing storPools check while DB loading
+
+ -- Gabor Hernadi <gabor.hernadi@linbit.com>  Mon, 07 Jun 2021 07:01:30 +0000
+
+linstor-server (1.12.5-1) experimental; urgency=medium
+
+  [ Rene Peinthor ]
+  * make-rsc-available: Set default for diskful flag
+  * db-migrationutils: always drop constraints on mariadb
+  * common: allow preferred nic for rd and rg
+  * physica-devs: Do not use blkid for filtering anymore
+
+  [ Gabor Hernadi ]
+  * MakeAvailable: toggle-disk if diskful is set
+  * Luks: Fixed reserving correct size for header
+  * AbsStorProvider: Fixed resize condition
+  * DRBD: Fixed shrinking
+  * Mixed SPs: Allow more combinations
+
+  [ Christoph Böhmwalder ]
+  * docs: apidiffgo: use more common tail syntax
+  * docs: rest-api: clarify PropsInfo documentation
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Wed, 02 Jun 2021 11:00:23 +0000
+
+linstor-server (1.12.4-1) experimental; urgency=medium
+
+  [ Gabor Hernadi ]
+  * OpenApi,files: Added missing requestBody
+  * Exos: Fixed setting corret properties
+  * Exos: Force recache after modifying Exos settings
+  * Rsc: Added de-/activate to openapi.yaml
+  * NameShortener: support OverrideVlmId property
+
+  [ Moritz "WanzenBug" Wanzenböck ]
+  * docker: create error when requested package is missing
+
+  [ Rene Peinthor ]
+  * ctrlconf: fix setting the correct ctrl property(instead of stlt)
+  * migration: auto-verify, only use non keyed algos and migrate ctrl disable
+
+ -- Gabor Hernadi <gabor.hernadi@linbit.com>  Tue, 18 May 2021 06:34:10 +0000
+
+linstor-server (1.12.3-1) experimental; urgency=medium
+
+  [ Gabor Hernadi ]
+  * RscDfn,mod: fixed autoplacer run when changing rscGrp
+  * SqlEngine: Treat CLOBs as Strings
+
+  [ Rene Peinthor ]
+  * gitlab-ci: pin openapi-validator to 0.44.0
+  * gitlab-ci: fix latest openapi linter to use correct ruleset
+  * migration: update verify algorithm list for drbd
+
+ -- Gabor Hernadi <gabor.hernadi@linbit.com>  Fri, 07 May 2021 06:19:27 +0000
+
+linstor-server (1.12.2-1) experimental; urgency=medium
+
+  * RscGrp: Fix incorrectly stored value
+  * RscGrp: Fixed incorrect migration
+
+ -- Gabor Hernadi <gabor.hernadi@linbit.com>  Tue, 04 May 2021 09:04:09 +0000
+
+linstor-server (1.12.1-1) experimental; urgency=medium
+
+  [ Rene Peinthor ]
+  * doc-rest-api: fix external files errors
+  * linstor-common: updated drbdsetup.xml
+
+  [ Gabor Hernadi ]
+  * Snap,retore: Fixed creation of duplicate layer DB entries
+  * Add migration fixing duplicate layer-data
+  * RscGrp: Fixed incorrectly stored values
+  * Add ETCD migration fixing duplicate layer-data
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Fri, 30 Apr 2021 07:10:18 +0000
+
+linstor-server (1.12.0-1) experimental; urgency=medium
+
+  [ Rene Peinthor ]
+  * proccryptoutils: Parse /proc/crypto and filter methods
+  * rsc-create/del: update rsc-dfn DRBD verify-algo
+  * linstor-common: allow KEY_DRBD_DISABLE_AUTO_VERIFY_ALGO
+  * rest-api-doc: fix resource-group create example
+  * confbuilder: small code cleanup
+  * confbuilder: decide by property type if quoting is needed(drbd)
+  * verify-algo: only allow a specified list of driver names
+  * verify-algo: do no overwrite an already set verify algorithm
+  * auto-verify-algo: check that verify-algo is supported on all nodes
+  * debian/control: remove dh-systemd dep
+
+  [ Moritz "WanzenBug" Wanzenböck ]
+  * Update k8s-await-election to fix linstor client timeout
+  * Containers: Ensure LINSTOR components log to files
+  * CI: use docker safe refname for virter test version
+  * docker: add deps for exos provider
+
+  [ Gabor Hernadi ]
+  * Drbd: Fix ImplError when deleting a VlmDfn
+  * RscDfn,modify: Run autoplace if rscGrp changes
+  * linstor-common: Fixed duplicate ApiCall-ID
+  * MakeRscAvail: First version
+  * Autoplace: Returns null instead of Optional
+  * StltExtToolsChecker: Added cache
+  * Stlt collecting symlinks to devices
+  * Snap,Luks: Fixed incorrect copying of layer data
+  * Drbd,Snap,Restore: Fixed restore bug
+  * RscGrp,Db: Fixed ClassCastException
+  * Undelete resource
+  * Added equals and hashcode to Tx-Set,-List and -Map
+  * MakeRscAvailable: Added support for undelete
+  * Autoplacer: Added support for undelete
+  * Drbd: Fixed 'hasMetaData' check for external MD
+  * Stlt,symlink: Fixed incorrect handling of INACTIVE flag
+  * Autoplace: Add dedicated list of diskless SPs
+  * RscGrp: Add WARN if unknown/mismatched SP is defined
+  * RscDfn: Changing RscGrp now persists
+  * FreeSpaceMgr: Removed unused sharedStoragePools-set
+  * Renamed FreeSpaceMgrName -> SharedStorPoolName
+  * FreeSpaceMgr: Removed unused objProt
+  * Test: Added TestFactory classes
+  * SharedStorPoolManager: First version + Tests
+  * TransObjFact: added createVolatileTransaction* methods
+  * LayerVlmUtils: Made parameters more generic
+  * SharedSPMgr: New version also allows locking by node
+  * NotifyDevMgrRunCompleted: new internal api
+  * SharedSpMgr: Second version
+  * SharedSp: Added external_locking to SP
+  * SharedSp: Added external_locking to SP
+  * PhysicalStorageAPI: Added shared_space and external_locking
+  * StorPools: Fixed NPE
+  * Resource: Added INACTIVE_PERMANENTLY
+  * StltExtToolsChecker: Added cache
+  * LvmProvider can now de-/activate volumes
+  * Create StorPool: Added check if shared is supported
+  * SharedSP: First version
+  * Tests: Fixed security setting for tests
+  * SharedSpMgr: no longer transactional
+  * TcpConnectorService: removed unused variables
+  * ExtCmdFactoryStlt: Prohibits new sharedSP-calls
+  * CtrlConnTracker: Release sharedLocks if satellite goes offline
+  * SharedSP,AutoTiebreaker: only count ACTIVE resources
+  * SharedSP,Autoplacer: fixed counting
+  * DevMgr: Inverted accesses to svcCondFlag
+  * DevMgr: Added an initial wait until svcCond gets true
+  * DevMgr,SharedSp: Improved locking/releasing of shared locks
+  * SharedSPMgr: Fixed synchronized ordering
+  * DevMgr: Attempt to fix deadlock when requesting shared locks
+  * StltApiCallHandler: Report storExc during fetchSize
+  * AbsStorage: Do not update size of inactive volume
+  * SharedSp: Disable sharedSp for lvmthin SP
+  * SharedSp: Fix resource deletion
+  * CrtRsc: Added warning response when adding diskless flag
+  * LayerData: Added nullchecks
+  * RscDel: Activate last shared rsc
+  * SharedSp: Implemented review suggestions
+  * RscAct: Fixed wrong response message
+  * SharedSp: Fixed Luks setups
+  * SharedSp: Fixed cleanup bug
+  * NameShortener: added vlmDfn support
+  * NameShortener: Moved to server project
+  * ExosProvider: First version
+  * ExosProvider: Fixed resize
+  * VlmDfn: Added shrink-supported check
+  * Exos.Rest: Add HTTP-headers to exception
+  * NameShortener: Extended tests
+  * Exos: started using new properties hierarchy
+  * Exos: Auto-discover
+  * Exos: Made ExosRestClient multi-enclosure aware
+  * Exos: Added ExtTool.LSSCSI dependency
+  * Exos: auto-discovery now sets node props
+  * Exos: use multipath-device instead of single device
+  * SharedSP: fixed possible NPE
+  * ExosRestClient: add "Accept: application/json" header
+  * DevMgr: always give up sharedLocks when devMgr-cycle ends
+  * Exos: small rework on scaning lsscsi devices
+  * Exos: Add all exos-initiator-ids with 4 LSB masking
+  * Exos: Limit initial mapping to exos storpools
+  * Exos: added dependency to /sys/class/ entries
+  * Toggle-disk: fixed bugs with shared SP
+  * Fixed tests
+  * SharedSpMgr: Fixed bug where too many locks were granted
+  * SPResolve: add boolean to toggle auto-search
+  * Fix: SysFsHandler retires fetching maj:min
+  * DevHandler: checkPool can also change local node props
+  * Exos: fixed bugs with inactive resource hctl handling
+  * ToggleDisk: Fixed shared rsc toggle disk bug
+  * Exos: Whitelisted props for deletion
+  * Exos: Added _EVN properties for IP, Username and Pw
+  * ToggleDisk: diskful->diskless resource is now activated
+  * SharedSpMgr: Fixed incorrect hasNodeActiveLocks check
+  * ETCD-Migration: fixed versions
+  * Proto: removed unused imports
+  * RscList: Added shared_name
+  * ToggleDisk: Another fix for resolving storage pools
+  * ExosRestClient: Moved to server project
+  * Exos: Added REST-API
+  * ExosRestClient: Added retry in case of internal server errors
+  * Exos: Added null-checks
+  * Exos: Disabled snapshot support
+  * MakeRscAvail: try to make rsc active
+  * DRBD: remove linstor_common.conf
+  * RscApplied: Only merge Satellite props-namespace
+  * Node,reconnect: Fixed wrong warning message
+  * ExtFiles: first version
+  * ExtFiles: Only write if Linstor changed content
+  * RscGrp,spawn: Added fetchThinSpaces
+  * RD,Props: Made sure RG props are also used
+  * RG,spawn: Do not copy props to RD
+  * VlmDfn,resize: Add check if all SPs have enough free space
+
+  [ Robert Altnoeder ]
+  * Minor control flow and style cleanups
+  * Minor control flow cleanup, potential optimization
+  * NumberPool: Keep track of the count of allocated numbers
+  * NumberPool: Added method isEmpty
+  * Add checks for new methods to BitmapPoolTest
+  * Fixed dfltAddrSupplier algorithm in NetInterfaceTestFactory
+  * Move return statement out of try block
+  * Skip superfluous intermediate list creation
+  * RetryHandler enhancements
+  * Change control flow to comply with coding standard
+  * Enhance text message for an unhandled StorageException
+  * Change control flow, extract function
+  * Style cleanup
+  * NameShortener: Simplified and fixed reimplementation
+  * Propagate and handle LinStorException from NameShortener
+  * Change NameShortener to use a fixed maximum base name length
+  * NameShortener: Fix statement order
+  * NameShortenerTest: Adjust max length
+  * NameShortenerTest fixes
+  * NameShortener: Start numbering at 1
+  * NameShortenerTest: Adjust tests to changed name length
+  * NameShortenerTest: Fix expected names in test
+  * NameShortener: Fix processNumberSuffix method
+  * Remove superfluous 'throws LinStorException' from tests
+
+  [ Johanna Kucera ]
+  * sos-report: nicer error-handling
+  * evict-api: allow manual eviction via api
+
+  [ Roland Kammerer ]
+  * containers: install thin-send-recv in s390x
+  * containers: get pkgs in first stage
+  * containers,satellite: add ext/xfs tools
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Tue, 27 Apr 2021 09:52:14 +0000
+
+linstor-server (1.11.1-1) experimental; urgency=medium
+
+  [ Rene Peinthor ]
+  * rest-api-doc: fix openapi errors
+  * gitlab-ci: check rest-api-doc
+  * rest-api-doc: fix openapi errors
+  * rest-jsontypes: update after doku fixes
+  * resource: add isDiskless method
+  * toggle-disk: get storage pool if not set, from another resource
+  * rscgrp-spawn: prevent spawn from committing rscdef/voldef
+  * Revert "debian/control: remove gradle build dep"
+  * debian: minimal gradle version should be 4.4.1
+
+  [ Johanna Kucera ]
+  * properties: add common base class GenericProperty
+  * properties: add better error messages
+
+  [ Gabor Hernadi ]
+  * AutoTiebreaker: Fixed "shouldExist" check
+  * AutoTiebreaker: ignore RG's storpoollist
+  * DBLoad,DrbdExtMd: ignore extMdProp when loading from DB
+  * Etcd,Props-Keys: Fixed loading bug
+  * Autoplace+Tiebreaker: Fixed incorrect storpoolFilter
+
+  [ Moritz "WanzenBug" Wanzenböck ]
+  * Update k8s-await-election to fix golang crashes
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Wed, 13 Jan 2021 08:34:16 +0000
+
+linstor-server (1.11.0-1) experimental; urgency=medium
+
+  [ Rene Peinthor ]
+  * gradle: update dependency keyword usage
+  * docker: use gradle-wrapper on non lbbuild runs
+  * makefile: use gradlew for all non lbbuild tasks
+  * debian/control: remove gradle build dep
+  * doc/rest-api: fix incorrect ApiCall answer type
+  * gitlab: use internal docker registry
+  * gradle: update 3rd party libs
+  * ctrlrscdeleteapi: move ensureNotLastDisk to helper class
+  * node-delete: Check that node delete wouldn't fail because of resources
+  * PropertyBuilder: fix build
+  * rsc-create: do not report an error if resource already exists
+  * node-restore: use apiconsts instead of internal
+  * rest-api-doc: update rest property docu
+
+  [ Johanna Kucera ]
+  * props-info: add unit and dflt to property info
+  * props-info: add api-entrypoints to get the property info, add seperate [...]
+  * slight code cleanup
+  * fix auto-evict
+  * auto-evict: don't try reconnect to evicted nodes
+  * auto-evict: add AUTO_EVICT_ALLOW_EVICTION
+  * auto-evict: do not allow evicted nodes to reconnect
+  * rest-api-doc: added node restore endpoint documentation
+  * SnapshotShipping: allow configuration of used port range
+  * LayerRscIdPool: Fix ctrl-prop
+  * SnapshotShipping: blacklist already in use ports
+  * SnapshotShipping: retry immediately if port already in use
+  * SnapshotShipping: allow setting PREF_TARGET_NIC
+
+  [ Gabor Hernadi ]
+  * build.gradle: Fixed showMe*Cache tasks
+  * StorConfReader: Fixed NPE
+  * FileProvider: Fixed getSize bug
+  * ConfFileBuilder: Extend prioprops
+  * NodeLost: Fixes DB-Ref violation with snapshots
+  * TxSet: Fixed incorrect dirty-check
+  * Autoplace: Allow additionalPlaceCount
+  * Autoplacer: Allow placing diskless resources
+  * Auto*: Added AutoHelperContext
+  * AutoTiebreaker: use autoplacer for selection
+  * Autoplacer: only count diskless if placing diskless
+  * Autoplace: Fix incorrectly logged rsc-count
+  * Autoplacer: Do not mix storage pool kinds
+  * Autoplace: include additionalPlaceCount in response
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Fri, 18 Dec 2020 08:39:38 +0000
+
+linstor-server (1.10.0-1) experimental; urgency=medium
+
+  [ Rene Peinthor ]
+  * release-tgz: do not inlcude .gitlab files
+  * gitlab-ci: fix dummy-release usage
+  * SpaceTracking: fix migration for postgresql
+  * rest-snapshots: fix single snapshot filtering
+  * gitlab-ci: add linstor test end2end stage
+  * gitlab-ci: test corresponding test-branch if possible
+  * toggle-disk: do not create error reports for user errors
+  * toggle-disk: allow toggle disk even if a non affected node is offline
+  * toggle-disk: check that the last diskfull resource is online on diskle [...]
+  * gitlab: use a safe name for test bundles
+  * rest-events-promotion: send initial state if requested by Last-Event-ID
+  * etcd: merge migrations til version 35 into initial migration
+  * etcd: allow the linstor prefix to be configured
+  * reconnectorTask: cleanup code a bit
+  * gradle: use gradle-wrapper in online builds
+  * gitlab: use newer vmshed and virter
+  * drbdstatetracker: synchronize observers access
+  * migration-pool-prop: Fix migration on mariadb
+  * pkging: include spacetracking.jars if present
+  * rest-doc: update property documentation
+
+  [ Gabor Hernadi ]
+  * StltExtToolsChecker: Fixed /proc/modules parsing regex
+  * StltExtToolsChecker: Replaced ExtCmd with native Files.readAllBytes
+  * StltExtToolsChecker: Rework trace logging
+  * SnapShip: Fixed incompatible wait option
+  * AutoTiebreaker: fixed race condition
+  * SysFs: Added throttle by iops
+
+  [ Robert Altnoeder ]
+  * SpaceTracking: Added MsgIntCapacityInfo.proto
+  * SpaceTracking: Added REST API for querying space reports
+  * SpaceTracking: Add DB migration
+
+  [ Johanna Kucera ]
+  * code cleanup: remove unused properties, restructured ApiConsts
+  * node-ko: fixed adding/removing nodes from ReconnectorTask
+  * node-ko: fix broken while loop iterating over the netIfs
+  * node-ko: add DEAD-Flag and necessary checks
+  * autoplace: do not count deleted nodes when counting already placed resources
+  * node-ko: add automated re-placement for resources from dead nodes
+  * node-ko: add node-ko-logic to ReconnectorTask
+  * node-ko: add api-endpoint to restore a dead node
+  * node-ko: review changes
+  * node-ko: rename DEAD into EVICTED
+  * fix checks for error codes not working correctly
+  * node-ko: second review changes
+  * ReconnectorTask: fix reconnect
+  * CtrlNodeApiCallHandler: only delete drbd resources on evicted
+
+  [ Moritz "WanzenBug" Wanzenböck ]
+  * set UTF-8 locale in controller container
+
+  [ Roland Kammerer ]
+  * Dockerfile.controller: set LC_ALL
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Mon, 09 Nov 2020 08:11:14 +0000
+
+linstor-server (1.9.0-1) experimental; urgency=medium
+
+  [ Rene Peinthor ]
+  * metrics: read cached values for volumes sizes and storagepools
+  * metrics: fix incorrect block log message
+  * etcddb: single column driver for modify uses the toString of objects
+  * resource/drbd: expose promotion_score and may_promote to rest API
+  * error-report: Add delete API
+  * gitlab-ci: deploy to nexus
+  * rest-api-doc: fix duplicate operationId
+  * TcpConnectorPeer: add completion Id for unexpected
+  * CtrlRscCrtHelper: remove unused create volume list
+  * CtrlRscCrtHelper: Add timeout while waiting for the resource ready event
+  * rest-sse-events: HTTP-SSE may_promote changes on url /v1/events/drbd/p [...]
+  * controller-init: fix NPE on intialization startup fail
+
+  [ Moritz "WanzenBug" Wanzenböck ]
+  * Add k8s-await-election as entrypoint for controller
+
+  [ Gabor Hernadi ]
+  * Lvcreate: fixed position of VG argument
+  * DevHandler: Failure should be responded as failure
+  * DevHandlerImpl: allow storExc in calcGrossSize
+  * Zfscreateoptions: Extend getExtentSize with other combinations
+  * Autoplace: Also consider toggle-disking diskless resources
+  * AutoDiskfulAllowCleanup: Remove excessive resource
+  * AutoDiskful: Deactivate when secondary
+  * Stlt: Call systemd-notify READY=1 after first fullsync
+  * systemd-notify gets called in correct place
+  * OpenFlex: Changed prop to StorPoolName
+  * RscCrt: Fixed 'typo'
+  * SnapShip: Make sure ship-daemons are killed when aborting
+  * SnapShip: move socat-port to snapVlmDfn
+  * Snap,SnapVlm,SnapVlmDfn props: serialize and apply
+  * SnapShip: Fixed alreadyStarted method
+  * DevLayerKind: Add NVMe as dependency for OpenFlex
+  * Lvm: Fixed recaching of lvm-filter
+  * NameShortener: added implementation
+  * OpenFlex: Added limitation of 32 chars
+  * Openflex: Allow Provider for Satellite and Combined type
+  * Ctrl,Drbd-support-check: Fixed version check
+  * Fixed string-format for snapShip error message
+  * SnaShip: Increased req. version of thin_send_recv
+
+  [ Roland Kammerer ]
+  * containers: add pkgcache
+  * containers: fix ClefOS name
+  * api doc: mark unreleased
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Wed, 23 Sep 2020 09:24:07 +0000
+
+linstor-server (1.8.0-1) experimental; urgency=medium
+
+  [ Rene Peinthor ]
+  * sqlutils: trim statement and do not print to stderr
+  * remove deprecated only: syntax
+  * virter: remove multipath-tools and cleanup
+  * rest-api-docu: fix incorrect changelog
+  * disable rest-access.log per default now
+  * rest-api: simplify http server init and use single resourceconfig
+  * virter: extend provision to centos vms
+  * skip initial sync on VDO
+  * stlt: fix NPE on apply controller changes
+  * ctrlpropshelper: indicate if properties were really changed
+  * update satellites only if properties changed or really got deleted
+  * ctrl-props: only update satellites on real changes
+  * gradle: grizzly-http-server fix to version 2.4.4
+  * virter-provisioning: use new virter features
+  * gradle: update jackson to 2.11.+
+  * gradle: update httpclient to 4.5.12
+  * gradle: update reactor-core to 3.3.5
+  * gradle: update etcd-java to 0.0.14
+  * rest-api-doc: increment API version to 1.2.0
+  * controller: small cleanup
+  * request-helper: add error report id to apicall answer
+  * errors: add skipErrorReport flag and do not gen. error report for warnings
+  * errors: do not create error reports for already exists errors
+  * rscdfn-create: do not create error-report for invalid transp-type
+  * crtvlmdfn: do not create error-report for invalid user data
+  * linstor.toml-example: fix incorrect enum values
+  * fix incorrect use of ErrorReport.reportProblem()
+  * stderrreporter: check mkdirs result
+  * gradle: move h2, dbcp2 libs into server, so it can be used by ctrl and stlt
+  * error-report: log and read error-reports into/from h2 database
+  * sos-report: download error-report db
+  * gitlab: enable java assert for tests
+  * Don't close the err-reporter database immediately after start if no DbgCsl
+  * CtlrErrorListApi: error reports should be a list now(sorted by date)
+  * http: add /metrics url for prometheus export support
+  * proto/error-report: serialize module value
+  * error-reports: sort final list by date
+  * grizzly: do not report 404 exceptions
+  * grizzly: improve error reporting for basic http errors
+  * etcd: Add missing resource group-storage pool migration
+  * RscDfn: Allow to modify the resource group via REST-API
+  * error-logging: at least log apicallrc exc to normal log
+  * ext-metadata: allow ext metadata storage pool to be different driver
+  * lvm-cmds: force resize command, otherwise shrink will fail
+  * vdfn-shrink: remove shrink check and implement shrink
+  * storagepools: merge all pool name properties into a single key
+  * requesthelper: catch all Throwable to report errors
+  * add generate db constants program
+  * layerdatafactory: add unique node-id check
+  * virter: set correct global_filter for lvm
+  * virter: add manage.py script and update provision-ubuntu.toml
+  * rsg-grp/spawn: fix ArrayoutofBounds if partial and no volume-groups
+  * stlttoolschecker: fix losetup parsing without PATCH number
+  * stlttoolschecker: fix LVM version typo
+  * eventprocessor: read lock node map on connection closed
+  * pkging: add new suggested deps
+  * store resource and snapshot creation date in the database
+  * controller: do not bind tcpconnectors on controller side
+  * linstor-common: use rebased master/snapshot-shipping
+  * linstor-common: use input file modification date for copyright range
+  * rest-api-doc: fix missing view/snapshot-shippings entry
+  * snapshot-shipping: fix nodes filter
+  * grizzly: do not redirect HTTP /health
+  * grizzly: allow prometheus /metrics also with HTTPS enabled
+  * rest-docu: update property docu
+  * virter: fix commandline typo
+
+  [ Gabor Hernadi ]
+  * RscGrp,spawn: Added optional select_filter
+  * ExtToolsCheck: use /proc/modules instead of modprobe
+  * Cache: Added dependency to dm-cache module
+  * File/thin: Added dependency to losetup
+  * Writecache: renamed enum to DM_WRITECACHE
+  * StorPool: Prevent deletion if StorPool has snapshots
+  * LvcreateType: Added rsc, node and controller to prioprops
+  * Autoplacer: ignore already selected DISKLESS provider
+  * SslTcpConnectorHandshaker: change thrown exception
+  * SqlGenerator: reworked to be easier to understand
+  * DB: Added SqlDump utility
+  * Fixed some tests
+  * Snapshot: Resume-IO on error and add timeout to takeSnapshot
+  * LVM: LvmProvider also activates LVs
+  * TcpConnectorService: Attempt resolving deadlock
+  * Allow some mixed storage pools for actual data devices
+  * Lvm,thin: Added LvcreateOptions
+  * Moved merger classes to correct package
+  * Removed unnecessary .satellite package ending
+  * Moved VlmGrpStltFactory to correct package
+  * Removed unused classes
+  * Restructured packages of layer-classes
+  * Moved drbdstate into layer.drbd package
+  * Cleanup: removed unused imports
+  * CtrlSnapCrt: Refactored snapshot creation
+  * SnapshotShipping: First version
+  * SnapshotShipping: Added incremental shipping
+  * SnapshotShipping: Prevent snapshot deletion while shipping
+  * SnapshotShipping: Generated name can now skip ids
+  * SnapshopShipping: Added check for required utilities
+  * SnapshotShipping: Added inactive resource-flag
+  * Auto-Snapshotting/-SnapshotShipping
+  * AutoSnap: Skip used snapshotName
+  * AudoSnap: Removes old autoSnapshots
+  * AutoSnap,Cleanup: Added trigger to property changes
+  * AutoShipping: source must no longer be active
+  * RscActivate: fixed possible NPE
+  * AutoSnap/Ship: Removing RunEvery property stops auto-task
+  * AutoSnapTask: adding with RunEvery<=0 will be converted into a remove call
+  * AbsStorProvider: Fixed wrong cast
+  * Resource: Introduce reactive flag
+  * SnapShip: Copy Luks password if needed
+  * SnapShip: Prevent multiple merging of snapshots
+  * Fixed tests
+  * RscActivate: Improved nvme-related in-use check
+  * DevMgr: Improved send ready-state handler
+  * NvmeLayer: fixed incorrect INACTIVE handling
+  * SnapShip: Added zfs support
+  * Rsc,Activate: DRBD resource can no longer be activated
+  * Snap,restore: recreate metadata when restoring shipped snapshot
+  * Ship,received: cleanup flag for lvm-merge
+  * LvmThin: Recreate shipped snapshot after merging
+  * SnapShip: restarting ctrl also restarts snap-shipping
+  * SnapShip: Fixed some issues when restarting ctrl/stlt
+  * ReconnectorTask: Fixed NPE
+  * Zfs: Fixed snapshot-update bug
+  * AbsStorProvider: Fix snapshot deletion bug
+  * Reconnector: workaround for incompatibe fluxing
+  * use AbsResource base class in database drivers
+  * SysFs: Only throttle data-path, not meta-path
+  * SysFs: Only apply settings to lowest local device
+  * CrtRsc: Do not ignore --inaktive during takeover
+  * RD.autoplace: layer_list now defaults to null
+  * TxList: Fixed dirty status
+  * LayerData: Disabled dup-node-id check
+  * Stlt,Api: Moved class from old package to new
+  * Rc,Paths: Fixed delete bug
+  * RscCon: Fixed comparator
+  * SnapShip,View: Added shippment overview
+  * Stlt,DevHandler: Fixed bug when deleting an inactive resource
+  * Ctrl,DelRsc: Deleting inactive resource also aborts snapshot-shipping
+  * AbortSnap: Added null-check
+  * AutoDiskfulTask: first version
+  * AutoDiskful: Only add diskless resources
+  * AutoDiskful: Added triggers for rscGrp, node and ctrl
+  * Added StorDriver/ZfscreateOptions
+  * Added unit tests for SizeUnit.parse
+  * RscAutoPlaceApiTest: Added extra test
+  * SnapShip: Added check for util_linux >= 2.24
+  * ExtToolsInfo.Version: Added utils class
+  * SnapShip: Added thin_send_recv >= 0.23 check
+
+  [ Johanna Kucera ]
+  * set config: allow changing of log level through rest
+  * set-config: allow getting and setting of stlt configs
+  * ErrorReports: always use limit and offset
+  * logging: Add general LinstorFile class to file content
+  * sos-report: collect all sort of logs and info for download
+  * sos-report: make sure all commands are executed, even if some of them  [...]
+
+  [ Robert Altnoeder ]
+  * CmdDisplayThreads: Make room for longer thread names
+  * StdErrorReporter: Avoid interpretation of exception messages as format [...]
+  * Added class InjectorLoader
+  * InjectorLoader: Add capability to construct with DB type parameter
+  * Added SpaceTracking plugin interface
+  * Controller: Added SystemService for space tracking
+
+  [ Roland Kammerer ]
+  * containers: add support for multiarch
+  * containers: add thin-recv-send
+  * containers: change path of public repo
+  * containers: add full s390x support
+
+  [ Beorn Facchini ]
+  * Add Sentry integration to capture error info
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Mon, 17 Aug 2020 12:52:41 +0000
+
+linstor-server (1.7.3-1) experimental; urgency=medium
+
+  [ Rene Peinthor ]
+  * layerdatafactory: add unique node-id check
+  * stlttoolschecker: fix losetup parsing without PATCH number
+  * stlttoolschecker: fix LVM version typo
+  * eventprocessor: read lock node map on connection closed
+
+  [ Gabor Hernadi ]
+  * Lvm,thin: Added LvcreateOptions
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Wed, 22 Jul 2020 13:21:05 +0000
+
+linstor-server (1.7.2-1) experimental; urgency=medium
+
+  [ Rene Peinthor ]
+  * sqlutils: trim statement and do not print to stderr
+  * remove deprecated only: syntax
+  * rest-api-docu: fix incorrect changelog
+  * stlt: fix NPE on apply controller changes
+  * gradle: grizzly-http-server fix to version 2.4.4
+  * request-helper: add error report id to apicall answer
+  * linstor.toml-example: fix incorrect enum values
+  * gitlab: enable java assert for tests
+  * etcd: Add missing resource group-storage pool migration
+  * ext-metadata: allow ext metadata storage pool to be different driver
+  * requesthelper: catch all Throwable to report errors
+  * skip initial sync on VDO
+
+  [ Gabor Hernadi ]
+  * ExtToolsCheck: use /proc/modules instead of modprobe
+  * Cache: Added dependency to dm-cache module
+  * File/thin: Added dependency to losetup
+  * Writecache: renamed enum to DM_WRITECACHE
+  * StorPool: Prevent deletion if StorPool has snapshots
+  * LvcreateType: Added rsc, node and controller to prioprops
+  * SslTcpConnectorHandshaker: change thrown exception
+  * Snapshot: Resume-IO on error and add timeout to takeSnapshot
+  * LVM: LvmProvider also activates LVs
+  * TcpConnectorService: Attempt resolving deadlock
+  * Snapshot: also resume-io after timeout of suspend-io
+
+  [ Roland Kammerer ]
+  * containers: add support for multiarch
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Mon, 13 Jul 2020 06:37:09 +0000
+
+linstor-server (1.7.1-1) experimental; urgency=medium
+
+  [ Rainer Laschober ]
+  * VolumeDefinition: Make create synchronous
+
+  [ Gabor Hernadi ]
+  * Autoplacer: Fixed decimal regex for weights
+  * Renamed DrbdProxy/Site to Site
+  * ParseThinSpace: Fixed NPE due to a race condition
+  * ParseThinSpaces: return now all requested entries
+  * AutoPlaceApi: added null-pointer check
+  * Autoplacer: Fixed "autoplaced on 0 nodes" bug
+  * ReconnectorTask: Attempt to fix possible deadlock
+  * DrbdProxy: Disable autoproxy when disabling proxy
+  * AutoProxy: Added migration to rename Site property
+
+  [ Rene Peinthor ]
+  * virter/Makefile: fix hardcoded path
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Thu, 14 May 2020 12:41:32 +0000
+
+linstor-server (1.7.0-1) experimental; urgency=medium
+
+  [ Rene Peinthor ]
+  * rest-api: add /view/snapshots path with filtering
+  * gradle: lock grizzly-jersey to latest versions
+  * provide a controller docker image
+  * rest-api-docu: fix snapshot operationid copy paste error
+  * virter: add linstor provision template for ubuntu-focal
+  * rest-api: Add props filter for useful paths
+  * rest-api-doc: update generated property doc
+  * gitlab-ci: add tools to cache
+
+  [ Yusuf Yıldız ]
+  * Update of Readme.md
+
+  [ Gabor Hernadi ]
+  * Reconnector: Fixing deadlock
+  * Autoplacer,API: Added stor_pool_name_list
+  * Autoplacer: Introducing new Autoplacer
+  * Autoplacer: added StorPoolWithScore class
+  * Autoplacer: Fixed loop condition for searching new candidates
+  * Autoplacer: fixed unit tests
+  * RscGrpApi: added null-check
+  * RscGrp: StorPool-filter can now be cleared
+  * Autoplacer: update freeThinSpace before autoplacing
+  * Autoplacer: Added trace-logging
+  * Autoplacer: Considers now user-defined weights
+  * Autoplacer: added minMax option for strategies
+  * Autoplacer: put all autoplacer-props into ctrlProp
+  * Autoplacer: Enable preselection
+  * Autoplacer: Caching ScriptEngine
+  * Autoplacer: Added additional tests
+  * Autoplacer: ignore layers above nvme
+  * Autoplacer: Respect already deployed resources
+  * Autoplacer: Added MinReservedSpace strategy
+  * Autoplacer: Added MinRscCount strategy
+  * Autoplacer: Fixed normalizing and weight bugs
+  * rest: Fixed typo in description
+  * Autoplacer: Redirected qmvs to new autoplacer
+  * Autoplace: Prevent mixed provider selection
+  * Tests: Adjusted logging for tests
+  * CryptCmd: increase shred size from 2M to 16M
+  * Autoplacer: Prevent nodes missing repl-on-same property
+  * Autoplacer: Renamed strategy FreeSpace to MaxFreeSpace
+  * Autoplacer: Whitelisted MinReservedSpace and MinRscCount strategy
+  * Autoplacer: small logging cleanup
+  * Fix: thrown exc in finally block may suppress original exception
+  * CtrlDrbdProxy: extracted enable methods
+  * Autohelper: Refactored and introduced internal state
+  * Autohelper: Cleanup
+  * Autohelper: Introduced Autohelper interface
+  * AutoDrbdProxy: Added first version
+  * RscAutoplaceTests: Fixed by configuring mocked tcpPool
+  * RscGrp: load props on start
+  * AutoDrbdProxy: Changed apiCtx to peerCtx
+  * AutoDrbdProxy: uses prioProps now
+  * Autoplacer: Added MaxThroughput strategy
+
+  [ Roland Kammerer ]
+  * containers,satellite: add nvme-cli
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Thu, 07 May 2020 07:00:44 +0000
+
+linstor-server (1.6.2-1) experimental; urgency=medium
+
+  [ Rene Peinthor ]
+  * ubuntu-focal support
+  * query-max-volume-size: fix NPE on null list access
+
+  [ Gabor Hernadi ]
+  * Layer: Allow CACHE to be topmost layer
+  * Writecache: add vlmNr to error message
+  * RscCrt: Reworked ResourceCreateCheck
+  * linstor-common: Fixed whitelisting typo/issue
+  * Write-/Cache: Added ctrl-props to prioProps list
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Mon, 27 Apr 2020 06:51:30 +0000
+
+linstor-server (1.6.1-1) experimental; urgency=medium
+
+  [ Gabor Hernadi ]
+  * DB: Prevent deadlock on startup-exception
+
+ -- Gabor Hernadi <gabor.hernadi@linbit.com>  Tue, 14 Apr 2020 14:39:46 +0200
+
+linstor-server (1.6.0-1) experimental; urgency=medium
+
+  [ Gabor Hernadi ]
+  * DevMgr: minor cleanup
+  * Cache: Added new layer
+  * Cache, Writecache: Fixed bug finding existing dm device
+  * RscLayerSuffixes: Introducing new consts class
+  * Tests,CacheLayer: Fixed unit tests
+  * DevMgr: Node answer is created before sending it
+  * DevMgr: Added 500ms sleep when DRBD tracking is not yet available
+  * DRBD: added drbdsetup resume-io if resfile does not exist
+  * DRBD: check if peer exists when forget-peer fails
+  * DB: Fixed ListToJsonArray converted
+  * DB,cleanup: remove unused variable
+  * RscGrp.spawn: Added external names for rscDfn
+
+  [ Rene Peinthor ]
+  * allow blkid to return exitcode 2
+  * add gitlab ci yaml
+  * update to latest flyway, add postgresql and maria db driver
+  * fix unset of autoselect filters from API
+  * gitlab-ci: use caching
+  * select_filter: correctly handle modifying select_filters
+  * db-init: exit controller if sql or etcd failed to initialize
+
+  [ Robert Altnoeder ]
+  * Added comments to com.linbit.utils.Align
+  * Added com.linbit.utils.SignedAlign
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Wed, 08 Apr 2020 13:46:16 +0000
+
+linstor-server (1.5.2-1) experimental; urgency=medium
+
+  * Lvm: fixed bug where a VG has no PV
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Tue, 24 Mar 2020 11:42:55 +0000
+
+linstor-server (1.5.1-1) experimental; urgency=medium
+
+  * Revert "DB: Removed deprecated *CtrlDatabaseDriver interfaces"
+  * Lvm: Replaced ExtCmd with ExtCmdFactory parameters
+  * Lvm: added --config option to filter required pvs
+  * Config: Actually using the dbPassword from config
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Mon, 23 Mar 2020 09:35:07 +0000
+
+linstor-server (1.5.0-1) experimental; urgency=medium
+
+  [ Rene Peinthor ]
+  * rest-api-docu: fix changelog entry
+  * move EVENT_ consts to internal api
+  * drbd-connection: Monitor drbd connection states
+  * peeroffline: pretend full-sync is successful
+
+  [ Johanna Kucera ]
+  * Tests: added tests for class Align
+
+  [ Roland Kammerer ]
+  * containers,lvm: disable drbd devices
+
+  [ Gabor Hernadi ]
+  * RscCrt: Relaxed layer-list restrictions
+  * Openflex: Restoring reusable utilities from swordfish-implementation
+  * StltCfg: added --openflex cmdline option
+  * StltExtToolChecker: Openflex now reports support for NVMe
+  * Added openflex specifc checks for resource-creation
+  * StorageLayer: Combined getCapacity and getFreeSpace methods
+  * Stlt: fetching free space now goes through devMgr
+  * OpenflexProcessStarter: start process before creating node
+  * Openflex: Allow only 1 vlm per rsc
+  * Openflex: Added Openflex layer
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Wed, 11 Mar 2020 12:57:32 +0000
+
+linstor-server (1.4.3-1) experimental; urgency=medium
+
+  [ Rene Peinthor ]
+  * nvmeutils: code cleanup
+  * dbdriver: fix incorrect delete order
+  * db-init: remove ON DELETE RESTRICT
+  * migration: remove ON DELETE CASCADE from remaining constraints
+  * Use new ConnectionStatus enum const
+  * physical-storage: check if pool name is used before creating
+
+  [ Gabor Hernadi ]
+  * Config: Refactored config parsing
+  * Startup: fixed SystemService shutdown info
+  * Cfg,Env: Fixed wrong default values
+  * Cfg,log-level: Changed behavior for better compatibility
+  * RscDfn: Extended auto-place api call
+  * RscGrp: ReplicaCount is now automatically set to 2
+  * Added etcd.ops_per_transaction to toml
+  * ETCD: encapsuled all operations into EtcdTransaction class
+  * DB: Added toString methods to GeneratedDbTables
+  * ETCD: fixed migration
+  * SQLEngine: Fixed select statement generating bug
+  * RscDfnDbDriver: Removed deprecated SQL driver
+  * DB: renamed layer specific *Generic drivers to *SQL
+  * Tests,DB: renamed PropsContainerDbDriver tests
+  * DB: removed deprecated KeyValueStoreGenericDbDriver
+  * DB: removed deprecated NetInterfaceGenericDbDriver
+  * DB: removed deprecated NodeConnectionGenericDbDriver
+  * DB: removed deprecated ResourceConnectionGenericDbDriver
+  * DB: removed deprecated ResourceGenericDbDriver
+  * DB: removed deprecated SnapshotDefinitionGenericDbDriver
+  * DB: removed deprecated SnapshotVolumeDefinitionGenericDbDriver
+  * DB: removed deprecated StorPoolDefinitionGenericDbDriver
+  * DB: removed deprecated VolumeConnectionGenericDbDriver
+  * DB: removed deprecated SnapshotGenericDbDriver
+  * DB: removed deprecated SnapshotVolumeGenericDbDriver
+  * DB: removed deprecated VolumeDefinitionGenericDbDriver
+  * DB: removed deprecated VolumeGenericDbDriver
+  * DB: removed deprecated ResourceGroupGenericDbDriver
+  * DB: removed deprecated StorPoolGenericDbDriver
+  * Tests,DB: renamed NodeDbDriverTest
+  * DB: Removed deprecated *CtrlDatabaseDriver interfaces
+  * DB: Extracted Table and Column to dedicated interface
+  * DB: Moved stlt specific drivers to satellite project
+  * DB: moved interfaces of update drivers to dedicated package
+  * DB: Moved Noop drivers to dedicated package
+  * Moved TxMgr to dedicated package
+  * Tx: Fixed rollback bug + added tests
+
+  [ Johanna Kucera ]
+  * gitignore: added database files
+  * logging: added level by components
+  * logging: add correct error messages
+  * service ordering: implement correct ordering for starting and stopping [...]
+  * Passphrase: implemented automated initialization of passphrase
+  * startup order: added shutdown for NetCom
+
+  [ Roland Kammerer ]
+  * docker,controller: add client for debugging
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Tue, 03 Mar 2020 14:52:27 +0000
+
+linstor-server (1.4.2-1) experimental; urgency=medium
+
+  [ Gabor Hernadi ]
+  * Removing unnecessary merge-resolving file
+  * SignIn: Add return code
+  * Drbd: fixed resize while resync uncleard flag
+  * StorPool, list: Removed filtering DfltDisklessStorPools
+  * VlmGrp: Added Flags with GROSS_SIZE as first value
+  * VlmDfn: Changed method of toggling GROSS_SIZE
+  * DISKLESS flag: pulled splitting into new flags up
+
+  [ Rene Peinthor ]
+  * res-grps: check that place count is positive
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Mon, 27 Jan 2020 11:07:59 +0000
+
+linstor-server (1.4.1-1) experimental; urgency=medium
+
+  * FILE, FILE_THIN: fixed isSnapshotSupported
+  * Pair: Fixed compareTo method
+  * DbLoader: added additional filter for snapshots
+  * Migration: fixed incorrect column
+  * Fix Boolean unboxing: Boolean object can be a null reference
+  * PairTest: Extended with null_null case
+  * Migration: Fixed tcpPort and minorNr of snapshots
+  * OpenApi: Added missing WRITECACHE entries
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Thu, 16 Jan 2020 07:24:57 +0000
+
+linstor-server (1.4.0-1) experimental; urgency=medium
+
+  [ Rene Peinthor ]
+  * rest-api: go back to version 1.0.11
+  * errorreport: parameterize comparable
+  * wiphandler: allow a collection of paths to be specified
+  * create-storagepool: Allow an onError flux to be given and fix Exc handling
+  * createdevicepool: cleanup
+  * scripts/rest-gen: allow null default for string
+  * genericname: Throw InvalidNameException if string is null
+  * rest/physicaldevice: Add "atomic" storage pool creation
+  * rest-api-doc: fix incorrect yaml
+  * lsblkutils: show full paths for device names
+  * createdevicepool: do not continue on vdo errors
+
+  [ Roland Kammerer ]
+  * args: allow args to be overwritten
+
+  [ Gabor Hernadi ]
+  * LayerData: Implemented layer-skip
+  * Added Writecache layer
+  * RestApi: reorganized some classes
+  * Resource.Flags: Split DISKLESS into DRBD_DISKLESS and NVME_INITIATOR
+  * Layer: Allow DRBD over NVMe
+  * Drbd,Diskless: fixing wrong usage of flags.isUnset
+  * Drbd,Nvme: Added support for ext. metadata (local-only!)
+  * Writecache: Fixed delete bug and added some logging
+  * AbsResource: Unified Resources and Snapshots
+  * Snapshot: add support for DRBD external metadata
+  * DatabaseLoader: Fixed NPE when restoring layerdata
+  * Tests: Fixed unit tests
+  * Snapshot: Fixed migration issues
+  * Writecache: Flushing device before creating snapshot
+  * Drbd,Nvme: Added support for snapshot
+  * Drbd,Nvme: Allow multiple nvme targets when using DRBD
+  * ETCD: Fixed lot of PK access bugs
+  * AbsStorageProvider: Fixed cast exception
+  * Workaround: Add AFTER clause in ADD COLUMN for H2
+  * SnapVlmDfn: Fixed access to deleted VlmDfn
+  * LayerDrbdDriver: Fixed incorrect loading of volumes
+  * MigrationUtils: Fix drop constraint bug for mariaDB
+  * MariaDB: fixed several migration bugs
+  * Fixed unit tests
+  * Added missing switch-case
+  * NvmeHelper: Fixed multiple initiators choosing the same target
+  * DbTablesGen: removed unnecessary column-index property
+  * Partial revert of ADD COLUMN AFTER clause
+  * Removed support for swordfish
+  * Cleanup: Added some generic types to layer objects
+  * Gradle: Fixed vararg related compile warnings
+  * Diskless: Fixing unnecessarily needed storagepools
+  * VlmDfn: Added GROSS_SIZE flag
+  * Rsc.delete: Fixed possible NPE
+  * CtrlRscDelete: Fixed bug preventing cleanup of DELETING resources on c [...]
+  * AuthResponse: Ctrl now logs extTools of stlt when received
+  * Added API for new GROSS_SIZE flag
+  * Added qmvs to rscGrp api
+  * Snapshot/-Volumes now have their own propsContainer
+  * Nvme: Target shares drbd-node-id with its initiator
+  * ETCD: added deadline (timeout) for etcd requests
+  * Revert "Partial revert of ADD COLUMN AFTER clause"
+  * PhysicalStorage: Added missing enum cases
+
+  [ Tomasz Bykowski ]
+  * Added support for SPDK in DevicePoolHandler
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Tue, 14 Jan 2020 07:29:28 +0000
+
+linstor-server (1.3.1-1) experimental; urgency=medium
+
+  [ Rene Peinthor ]
+  * Fix storage pool delete
+  * rest-api: use http.OK instead of CREATED for modify operations
+  * etcd-transaction: throw a DatabaseException instead of grpc exception
+  * etcd: fix missing netinterface delete on node delete
+  * rest-api: 1.0.12 enable /physical-storage endpoint
+  * nvmelayer: fix copy paste bug
+
+  [ Gabor Hernadi ]
+  * Db: Added migration for orphaned drbd layer data
+  * ETCD: added missing migrations
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Thu, 05 Dec 2019 13:05:39 +0100
+
+linstor-server (1.3.0-1) experimental; urgency=medium
+
+  [ Rainer Laschober ]
+  * CtrlAutoStorPoolSelector: Fixed and extended algorithm so that replica [...]
+  * Compare nodes with repOnDiff so that better ones are chosen
+  * BUGFIX: Incorrect number of nodes being filtered for repOnDiff
+  * Add startup checks for databases
+  * Fix derby minor version req; code quality
+  * Relax minimum requirement for databases (only tested PostgreSQL)
+  * Node delete: Deletes now its snapshots
+  * EXPAND UNITTESTS: Add test, new parameter for addStorPool; BUGFIX: Ctr [...]
+  * Fluxify vlmGrp modify
+  * Fluxify rscDfn modify
+  * Fluxify vlm modify
+  * Fluxify rsc modify
+  * Fluxify node modify
+  * Fluxify storPool modify + delete
+  * Fluxify storPoolDfn modify
+  * Fluxify rscConn modify + create + delete
+  * Fix unit tests for modify and make REST call safer
+  * Take care of stlt-side of now synchronous node-modify-call
+  * Comment out failing unit tests that need further attention later (see  [...]
+  * AutoPlace BUG: node deletion when filtering list of replicas on same
+
+  [ Gabor Hernadi ]
+  * RscAutoPlaceTest: Added test to cover github example
+  * Ctrl: Small improvements for database-version check
+
+  [ Robert Altnoeder ]
+  * TcpConnectorService: Ignore canceled selection keys
+  * TcpConnectorService: Handle various cases of CancelledKeyException
+  * SPDK extensions: Code cleanup, control flow corrections, style fixes
+  * Replaced some external ls/rm commands with Java code
+
+  [ Rene Peinthor ]
+  * linstor/toml: Fix typo in client_key_p[ck]s8_pem variable
+  * firewalld: add http(s) port for linstor-controller services
+  * node-create: fix incorrect http status if no satellite conn defined
+  * db-version-check: Fix check if dbversion string isn't just a number
+  * rest-api: allow configuration of access log file
+
+  [ Tomasz Bykowski ]
+  * Added initial support for SPDK v19.07
+  * Changed logic for SPDK in NVMe Layer an Utils
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Tue, 03 Dec 2019 11:51:01 +0100
+
+linstor-server (1.2.1-1) experimental; urgency=medium
+
+  [ Rene Peinthor ]
+  * etcd-tls: enable all options to use etcd with tls
+  * gradle: update to jackson 2.10.0
+  * rest-api-doc: update property documentation
+  * rest-api: Fix query-max-vlm-size api call, expected incorrect post data
+
+  [ Roland Kammerer ]
+  * docker,satellite: add cryptsetup
+
+  [ Gabor Hernadi ]
+  * Added environment variables
+  * DRBD: additionally copy .res files to backup dir
+  * LvmProvider: disabled unimplemented async wiping
+  * Snapshot-restore: actually deleting hanging properties
+  * Drbd: Skip initial sync on ZFS
+  * Encryption API: improved correction message
+  * Props: Added whitelist check for delete
+  * Rest: Changed type for supported providers / layers in yaml
+
+  [ Rainer Laschober ]
+  * Correct error message
+  * Rest: Add un-/supported providers and layers to Node
+
+  [ Robert Altnoeder ]
+  * Further improved error message for failed TCP/IP port number allocation
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Thu, 07 Nov 2019 12:54:27 +0100
+
+linstor-server (1.2.0-1) experimental; urgency=medium
+
+  [ Rene Peinthor ]
+  * eventprocessor: fix a deadlock on even closeConnection
+  * volume: don't fail if a single volume reports an error
+  * protoctrlstltserializer: rename builder parameter
+  * ctrlerrorlistapi: use method shortcut
+  * api-docu-rest: add missing FILE, FILE_THIN provider
+  * LinstorParsingUtils: asProviderKind check on null
+  * physical-storage: add REST to group and list not filtered physical storage
+  * physical-storage: provide model, serial and wwn info
+  * physical-storage: add creating of LVM(VDO)/LVM-thin/ZFS pools
+  * satellite: Remove API_HOSTNAME and API_PREPARE_DISKS
+  * extcmd: use logTrace instead of logDebug for command output
+  * stringutils: allow Collection<String> for concat()
+  * physical-storage: Fix multiple same size devices per node, support mul [...]
+  * fix incorrect Functions.identity() usage
+  * physical-storage: do not document /v1/physical-storage yet
+  * grizzly: improve http not found messages
+  * rest-api-docu: update 1.0.10 changelog
+
+  [ Gabor Hernadi ]
+  * FileThinProvider: fixed loop_device_mapping output
+  * Core interface cleanup: AutoSelectorConfig
+  * Core interface cleanup: KeyValueStore
+  * Core interface cleanup: Node
+  * Core interface cleanup: NetInterface
+  * Core interface cleanup: NodeConnection
+  * Core interface cleanup: Resource
+  * Core interface cleanup: ResourceConnection
+  * Core interface cleanup: ResourceDefinition
+  * Core interface cleanup: ResourceGroup
+  * Core interface cleanup: Snapshot
+  * Core interface cleanup: SnapshotDefinition
+  * Core interface cleanup: SnapshotVolume
+  * Core interface cleanup: SnapshotVolumeDefinition
+  * Core interface cleanup: StorPool
+  * Core interface cleanup: StorPoolDefinition
+  * Core interface cleanup: Volume
+  * Core interface cleanup: VolumeConnection
+  * Core interface cleanup: VolumeDefinition
+  * Core interface cleanup: VolumeGroup
+  * Cleanup: Added private constructor in rest-gen.py
+  * DrbdLayer: Fixing del-peer race condition
+  * Database: Fixed incorrect linking
+  * SnapshotDbDriver: Fixed possible NPE
+  * DrbdProxy: Whitelisted zstd compression type
+  * DrbdRsc: prevent repeated setting upToDate flag
+  * Snapshot: remove properties after restore
+  * Minor cleanup: Added neglectable missing switch-cases
+  * RetryTask: continues previous flux
+  * IntAuthResponse: Include versions of layer-tools
+  * Controller: Added AutoQuorum & TieBreaker feature
+  * ToggleDisk: Added support for auto-quorum and auto-tiebreaker
+  * AutoTiebreaker: Fixed minor bugs
+  * RetryResource: Fixed access to deleted resource
+  * DelayedApiRcException: Add exceptions as suppressedException
+  * ErrorReporter: also report suppressed exceptions
+  * CtrlRscCrt: fixed call of auto-logic
+  * AutoTiebreaker: Allow takeover
+  * AutoTiebreaker: added trigger for node create
+  * AutoTiebreaker: removed trigger when controller restarts
+  * Fixed unit tests
+
+  [ Robert Altnoeder ]
+  * Cleanup: A few small simplifications & optimizations
+  * Cleanup: Use isEmpty() instead of comparison with zero-length string
+  * Cleanup: Pass in correctly sized array
+  * Cleanup: Replaced string concatenation with append(...)
+  * Cleanup: Added private constructors
+  * Cleanup: Removed public modifiers from constructors of private inner & [...]
+  * Cleanup: Replaced instance reference to static constants with class re [...]
+  * Cleanup: Removed unused and duplicate imports
+  * Cleanup: Changed ByteBuffer allocation in SslTcpConnectorPeer
+  * Cleanup: Naming, style, scope and control flow fixes
+  * DebugCommands: Catch DatabaseException instead of SQLException
+  * Fixed authentication policy load error
+  * Use Boolean automatic unboxing where possible
+  * debug/HexViewer: Fixed duplicate format flag
+  * Fix Boolean unboxing: Boolean object can be a null reference
+  * NumberAlloc: Removed LoopGuard
+  * Simplified DynamicNumberPoolImpl
+  * BitmapPool: Removed statement only required for debugging
+
+  [ Rainer Laschober ]
+  * Code cleanup and small fix
+  * ResourceCreateCheck: Enable multiple NVMe initiators
+  * ResourceGroups: Filter list data on ctrl
+  * StoragePools: Filter list data on ctrl
+  * ResourceDefinitions: Filter list data on ctrl
+  * Nodes: Filter list data on ctrl
+  * Fix typos
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Thu, 24 Oct 2019 11:43:16 +0200
+
+linstor-server (1.1.2-1) experimental; urgency=medium
+
+  [ Rene Peinthor ]
+  * resourcegroup-spawn: throw exception on early rsc-dfn-create errors
+  * db-loading: fix loading of Node/Resource/Volume-Connection data
+  * resource-deletion: allow deleting resources if diskless in deleting state
+  * checkstyle: modify MethodTypeParameter to allow DB_TYPE
+  * gradle: upgrade jackson-databind to fix some CVE's
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Mon, 16 Sep 2019 08:47:43 +0200
+
+linstor-server (1.1.1-1) experimental; urgency=medium
+
+  [ Gabor Hernadi ]
+  * DbEngine: Added JavaDoc
+  * Fixed unit tests
+  * EtcdMigration: Unified key building method
+  * dmstats: fixed broken command
+  * Gradle: shortened linstor's classpath
+  * DevHandler: added exception handling for prepare-step
+  * dmstats: fixed incorrect ext-cmd order when deleting volume
+  * RetryTask: Cleanup successfully deleted resource
+  * Create Rsc: change default layer list
+  * NvmeUtils: Fixed ArrayIndexOutOfBoundsException
+  * StdErrorReporter: Added username to log entries
+  * RetryResourceTask: Ignore peer not connected exception
+
+  [ Rene Peinthor ]
+  * node-reconnect: Also add offline/failed nodes to the reconnector on request
+  * linstorconfig: clearly state the linstorTomlFile as param
+
+  [ Rainer Laschober ]
+  * Check if HTTPS is enabled
+
+  [ Robert Altnoeder ]
+  * Add database fixes for resource definition external name entries
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Tue, 10 Sep 2019 14:54:20 +0200
+
+linstor-server (1.1.0-1) experimental; urgency=medium
+
+  [ Rene Peinthor ]
+  * db/security: abstract security loader classes
+  * databasetype: fix typo in etcd db type
+  * dbconnectionpool: remove unnecessary DbConnectionPool usages
+  * dbinitializer: introduce a database initializer interface
+  * databaseinfo: pass productinfo to migrate and static only databaseinfo
+  * remove unused skipHostnameCheck
+  * satellite: parse satellite settings from toml file
+  * StltRscApiCallHandler: set properties on all remote nodes
+  * improve checkstyle rules
+  * drbd-check: allow any node name for linstor nodes
+  * transactionmgr: subinterface SQL transaction manager
+  * signignentry: Fix nullpointer exception on getSalt() or getHash()
+  * StorPoolData: correclty set snaphot supported field
+  * remove old database.cfg samples
+  * db/etcd: initial implementation
+  * etcd: Migration_00_Init implementation
+
+  [ Gabor Hernadi ]
+  * MigrationUtils: Renamed method for better understanding
+  * MigrationUtils: Unified equal handling for cases
+  * MigrationUtils: Added ETCD cases
+  * StorPoolApi: Added supportsSnapshot
+  * IntAuthResponse: Fixed version mismatch impl error
+  * NvmeUtils: Fixed typo
+  * NetIf: fixed NPE for setActive
+  * CheckStyle: Make more warnings suppressible
+  * DbDriver: Added Database constants generator
+  * SysFsHandler: cleanup caches on delete
+  * NvmeUtils: Fixed potential bug with exists flag
+  * LvmProvider: changed "wiping_in_progress" lv-suffix
+  * SysFsHandler: not deleting entry for missing device
+  * linstor-common: NVMe/PrefNic whitelisted for storPool
+  * ETCDDriver: added security drivers
+  * VlmDriver: added generic driver for Volumes
+  * DbEngine: Added loadAll method
+  * ETCDEngine: Implemented missing methods
+  * SwordfishETCDDriver
+  * StorageLayerETCDDriver
+  * ResourceLayerETCDDriver
+  * PropsConETCDDriver
+  * AbsDbDriver: added generic collection to json driver
+  * ResourceDefinitionDriver
+  * ResourceGroupDriver
+  * Renamed some DbDrivers
+  * ResourceDbDriver
+  * VolumeDefinitionDbDriver
+  * VolumeGroupDbDriver
+  * StorPoolDefinitionDbDriver
+  * StorPoolDbDriver
+  * NetInterfaceDbDriver
+  * NodeConnectionDbDriver
+  * ResourceConnectionDbDriver
+  * VolumeConnectionDbDriver
+  * SnapshotDefinitionDbDriver
+  * SnapshotVolumeDefinitionDbDriver
+  * SnapshotDataDbDriver
+  * SnapshotVolumeDbDriver
+  * KeyValueStoreDbDriver
+  * DrbdLayerGenericDbDriver: implemented missing delete method
+  * DrbdLayerETCDDriver
+  * LuksLayerETCDDriver
+  * NvmeLayerETCDDriver
+  * TransMgr: Fixed generic provider parameter
+  * CheckHealth: made the checks DB-specific
+  * ETCD: fixed minor differences in migration and driver
+  * ETCD: load security objects
+  * ETCD: fixed loading bugs
+  * StorPoolDfnDbDriver: fixed loading disklessStorPoolDfn
+  * DB: fixed minor issues in common drivers
+  * RscDfnDbDriver: fixed NPE
+  * ETCD: fixed minor issues
+  * Controller: removed dummy ETCD initializer
+  * NetIfDriver: Fixed possible NPE
+  * ETCD: fixed duplicated key in txn bug
+  * NetIfDbDriver: (SQL) fixed wrong type when loading
+  * SQL: added special call for setting blob type
+  * SQL: Fixed loading blob fields
+  * NVMe: Workaround to avoid hanging nvme disconnect
+
+  [ Robert Altnoeder ]
+  * External name handling fixes
+  * Fix: Load external names map upon controller startup
+  * Modified handling of external names
+  * Added external name dump to debug command DspRscDfn
+  * CtrlRscDfnApiCallHandler: Removed unused import
+
+  [ Rainer Laschober ]
+  * Add parameter 'hostnqn' in commands 'discover' and 'connect'
+  * Fix grep-commands for setting device-path
+  * Minor code improvements
+  * Disable deletion of nvme volumes (block on controller)
+  * Added checkPrefNic to storPool-create and -modify
+  * Fix external call wipefs so that it really wipes the fs :)
+
+  [Beorn Facchini]
+  * Add truststore to config and HTTPS rest-api
+
+ -- Gabor Hernadi <gabor.hernadi@linbit.com>  Fri, 30 Aug 2019 12:27:03 +0200
+linstor-server (1.0.1-1) experimental; urgency=medium
+
+  [ Rene Peinthor ]
+  * migration: fix resourcegroups in postgresql
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Fri, 09 Aug 2019 08:48:03 +0200
+
+linstor-server (1.0.0-1) experimental; urgency=medium
+
+  [ Rene Peinthor ]
+  * db: introduce new DatabaseException to prepare support for etcd
+  * linstor.toml-example: add [http] listen_addr
+  * cleanup SQLException imports
+  * transactionmgr: autocommit is already set from getConnection()
+  * databaseDriverInfo: Add DatabaseType enum
+  * Use TransactionMgrGenerator instead of direct new
+  * Rename ControllerTransactionMgrGen... to ControllerSQLTransactionMgrGen..
+  * Detect database type from connection url
+  * rest-api: correctly convert volume group list return
+  * rest-api: add volume group delete method
+  * rest-api: rename resource-group/spawn arguments
+  * controller: log if linstor config was parsed
+  * docker.controller: rest-bind setting is now default
+  * controller: fix incorrect rest-port commandline initalization
+  * rest-api: raise API version to 1.0.8, changelog, place_count default
+  * rest-api: Add volume-group PUT and fix missing transaction commit
+  * RscGrpDbDriver: fix broken logTrace
+  * AutoSelectFilter: correclty set and get disklessonremaining
+  * CtrlRscGrpApiCallHandler: fix NPE on DisklessOnRemaining
+  * rest-api-docu: fix openapi errors
+  * rest-api: only report the resource-group-name from resource-definition
+  * rest-api: resource-definition always set resource group name
+  * migration/resource_group: set upper case default resource group name
+  * rest-gen: support simple allOf types
+  * rest-api: create an extended ResourceWithVolumes type for /view/resources
+  * satellite/resource_groups: fix missing resource def->resource group link
+  * satellite/devicehandler: fix trying update sysfs setting on deleted or [...]
+  * lvmprovider: prefix wipe in progress lv's with old name
+  * lvmprovider: set exists before starting the async wipe
+  * ctrlrscdfnhandler: throw proper error if resource group doesn't exist
+
+  [ Gabor Hernadi ]
+  * GeneridDbDriver: Renamed to DatabaseLoader
+  * Moved core objects to dedicated package
+  * Moved *Name and other types in dedicated packages
+  * Controller: Moved repository classes do dedicated package
+  * RscGrp: Added core classes
+  * Cleanup and renaming
+  * RscGrp: Linked RscGrp with RscDfn
+  * RscGrp: Stlt now removes unused RscGrps
+  * RscGrp: Added rscGrp-props wherever rscDfn-props was used
+  * VlmGrp: Added vlmGrp to prioProps after vlmDfn
+  * Api: Added RscGrp to RscDfn json object
+  * RscGrp,spawn: added definitions_only flag
+  * Proto: Removed unused proto files
+  * RscGrp: Bugfixes
+  * GenericDbUtils: Merged into SQLUtils
+  * Fixed unit tests
+  * VlmGrp: Fixed loading and listing bug
+  * PropsContainer: Fixed rollback in namespaces
+  * NvmeLayer: Fixed issues with setExists
+  * RscGrp: Spawn now considers disklessOnRemaining
+  * Logging: added LogLevel as argument and in toml
+  * ExtCmd: made wait timeout configurable
+  * Added info msg when no resources were spawned
+  * RscDfn: create now respects rsc_group_name
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Thu, 08 Aug 2019 10:25:43 +0200
+
+linstor-server (0.9.13-1) experimental; urgency=medium
+
+  [ Rene Peinthor ]
+  * taskscheduleservice: catch exception in running task
+  * retryresourcestask: check if resource is deleted
+  * database/mariadb: add compatibility with mariadb
+  * allow node names to be matched with a search domain property
+  * ctrlauthenticator: fix typo
+  * ctrlapidataload: fix accessdenied on loadnode
+  * InvalidKeyException: extend from LinStorRuntimeException
+  * rest-api-docu: fix missing volume_number in volumes PUT
+  * CmldArguments: ConfigurationDir is now returned as Path
+  * grizzly-http: add exception mapper for ApiRcException
+  * apicallrcimpl: shortcut to create a ApiCallRc with 1 entry
+  * rest-api: add HTTPS server and new TOML config file
+  * apicallrcimpl: add more shortcut functions for quit ApiCallRc creation
+  * security/ldap: Add LDAP authentication support
+  * linstorconfig: migrate database.cfg into linstor.toml config file
+  * add linstor.toml example file
+  * rest-api: raise API version to 1.0.7 and is_active to changelog
+  * satellite: always create directory /var/lib/linstor
+  * retrytask: Satellite now notifies the controller about failed rscs
+  * devicehandlerimpl: fix abortlayerprocessing exception
+  * rest-api-docu: update property documentation
+  * reconnectorTask: fix task using up all db connections
+
+  [ Robert Altnoeder ]
+  * Replaced String.equals("") with .isEmpty()
+
+  [ Beorn Facchini ]
+  * Enable mutual SSL authentication for controller and satellite
+  * Read SSL keystore and truststore from resolved path
+
+  [ Roland Kammerer ]
+  * debian: fix dependency for postinstall
+
+  [ Gabor Hernadi ]
+  * Eclipse: Workaround
+  * SysFs: correctly removing throttle setting
+  * GenericDbDriver: Added check for missing ';'
+  * Luks: shred luks headers on backing device when deleting
+  * DrbdLayer: added support for external metadata
+  * StorageLayer: Intorduced AbsStorageVlmData
+  * Drbd: Fixed NPE when using external metadata
+  * Drbd: ExtMetaStorPool is now persisted to DB
+  * Drbd: Add toggle disk support for external metadata
+  * Migration: Fixed migration of storage pool movement
+  * Snapshot: fixed bug preventing snapshot-restore
+  * Drbd: ctrl reports error when ext-meta-stor-pool does not exist
+  * LayerData: removed duplicated reporting of errors
+  * Fixed unit tests
+  * Minor typo fixes
+  * FileProvider, FileThinProvider: first version
+  * NotifyStorPoolApplied
+  * ListVlm: Fixed reporting of thick-allocated-sizes
+  * FileProvider: Added snapshot support
+  * FileProvider: Added resize support
+  * FileProvider: Minor bugfix when deleting a FileVolume
+  * AbsStorageProvider: Added check for size of created volumes
+  * FileProvider: Added fail-fast for snapshot create
+  * FileProvider: minor changes in loop_device_mapper
+  * Small cleanups and a typo-fix
+  * Nvme: VlmData are now set to exists
+
+  [ Rainer Laschober ]
+  * Add new conn status for no stlt conn on node
+  * Make addr parameter of 'n i m'-cmd optional
+  * Prevent node creation without stlt conn
+  * Allow node to set active stlt conn on netIf crt/mod
+  * Add/Fix automatic reconnect functionality, fix lock guards
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Thu, 25 Jul 2019 08:15:57 +0200
+
+linstor-server (0.9.12-1) experimental; urgency=medium
+
+  [ Gabor Hernadi ]
+  * DevMgr: Fixed deletion of multiple resources
+  * Proto: Removed no longer used API entry points
+  * Proto: Moved .proto files
+  * DRBD: fixed `uname -n` check
+  * Drbd-Proxy: Set protocol A as default
+  * LvmThin: Fixed incorrectly displayed allocated size
+  * Nvme,Luks: Enabled nvme op top of luks layer
+  * VlmApi: Added modify props
+  * Stlt: Added SysFsHandler
+  * CtrlVlmApi: Removed unintentional code duplication
+
+  [ Rene Peinthor ]
+  * gradle/common: move proto files into linstor project
+  * gradle: fix java generated files dependencies
+  * protobuf: use map<string, string> instead of LinStorMapEntry
+  * rest-api: fix NPE on grizzly service restart
+  * list-errorreports: use lambdas for since/to check
+  * rest-api-docu: Fix storage pool definition modify schema type
+  * allow PrefNic property on Node
+  * rest-api/drbdproxy: fix no response for modifyProxy
+  * rest-api: add a /health uri resource for kubernetes liveness probes
+  * gradle: update 3rd party libraries
+  * rest-api-doc: improve changelog and push REST_API_VERSION to 1.0.6
+
+  [ Roland Kammerer ]
+  * apidiffgo.sh: add script to easy API updates
+  * apidiffgo: die if subshell errors out
+
+  [ Robert Altnoeder ]
+  * Reintegrate authentication and version info
+  * Sort API list in debug output
+
+  [ Rainer Laschober ]
+  * Set correct api call for modifyStorPool
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Tue, 25 Jun 2019 10:28:03 +0200
+
+linstor-server (0.9.11-1) experimental; urgency=medium
+
+  [ Gabor Hernadi ]
+  * Snapshots: fixed NPE with storage-only snapshots
+  * Storage: always report free spaces
+  * Whitelisted LvcreateType for resource-definitions
+  * LayerData: RscDfn now supports multiple instances of same kind
+  * LayerData: VlmDfn now supports mulitple instances of same kind
+  * LayerData: Reworked creation of layerData
+  * DB: Fixed rscDfn and vlmDfn layer data loading
+  * linstor-common: removed "update=rebase" from .gitmodules
+
+  [ Rene Peinthor ]
+  * logarchive: add API call on satellite and trigger on task run
+  * rest-api: add user-agent information to peer
+  * apiloading: Do not dynamically load event classes
+  * rest-api: report exceptions on errors in flux streams
+  * rest-gen.py: fix generated trailing spaces
+  * devicemanager: storage pool config is already checked by update free space
+  * tcpconnectorpeer: peer is not online if fullsync failed
+  * storagepools: Attach apicall reports as state to StorPoolData
+  * gradle-protobuf: update to 3.8 and use lite classes, runtime will follow
+  * rest-api: Add safeAsyncResponse to handle ApiRcExceptions
+  * internalhandler: add todos
+  * gradle/protobuf: switch to javalite runtime
+
+  [ Roland Kammerer ]
+  * docker: base images on UBI
+  * docker: fix lbbuild
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Tue, 11 Jun 2019 13:17:06 +0200
+
+linstor-server (0.9.10-1) experimental; urgency=medium
+
+  [ Gabor Hernadi ]
+  * DevMgr: Call forget-peer when remote-rsc is deleted
+  * DrbdLayer: Whitelisted DrbdCurrentGi
+  * DrbdLayer: Fixed forget-peer bug
+  * Partially reverted "LvsUtils now parses json output for 'lvs' and 'vgs'"
+
+  [ Rene Peinthor ]
+  * grizzly-http: try to start on ipv4 if default ipv6 start failed.
+  * ErrorReporter: add a log archive method and task
+  * ErrorReporter: fix possible null pointer exception
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Mon, 27 May 2019 13:03:42 +0200
+
+linstor-server (0.9.9-1) experimental; urgency=medium
+
+  [ Rene Peinthor ]
+  * rest-api: enable compression
+  * rest-api: add /v1/view/storage-pools and pump rest-api to 1.0.4
+  * rest-api-docu: add changelog
+  * rest-api: move apiToJson functions to Json class
+  * rest-api: also return UUID's for linstor objects
+  * rest-api-docu: add script to update the property information and update
+  * rest-api-docu: update with more property info
+  * rest-api-docu: fix wrong resync-after type
+
+  [ Gabor Hernadi ]
+  * Remove DRBD dependency from DISKLESS provider
+  * Fixed resize and detailed size-reporting issue
+  * Fixed Exception when reconnecting to peer
+  * Added WaitTimeoutAfterCreate
+  * Suppressed repeated exception on version-mismatch
+  * Correctly set the rscName in objRef when using extName
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Thu, 23 May 2019 08:28:51 +0200
+
+linstor-server (0.9.8-1) experimental; urgency=medium
+
+  [ Gabor Hernadi ]
+  * Made Node create synchonous
+  * Fixed finding device path of nvme volumes
+  * Fixed possible deadlock in sync node creation
+  * Fixed NodeApiTests
+  * LvsUtils now parses json output for 'lvs' and 'vgs'
+  * Skip attemptConnection to Controller and Aux nodes
+  * Added property to set --type for lvcreate
+
+  [ Rene Peinthor ]
+  * rest-api-docu: update bind interface info
+  * rest-api: use generated data structures from rest-documentation
+  * peeroffline: offlinepeer(controller) will display online if local
+  * rest-api: rest-gen, use `default` and `required` properties
+  * rest-api-docu: add default and required for ResourceDefinition.name
+  * rest-api-gen: correctly generate string defaults
+  * rest-api: add /v1/view/resources as a summary and raise rest-api-version
+
+  [ Robert Altnoeder ]
+  * Added length padding for concealing the length of encrypted data
+  * Updated encrypted properties to use length padding
+
+  [ Roland Kammerer ]
+  * build: fix empty files for RHEL8
+  * build: fix python dependency for RHEL8
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Thu, 16 May 2019 09:59:06 +0200
+
+linstor-server (0.9.7-1) experimental; urgency=medium
+
+  [ Gabor Hernadi ]
+  * Added NVME-layer support for JSON API
+  * Fixed formating errors reported by checkstyle
+  * Fixed volume-definitions not being deleted on satellite
+  * Fixed race-condition when creating vlmDfn too fast
+  * Fixed AccessToDeleted StorPool
+  * Added all storPools to prioProps for NVMe's PrefNic
+  * Removed hardcoded "default" network interface name
+  * Fixed issues when DRBD is not installed
+
+  [ Rene Peinthor ]
+  * rest-api: fix copy paste return code error
+  * rest-api: add /v1/storage-pool-definitions resource
+  * rest-api-docu: add nvme
+  * rest-api: do not default drbd_transport_type
+  * rest-api-docu: fix missing requestbody for drbdproxyenable
+  * rest-api-docu: fix incorrect drbd_volumes type
+  * rest-api: link to the current api version documentation
+  * rest-api: bind on ipv4 and ipv6 and not local only
+  * remove garbage collector task
+  * reconnectortask: small code cleanup
+  * commandline-args: add --version to Controller and Satellite
+  * gradle: add better JVM default options
+
+  [ Rainer Laschober ]
+  * Fix minor bugs
+  * Fix command parsing, merge constraints for create/delete in NvmeLayer
+  * Add functionality for creating and deleting volumes while the resource is up
+  * delete obsolete method, add description for class
+  * add controller check for nvme rsc creation + api consts
+  * Source out behavior that checks if a resource creation is valid
+  * Fix nullpointer exception when rsc role is neither NVMe nor Swordfish
+
+  [ Robert Altnoeder ]
+  * Adjusted REST-API IPv6 bind address format
+  * Handle exceptions during REST service initalization
+  * Enable debugging failed controller startup
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Thu, 09 May 2019 09:16:49 +0200
+
+linstor-server (0.9.6-1) experimental; urgency=medium
+
+  [ Gabor Hernadi ]
+  * Added OTHER_CONTROLLER internal api
+  * Reject storage only diskless setups
+  * Fixed wrong migration for resources without volumes
+  * Fixed db NPE when loading 0 storage volumes for a resource
+  * Removed unnecessary ConfigModule
+  * Deletiion of resources now also update the freeSpace
+  * Fixed rare NPE when applying already deleted remote resource on satellite
+  * Added DbDriver for NVMe layer
+  * Removed unnecessary masterKey access
+  * Added missing NVMe cases in switch statements
+  * Minor changes in NvmeUtils
+  * Fixed some nvmet related external commands
+  * Bugfix in nvme layer querying target namespaces
+  * Fixed minor issues with NvmeLayer
+  * NvmeLayer now supports multiple volumes per resource
+  * Diskless can also be used for NVME resources
+
+  [ Rene Peinthor ]
+  * rest-api-docu: static_traits is a string->string map
+  * postinstall.sh: remove very old db location migration
+  * postinstall.sh: add timestamp to database backups
+  * rest-api: introduce a rest_api_version field and pump minor to 1.0.1
+  * storpoolisthandler: fix unhandled ApiRcExceptions
+  * rest-api: specified object GETters now return a single value
+  * rsc_con: improve error reporting on using non existing rsc con
+  * whitelistprops: add drbd handlers on satellites
+  * conffilebuilder: always quote drbd handler options
+  * priorityprops: add a default variant for getProp(key,ns)
+  * mkfs feature for ext4 and xfs
+  * extcmdExc: fix typo
+
+  [ Robert Altnoeder ]
+  * Fixed capitalization typo in Migration_2019_04_04_Fix_LayerData_Multip [...]
+  * Code cleanup: Fixed imports
+  * Code cleanup: Fixed variable shadowing
+  * Code cleanup: Fixed line length
+  * Code cleanup: Fixed style & formatting
+  * Code cleanup: Fixed variable names, adjusted modifiers
+  * Code cleanup: Added fall-through comments
+  * More efficient listResourceConnections() implementation
+  * Set access context for REST API calls to the public context
+
+  [ Rainer Laschober ]
+  * introduce nvme layer
+  * Fix namespaces and other bugs
+  * Make transport type and port configurable in nvme layer, fix ip addres [...]
+  * Add new rsc prop 'prefNic'
+  * fix device path query on initiator, start documentation
+  * add constraints in NvmeLayer.process(), fix isTargetConfigured()
+  * Fix race condition for setting device path
+  * minor fix, add logging for debugging
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Thu, 18 Apr 2019 11:14:54 +0200
+
+linstor-server (0.9.5-1) experimental; urgency=medium
+
+  [ Rainer Laschober ]
+  * moved constructor logic to new checkVersion() method
+  * checkVersion() now restores defaults values on error
+  * Satellite, DrbdVersion: cosmetic changes; DrbdVersionTest: exception t [...]
+  * DrbdVersionTest: overlooked a compile error
+  * DrbdVersionTest: exception test added (presumably completed)
+  * Satellite: added checkVersion call before Drbd9 check
+  * Checks: removed checks for ipv4/-6; LsIpAddress: replaced ipAddrCheck  [...]
+  * LsipAddress: fixed fatal mishap (unchecked return value of isInetAddre [...]
+
+  [ Gabor Hernadi ]
+  * Added environment checks on satellite startups
+  * Updated ApiRc resolving map
+  * Fixed issue with resizing non-drbd resources
+  * Fixed drbdmanage migration issue
+  * DrbdRscDfn.peerSlots is now modifiable
+  * Fixed unit tests
+  * Added layerStack and provider filter to autoplace
+  * Fixed NullPointerException in StorPoolList
+  * Fixed a wrong migration regarding multiple volumes per rsc
+  * Fixed opening Luks after ctrl restart
+
+  [ Rene Peinthor ]
+  * rest-api: CreateNode set default satellite port on single netif
+  * rest-api: fix incorrect used apiconst
+  * rest-api-docu: format fixes, snapshot post at wrong location
+  * luks-layer: only try once to enter passphrase and check on exit code
+  * rest-api-docu: do not inline passphrase schemas
+  * rest-api: return 404 if a specific rsc-dfn couldn't be found
+  * conffile: generate handlers section from DrbdOptions/Handlers keys
+
+  [ Robert Altnoeder ]
+  * Add migration to fix database constraints
+  * Replaced FIXMEs with a comment where the fix can be found
+  * ResourceName: Added 'proxy' as a reserved keyword
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Mon, 08 Apr 2019 15:27:51 +0200
+
+linstor-server (0.9.4-1) experimental; urgency=medium
+
+  [ Rene Peinthor ]
+  * rest-api: fix inconsistent error returns
+  * rest-api-docu: obj_refs is also a string map
+  * rest-api-docu: nodes/{node}/storage-pools missing GET parameters
+  * zfs-provider: fix thin and thick storage pool detection and size query
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Fri, 29 Mar 2019 10:21:23 +0100
+
+linstor-server (0.9.3-1) experimental; urgency=medium
+
+  [ Roland Kammerer ]
+  * docker: expose REST port
+  * docker: bind on 0.0.0.0
+
+  [ Rene Peinthor ]
+  * gradle: source package, only store jar libraries once
+  * rest-api: fix incorrect snapshot-restore-volume-definition path
+  * Better error reporting on invalid database type
+  * rest-api: allow the set the bind address via cmdline or env variable
+  * snapshot-restore API call is now synchronous
+  * packaging: remove drbd-utils from satellite requirements
+  * absstorage: do not try to resize a volume if it is already at that size
+  * satellite-drbdlayer: do not try to resize diskless resources
+  * satellite: do not try to create linstor-resource.res if not drbd installed
+  * rest-api-docu: define property values as strings
+  * satellite: skip drbd check per default
+
+  [ Gabor Hernadi ]
+  * Removed deprecated checkstyle options
+  * Fixed some ZfsThin related bugs
+  * Fixed dispatching of DRBD-resize events
+  * Setting drbd-properties for thin-sync if needed
+  * Fixed parse exception when listing zfs datasets
+  * LvmThinProvider now activates all needed volumes
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Thu, 28 Mar 2019 13:15:16 +0100
+
+linstor-server (0.9.2-1) experimental; urgency=medium
+
+  [ Rene Peinthor ]
+  * rest-api-docu: info no server bindings and storpoolname
+
+  [ Gabor Hernadi ]
+  * Fixed incorrect persisting of layerStack to db
+  * Removed duplicated layer-data from RscDfn and VlmDfn
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Mon, 25 Mar 2019 14:01:44 +0100
+
+linstor-server (0.9.1-1) experimental; urgency=medium
+
+  [ Rene Peinthor ]
+  * rest-api: fix peer_slots typo
+  * rest-api: fix a few inconsistencies
+  * rest-api: update documentation to layer_stack changes
+  * rest-api: document resource-definition external_name
+  * rest-api: remove CRYPT_SETUP -> LUKS workarounds
+  * rest-api: remove DRBD_DISKLESS workaround
+  * rscDfn-load: do not crash on null external name
+  * rest-api: add external name support for resource-definitions
+  * rest-api: rename stlt_* to satellite_*
+  * rest-api: suffix sizes with their units
+  * rest-api: finalize rest server controller properties
+  * rest-api: docu update on storage pools
+
+  [ Gabor Hernadi ]
+  * Replaced DROP and CREATE table with ALTER statements
+  * Fixed small bug when migrating MariaDB
+  * Fixed incorrect reporting of allocated thin-sizes
+  * Fixed order of persisting layer objects of *DefinitionData
+  * Renamed Crypt(Setup) to Luks
+  * Renamed DrbdDiskless to Diskless
+  * Fixed: Snapshots are now found again
+  * Fixed Nullpointer when persisting null extName
+  * Fixed (another) NPE when serializing non-stlt netIfs
+  * Removed "TransactionList" from an exception message
+  * Added warning that STORAGE kind was automatically added
+  * Extended switches with missing enum-cases
+  * Added safety check if prepare was called before process (StorageLayer)
+  * Added check for valid layerstack
+  * Fixed minor extName database-related bug
+  * Removed some unused classes and methods
+  * Added missing enum case with fall-through comment
+  * Fixed incorrectly expected message
+  * Fixed serialization bug for RscDfn and VlmDfn
+  * Fixed missing errorMessage when devHandler catches unknown exception
+
+  [ Rainer Laschober ]
+  * Added external name functionality
+  * LvmThinProvider: add missing null check for getPoolCapacity and getPoo [...]
+  * LinstorConfig: replace exit codes with corresponding constants
+  * relocate ExternalNameConverter, fix control flow and logic
+
+  [ Robert Altnoeder ]
+  * Fixed EXT_NAME_COMP implementation
+  * Added fall-through comment to empty switch case
+  * Satellite: Fixed LINSTOR node name vs. locally determined node name co [...]
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Mon, 25 Mar 2019 09:59:04 +0100
+
+linstor-server (0.9.0-1) experimental; urgency=medium
+
+  [ Rene Peinthor ]
+  * gradle-tests: use powermock 2.0.0rc4 and mockito 2.23.4
+  * fix resource folder leak of Files.list()
+  * ControllerCoreModule: remove unused constant
+  * list-api: move protobuf specific serialization to upper layer
+  * reqrscconnlst: move protobuf parts to upper layer
+  * api: separate public and internal API's
+  * error-report: move serialization to the upper layer
+  * apicallrcwith: add hasApiCallRc
+  * maxvlmsize: move seralization to upper layer
+  * ctrlstorpooldfnapi: remove unused injections
+  * liststorpool: move serialization to upper layer
+  * list-volumes: move serialization to upper layer
+  * whitelistprops: prefixed keys can now be ignored
+  * resource-conn: allow and check Path properties
+  * fix typo
+  * KeyValueStore: rename modify message field names
+  * ApiCallRc: add isEmpty() and isError()
+  * gradle: update all kinds of third party libs
+  * keyvaluestore: load entries on startup from database
+  * keyvaluestore: do not throw NPE on accessing yet non existing KV
+  * storpoolapi: serialize freeSpaceMgrName
+  * conffilebuilder: fix broken drbd proxy configs
+  * snapshots: do not try to delete already removed snapshots
+  * KeyValueStore: use Set for deletePropKeys and deleteNamespaces
+  * unittests: fix nullpointer and guice related errors
+  * stltfreespacemgr: fix build
+  * satellite/preparedisks: PrepareDisks API
+  * rename asLayerStack to asDeviceLayerKind
+  * rest-api: Service startup and nodes resource
+  * rest-api: Add /resource-definitions
+  * rest-api: Add /resource-definitions/{rscname}/volume-definitions
+  * rest-api: Add /resource-definitions/{rscname}/resources
+  * rest-api: Add autoplace resource
+  * rest-api: Add /nodes/{node}/storage-pools
+  * rest-api: Add /error-reports resource
+  * rest-api: Add /controller resource
+  * rest-api: Add /encryption/passphrase resource
+  * rest-api: Add /resource-definition/{rscname}/snapshots resource
+  * rest-api: Add /resource-definitions/{rscname}/resource-connections resource
+  * rest-api: Add /resource-definitions/{rsc}/drbd-proxy resource
+  * rest-api: Add toggle-disk and migrate-disk to resource resource
+  * rest-api: add volume list getter
+  * rest-api: Add query-max-volume-size resource
+  * rest-api: Add key-value-store resource
+  * rest-api: add grizzly configuration properties
+  * rest-api: add openapi documentation and an index page
+  * rest-api: update to work with layer-stacks and deviceproviderkinds
+  * apiversion: raise API_VERSION to 4
+  * remove oneof as we have to support protobuf 2.5.0
+
+  [ Gabor Hernadi ]
+  * First version of new device manager
+  * Changed submodule to BK instead of GH
+  * Added basic LvmThin support (no snapshots yet)
+  * Implemented feedback for new devMgr + DRBD diskless support
+  * Added zfs and zfsthin support
+  * Applied changes made on original DeviceManagerImpl
+  * Minor refactoring
+  * Added ZFS (+thin) snapshot support
+  * Added objRef to responses from AbsStorageProvider
+  * Added LvmThin snapshot support
+  * Bug- and race-condition fixes and cleanup
+  * Fixed hanging rsc-del in case of broken storPool
+  * Removed debug outputs
+  * LvmProvider checkConfig
+  * Made Layers and DevMgr injectable
+  * Redirected getFreeSpace / getTotalCapacity to new DevMgr methods
+  * Fixed external command for query ThinTotalSize
+  * Fixed: layeredRscHelper now also converts Resource- and VolumeConnections
+  * Fixed free space reporting from LvmThin
+  * Fixed some NullPointerExceptions
+  * Fixed NPE when updating DRBD-diskless volume
+  * Fixed: Exending vlmSize if converted rsc has DRBD type
+  * Fixed: DevHandler now processes snapshots without resources if needed
+  * Added Swordfish support
+  * Minor cleanup
+  * Fixed: Swordfish bugs
+  * Fixed: implemented all "not implemented yet" methods
+  * Fixed bugs in ZfsProvider and when converting resources
+  * Fixed: added missing delete call
+  * Fixed: removed unnecessary parameter for compatibility
+  * Fixed zfs device path format for compatibility with older zfs versions
+  * Added CryptLayer
+  * DRBD layer now correclty reports devicePath
+  * Fixed Tests
+  * Updated submodule reference
+  * Deleted old deviceManager and its helper classes
+  * Renamed some classes
+  * Fixed JUnit tests
+  * Fixed false-positive warning about unknown resources
+  * Minor cleanup
+  * Renamed storage2 package to storage
+  * Fixed priority order of preferred nics
+  * Fixed bug where retCode's OP and OBJ mask was overriden
+  * Added RetryResourceTask
+  * Fixed: DrbdLayer now resizes volume if needed
+  * Added toString methods for Transaction* classes
+  * Fixed wrong resource-name case for wait-connect-resource call
+  * DrbdLayer now correctly sets / uses configured maxPeerSlots
+  * Split DeviceHandler#dispatchResources into sub-methods
+  * Fixed missing reported FreeSpace after modifying storage pool
+  * Added "HOSTNAME_MISMATCH" status to peer connection
+  * Added LockGuardFactory
+  * Added KeyValueStore
+  * Fixed overriding controllers PlainPort for CI-tests
+  * Fixed invalid input for %d formatting
+  * Improved handling of out-of-order drbd-events
+  * Added two more PropsContainerTest
+  * Restarting events2 stream in case of Exception
+  * Extract LayerdData into LayeredDataStorage
+  * Removed unused classes
+  * Fixed small bugs
+  * Fixed: non-existent storPools now return -1 as capacity and free space
+  * Added deleteNamespace for existing APIs
+  * Fixed some bugs repoted by FindBugs
+  * Controller now has full control over layer data
+  * Fixed: NoSuchElementExc in ConfFileBuilder with volume-less resources
+  * Fixed RetryResourceTask not incrementing retry-count
+  * Fixed resizing bug
+  * Fixed StorageLayer removing snapshots with no resources
+  * Added LayerUtils
+  * Reorganized protobuf messages
+  * LayerData are now also deleting themselves from DB
+  * Fixed access to deleted Volume
+  * Added layerStack to RscDfn
+  * Fix: CryptSetupLayer missing key bug
+  * Small bugfixes and a workaround
+  * Fixing unit tests
+  * Fix: non-drbd resources now also send the ready event
+  * Fix: minor number autoallocated twice
+  * Fixed minor snapshot related bugs
+  * Fixed toggle disk
+  * Added missing TransactionList impl
+  * Fixed Proxy deserialization bug
+  * AutoPlaceResource: changed input type of layer_stack
+  * Replaced string based storPool.driver with enum
+  * Fixed "access to deleted vlmDfn"
+  * Added missing DB-Migration for string-2-enum driver
+  * Fixed auto-place not finding storPools
+  * Fixed hung migrating drbd resource
+  * Fixed unit tests
+  * Fixed check of different storPool types
+  * Fixed: Reconstructed LayerStack when migrating
+  * Fixed NPE when serializing non-stlt netIfs
+
+  [ Joel Colledge ]
+  * ZFS 0.6.5 does not support a -o option to zpool get
+  * Extract mapping from StorageDriverKind to DeviceProvider into its own class
+  * Delete storage volumes when deleting resource definition
+  * Restore deployment status and error responses
+  * Fix removal of rollback property when rollback is successful
+  * Fix RscApiTest to expect deployment modification response which is now [...]
+  * Fix node lost API when the node had snapshots
+  * Revert "Changed submodule to BK instead of GH"
+  * Do not check current storage pool when validating whether a new volume [...]
+  * Update the reactor-test version to match the reactor-core version
+  * Include error report ID in error response from snapshot operations
+  * Fix addition of disks
+  * Fix removal of disks
+  * Make API calls even when we ignore the responses to them
+  * Do not process snapshots twice if an error occurred the first time
+  * Only take snapshots if the snapshot is marked to be taken
+  * Reduce the severity of unknown resource warnings
+  * Remove some unused classes
+
+  [ Rainer Laschober ]
+  * do not generate error report when creating storage-pool on disconnecte [...]
+  * fix javadoc issues
+  * implement multiple network path functionality and test cases
+  * cleanup code
+  * change error into warning when deleting non-existent snapshot
+  * implement prefNic check
+  * Fixed NPEs when updating satellite-connections
+  * fix setAllProps to do proper rollback on error and cleanup code
+  * adapt method calls to perform retain operations instead of full delete
+  * added method for deleting namespace
+  * implement api for listing all key-value-stores, code cleanup
+  * replace modifyKvsProps with modifyKvs and adjust corresponding .proto files
+  * Added DeleteKeyValueStore API
+
+  [ Roland Kammerer ]
+  * build: add sles15 support
+  * docker,controller: add python-all as dep
+  * docker: prepare for multiple Dockerfiles
+  * docker: dockerize satellite
+  * packaging: try to create backup file
+  * docker: allow specific version tags
+
+  [ Robert Altnoeder ]
+  * LockGuardFactory interface change, fixes & optimization
+  * Added interface ProtectedObject
+  * Changed ShutdownProtHolder so it implements the new ProtectedObject in [...]
+  * Added command CmdChangeObjProt
+  * Track connections in connecting state
+  * CmdDisplayConnections: Add option to display pending connections
+  * CmdDisplayConnections: Added attached debug console notice to ID details
+  * Refactor: Rebranded a few method & variable names
+  * Refactor spelling: priveleged -> privileged
+  * Some database migration script fixes
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Fri, 15 Mar 2019 13:22:27 +0100
+
+linstor-server (0.7.5-1) experimental; urgency=medium
+
+  [ Joel Colledge ]
+  * Fix node lost API when the node had snapshots
+  * Do not check current storage pool when validating whether a new volume [...]
+
+  [ Rene Peinthor ]
+  * fix resource folder leak of Files.list()
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Fri, 21 Dec 2018 09:08:38 +0100
+
+linstor-server (0.7.4-1) experimental; urgency=medium
+
+  [ Robert Altnoeder ]
+  * Added DB migration to fix SNAPSHOT_VOLUMES column
+  * DeviceManager service: Fixed scope enter/exit bug
+  * Fixed trace mode methods (fixes DeviceManager restarts)
+  * Set valid volume number range [0, 65534]
+  * Fixed worker queue size calculation
+  * Limit resync percentage to a [0, 100] range
+  * Satellite: Added check for a supported DRBD version
+  * Fix STOR_POOL_NAME database column type
+  * Unified exit codes
+
+  [ Joel Colledge ]
+  * Send response for snapshot change even when the resource is no longer  [...]
+  * Update volume disk state inside try-catch block so that the response i [...]
+  * Write logs to directory configured on the command line when writing to [...]
+  * Add resource definition created for snapshot processing to global map
+  * Only require the peer to be authenticated before sending API calls
+  * Allow volumes to be created when the free capacity is not yet known ev [...]
+  * Include error IDs in responses from fallback error handlers
+  * Include asynchronous stage trace in error reports
+  * Add low level fallback error handler so that uncaught errors do not st [...]
+  * Let watches subscribe to more than 256 streams concurrently
+  * Include thin volume allocated capacity in the volume list
+  * Do not suppress existing error IDs in fallback error handler
+  * Fix ZfsDriverTest to expect inclusion of 'used' column
+  * Make access of in-use state of resources thread-safe
+  * Simplify the API call handler ordering logic
+  * Fix failure when the controller is under load from many peers
+  * Tidy up message logging
+  * Event handling no longer needs a scope
+  * Add scope description to trace logging
+  * Use an EmitterProcessor instead of limiting queue size directly with a [...]
+  * Convert the Ping API to reactive style
+  * Add option to migrate disk from another node when adding disk to diskl [...]
+  * Make API calls singletons
+  * Ensure that the storage pool kind is the same as on the peers when add [...]
+  * Wait for connections to be established before treating a resource as ready
+  * Save and restore node ID with snapshot
+
+  [ Rene Peinthor ]
+  * satellite: only generate linstor-resources.res if it doesn't exist
+
+  [ Roland Kammerer ]
+  * build,pkg: /etc/drbd.d/linstor-resources.res
+  * packaging: bump drbd-utils to >= 9.7.0
+
+  [ Gabor Hernadi ]
+  * Removed unused controller arguments
+  * Fixed missplaced == for comparing names
+  * Fixed possible resource-leak
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Mon, 17 Dec 2018 11:17:59 +0100
+
+linstor-server (0.7.3-1) experimental; urgency=medium
+
+  [ Robert Altnoeder ]
+  * Fixed DbConnectionPool initialization in a test
+  * SQL fixes: Improved ANSI SQL compatibility
+  * Added DatabaseInfo classes, DatabaseDriverInfo for DB2
+  * Controller database fixes
+  * Fix missing import for GenericDbUtils
+  * Fix SQL migrations: resource connection flags & tcp_port column
+  * Added class DrbdVersion - Check of the DRBD kernel module version
+  * DrbdVersion: Indicate a failure to determine the DRBD version
+
+  [ Rene Peinthor ]
+  * unittest: fix db unittests
+  * fix forgetting createResourceDb warnings
+  * fix mixing implicit diskless resource with other storage types
+  * node-reconnect: fix re-entering scope exception
+  * whitelistprops: patch the resync-after property to a string prop
+  * create-resource: need write lock for storpooldfnmap
+  * swordfish: make sure resource/volume states are removed
+  * node-reconnect: make sure node doesn't get removed from reconnector
+  * drbd-event: update the current SyncTarget % status
+
+  [ Gabor Hernadi ]
+  * Swordfish: commiting setting node-name after fullSync
+  * Fix: skip storPool-size-check in case of migration
+
+  [ Joel Colledge ]
+  * Add snapshot definition sequence number so that we know which the last [...]
+  * Add snapshot rollback API
+  * Fix deletion of snapshot when the volumes on which the snapshot was ba [...]
+  * Fix rollback to snapshot when some volumes on which the snapshot was b [...]
+  * Preserve the initial generation identifier across snapshot and restore
+  * Allow resource creation on offline satellites without worrying about f [...]
+  * Do not recursively delete ZFS snapshots when deleting volumes
+  * Forward IDs of error reports from satellites
+  * Include the first volume exception in the resource exception when ther [...]
+  * Handle snapshot deletion before resource deletion
+  * Fail resource and volume definition deletion when ZFS snapshots are present
+  * Only prepare a DB transaction for the APIs that require one
+  * Produce simpler errors when the database connection is down
+  * Only send API calls when the satellite full-sync was successful
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Thu, 22 Nov 2018 11:19:50 +0100
+
+linstor-server (0.7.2-1) experimental; urgency=medium
+
+  [ Joel Colledge ]
+  * Make volume definition resize synchronous
+  * Create snapshots using reactive approach
+  * Delete snapshots using reactive approach
+  * Ensure security levels are set consistently for tests
+  * Reload number pool auto-allocation ranges after loading properties fro [...]
+  * Upgrade guice to 4.2.2 for better Java 10 and 11 support
+  * Replace usage of deprecated Flyway features
+  * Do not commit or rollback in Flyway migrations
+
+  [ Rene Peinthor ]
+  * db-init: set SECURITYLEVEL to NO_SECURITY
+  * Add node reconnect API
+  * auto-place: allow replicas-on-same to specify property values
+  * linstor-common: use latest makefile changes
+  * gradle: use same guice versions for extensions
+  * Prevent creating resources/volumes with different storage drivers
+
+  [ Gabor Hernadi ]
+  * Swordfish: Commiting stltProps.NodeName on auth
+  * Swordfish: Exclude specially handled status code
+  * Swordfish: Redirect default toString to error generating toString
+  * Swordfish: (re-)load json on reconfigure
+  * Swordfish: (Re)set nodename in stltProps after FullSync
+  * Satellite: setting shutdown-objProt
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Mon, 12 Nov 2018 09:44:37 +0100
+
+linstor-server (0.7.1-2) experimental; urgency=medium
+
+  [ Rene Peinthor ]
+  * Fully clean intermediate build files 
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Tue, 06 Nov 2018 09:10:12 +0100
+
+linstor-server (0.7.1-1) experimental; urgency=medium
+
+  [ Joel Colledge ]
+  * Remove thin volume from pending volumes when it has been deployed
+  * Close resource deployment event stream when the resource is deleted
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Wed, 31 Oct 2018 12:11:19 +0100
+
+linstor-server (0.7.0-1) experimental; urgency=medium
+
+  [ Joel Colledge ]
+  * Allow multiple resources to be created with a single API call
+  * Make resource auto-place synchronous
+  * Remove resource definition ready event which is no longer used
+  * Remove unused RequestRscDfn code from the satellite
+  * Make new node connection a little less racy
+  * Remove unused skipSync method
+  * Actually send the already initialized field with the primary request
+  * Tidy up use of comparators in the stor pool selection
+  * Extract free capacity fetching from the storage pool listing
+  * Tidy up auto-place placement count decision logic
+  * Auto-place using actual free capacity of thin pools
+  * Tidy up some unused imports etc
+  * Only fetch free capacities for thin pools and only track free capaciti [...]
+  * Fix RscApiTest which now has a free capacity fetcher dependency
+  * Supply oversubscription information with the max volume size query
+  * Fix resource creation free capacity check to allow resources that cons [...]
+  * Remove unused dependencies
+  * Only fetch thin free capacity from nodes that have thin pools
+  * Remove unused toggle disk methods and dependency
+  * Make storage pool creation synchronous so that configuration errors ar [...]
+  * Ensure that the satellite answers even when the request was made befor [...]
+  * Add optional port field to resource connection to make proxy connectio [...]
+  * Add configuration of DRBD proxy running locally
+  * Fix test that expected address entries in the node sections rather tha [...]
+  * Add configuration of DRBD Proxy options
+  * Add configuration of DRBD Proxy compression plugins
+  * Refuse to delete a node with snapshots
+  * Delete snapshots when a node is lost
+
+  [ Gabor Hernadi ]
+  * Fixed usage of correct node namespace for storPool reconfiguration
+  * Fixed possible "Access to deleted <object>"
+  * Fix: prevent deletion of sf_t resource before sf_i resource
+  * Fix: prevent multiple swordfish-target-resources per rscDfn
+  * Upgraded FlyWay dependency to version 5.2
+  * Made swordfish-initator-driver "diskless"
+  * Fixed wrong swrodfish-volume-url
+  * Drbdsetup events2 all now restarts when manually killed
+  * Added missing return-code checks for swordfish-REST calls
+  * Swordfish: Added centralized status-code check
+  * Swordfish: Added meaningful volume states
+  * Swordfish: Minor error-reporting changes
+  * Swordfish: fixed state-checking issues
+  * Fixed race-condition when creating storDriver
+  * SwordfishDriver also reports volume-state after exception
+  * Swordfish_Target nodetype does no longer try to move linstor_common.conf
+  * Fixed race-condition in swordfish-driver
+  * Fixed swordfish-state strings
+  * Added TransactionSet class
+  * Made FreeSpaceMgr's pendingVolumesToAdd transaction-safe
+  * Swordfish: added "To: Creating" state
+  * Swordfish: "Failed" state on unexpected response code
+  * Swordfish: Fixed NOT_FOUND response handling in "volumeExists"
+  * Swordfish: Actually calling the unexpectedRespCodeHandler
+  * Swordfish: Decreased default timeout to 290 sec
+  * Fixed race-condition in SF-driver and preventing DELETE with null volume-id
+  * Swordfish: Fixed NPE
+  * Swordfish: added configurable retry count and delay for 503 responses
+
+  [ Rene Peinthor ]
+  * storpool-freespace: fix null pointer exception if storage pool broken
+  * controller: Add version mismatch satellites to the reconnector task
+  * linstor-config,sql-script: read from stdin if no sql script was given
+  * controller,ssl: resolve the keystore and trustdb file on config direct [...]
+  * auto-place: do not try to deploy a diskless pool on any non SATELLITE  [...]
+  * StateFlagsBits: allow more than one objectProtection
+  * RscConn: Add flags to resource connections
+  * RscCon: add a resource connection list API
+  * StltResConDfnDriver: fix NPE
+  * give swordfish target satellites a error report node name
+  * swordfishtarget: create volume return is http 202
+  * rsc-del: rework swordfish target check to a common diskfull/diskless check
+  * drbdeventpublisher: remove unused method
+  * use interfaces instead of implementation classes
+  * swordfish-initiator: be more generous while deleting volumes
+  * ctrlrscautoplaceapicallHandler: make isStorPoolUsable static
+  * rsc-create: check storage pool if enough space is available
+  * increase API_VERSION
+  * swordfish-target: set log directory for error reports
+  * linstorconfig: disable auto commit on sql-script command
+
+  [ Robert Altnoeder ]
+  * TcpConnectorService: Automatic fallback from loopback/anylocal IPv6 to IPv4
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Tue, 30 Oct 2018 10:30:35 +0100
+
+linstor-server (0.6.5-1) experimental; urgency=medium
+
+  [ Roland Kammerer ]
+  * build,rpm: add myself back to changelog
+
+  [ Robert Altnoeder ]
+  * Added message size statistics
+  * Adjusted CmdRunDeviceManager to changes in the device manager
+  * Removed compile-time debugging from GenericTimer
+  * API processing: bounds on active worker threads and queue size
+  * Error reporting: Fixed DspRptLst debug command, replaced string litera [...]
+  * Code cleanup
+  * Fixed CmdDisplayReport: Adjusted to new instanceId format
+  * CmdRunDeviceManager: Mark resources for update instead of resource def [...]
+  * CmdRunDeviceManager: add a noop subscriber to the Flux object
+
+  [ Rene Peinthor ]
+  * apply-rsc-changes: Fix NPE if non existing rscconn is accessed
+  * apicallreply: add occurred error report id to the api call respond
+  * peer: set an PeerOffline for CONTROLLER | AUX node types
+  * picocli: upgrade to version 3.6.0
+  * cmdl-parsing: split common commandline parser into stlt and ctrl
+  * make: create jar.deps depending on build.gradle
+  * zfsthin: fix zfs thin reporting FAT provisioning
+  * drbddevicehandler: allow deleting of resource with broken storage pool
+  * thin_sync: fix initial thin resync
+
+  [ Gabor Hernadi ]
+  * Every api-message triggers a pongReceived()
+  * Fixed possible NPE
+  * Fixed ConcurrentModificationException
+  * Removed unnecessary payload from ChangedController API
+  * Fixed wrong SwordfishUserPw assignment typo
+  * Increased swordfish timeout to 300 sec
+  * Fixed swordfish stlt-port availability checking
+  * PriorityProps: added renderRelativeMap method
+  * Cleanups and minor changes required for DevLayers
+  * Included Peer description in ErrorReporting
+  * Fixed possible NPE
+  * Extracted common swordfish methods
+  * Updates to controller-props now re-configures ALL storDrivers
+  * Removed incorrect and misleading comment
+
+  [ Joel Colledge ]
+  * Remove unnecessary defer wrapping
+  * Remove barely used ScopeRunner convenience methods
+  * Allow an arbitrary number of API calls to run simultaneously
+  * Delete using reactive approach
+  * Remove internal deletion notification messages which are no longer used
+  * Automatically include the op return code fields and object references  [...]
+  * Remove the volume clean flag which is no longer set
+  * Respond to 'changed' calls which cause the dispatch of a given resourc [...]
+  * Notify connection listeners after disconnecting a deleted node
+  * Include peer in test error reporter header
+  * Only initiate an initial sync when the DRBD meta data is new
+  * Avoid deleting resources while iterating over them
+  * Respond with separate errors for each storage pool when getting the fr [...]
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Tue, 02 Oct 2018 08:13:02 +0200
+
+linstor-server (0.6.4-1) experimental; urgency=medium
+
+  [ Rene Peinthor ]
+  * zfsdriver-sizes: catch NumberformatException
+  * CommonSerializer: add parseApiCallRc method
+  * list-storpool: forward satellite errors to client
+  * storage-driver: improve invalid configuration message
+  * satellite: Allow a successful full sync with broken storage pool
+  * linstor-common: improve the chance the atomic move will work
+  * gradle: specify output file of versionInfo task
+  * resource: add isDiskless() method
+  * drbdDeviceHandler: do not attempt to generated metadata for diskless
+  * error-reports: rework instance id
+
+  [ Robert Altnoeder ]
+  * Added nbproject to .gitignore, deleted build-impl.xml from index
+  * Added class MdSuperblockBuffer
+  * Added an additional check for DRBD meta data
+
+  [ Gabor Hernadi ]
+  * Fixed race condition in DevMgr
+
+  [ Roland Kammerer ]
+  * build,rpm: generate noarch packages
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Fri, 14 Sep 2018 08:58:59 +0200
+
+linstor-server (0.6.3-1) experimental; urgency=medium
+
+  [ Rene Peinthor ]
+  * linstor-config: make sure the LINSTOR schema is set
+  * nodeapidata: use ConnectionStatus enum
+  * err-list: Fix null pointer exception if node not connected
+  * storpool-list: fix diskless storpool filtering
+  * zfsdriver: fix incorrect total capacity reporting
+  * zfsdriver: fix total capacity for sub datasets
+  * zfsthindriver: add zfs thin driver
+  * satellite: atomically write drbd res files
+  * tests: fix guice SF_TARGET_PORT_POOL mock
+  * swordfishtarget: resolve satellite start binary from class path
+  * swordfishtarget: don't fail controller startup
+  * node-lost: fix resource definition in delete state
+
+  [ Gabor Hernadi ]
+  * Added timeout for respawning drbd events2 stream
+  * Fixed access to deleted volume
+  * Removed special treatment for default diskless storage pool
+  * Added whitelist storage drivers per node type
+  * Fixed tests
+  * Fixed controller: establishing connection to swordfish_target
+  * Added --bind-address argument
+  * Added swordfish_target node creation API
+  * Fixed potential ConcurrentModificationException
+  * Added .res file testing
+  * Fixed satellite disconnect when extCmd takes long
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Mon, 10 Sep 2018 14:28:42 +0200
+
+linstor-server (0.6.2-1) experimental; urgency=medium
+
+  [ Gabor Hernadi ]
+  * SwordfishTargetDriver: removes vlmDfn entry on deleteVolume
+  * Ctrl: do not connect to Ctrl or Aux nodes
+
+  [ Rene Peinthor ]
+  * Fix missing SEC_ACL_MAP entries for freespacemgrs
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Mon, 03 Sep 2018 15:07:42 +0200
+
+linstor-server (0.6.1-1) experimental; urgency=medium
+
+  [ Rene Peinthor ]
+  * gradle: also add lib/* to linstor-config cp tool startup script
+  * db: fix broken freespace manager migration script
+  * Fix NPE if node currently doesn't have a peer
+
+  [ Gabor Hernadi ]
+  * Added 1 hour db-connection idle timeout
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Mon, 03 Sep 2018 11:07:48 +0200
+
+linstor-server (0.6.0-1) experimental; urgency=medium
+
+  [ Joel Colledge ]
+  * Create resource using reactive approach
+  * Clear up resource create name validation
+  * Correct resource modified message
+  * Resolve storage pool at volume creation
+  * Fix querying of LVM thin pool total capacity
+  * Add API to add a disk to a diskless resource
+  * Fix tests to expect new disk add flags
+  * Add API to remove a disk making a resource diskless
+  * Fall back to default when the free space manager name is empty
+  * Avoid tracking free space on satellites and ensure storage pools on di [...]
+  * Fix resource deletion by not tracking pending volume deletion
+  * Drop buffered messages when the peer is no longer connected
+  * Avoid contacting satellites before committing node deletion and loss
+  * Add object protection for free space managers for existing storage poo [...]
+  * Remove storage pool property which just duplicated the storage pool name
+  * Send resources to satellites even when they have no volumes
+  * Make generation of API classes a dependency of the server subproject r [...]
+  * Do not expect resources that are diskless everywhere to ever be ready
+  * Improve messages for resource create and toggle disk
+  * Fix resource create API test so that it expects the warning for no volumes
+  * Add property normalization step so that boolean properties are easier  [...]
+  * Add property to allow underlying volume to be larger than expected
+  * Differentiate between yes/no and true/false booleans
+  * Fix resource create peer added message
+  * Make sure toggle disk continues even if it was stopped while the trans [...]
+  * Remove toggle disk notification messages when for updates that don't h [...]
+  * Add support for resources without DRBD determined by storage driver kind
+
+  [ Rene Peinthor ]
+  * make: do not transform symlinks
+  * remove nebula.ospackage plugin
+  * work with symlinks for offline builds
+  * gradle/controller: add all jars in lib/ to classpath
+  * gradle: remove duplicate startup tasks
+  * linstorconfig: add command to run sql scripts
+  * sql: fix incorrect storage pool name length
+
+  [ Gabor Hernadi ]
+  * .gitignore: added eclipse-specific paths
+  * Removed unnecessary casts to StorPoolData
+  * Added realSize to VolumeData
+  * Added shared StorPools
+  * Extracted crypt feature to separate class / interface
+  * Added swordfish storage driver
+  * Removed unnecessary FIXME from ExtCmd
+  * Fixed property bug
+  * Added finer tuning options for swordfish driver
+  * Fixed exception when swordfish.json is empty
+  * Fixed wrong swordfish KEY references in submodule
+  * Fixed minor swordfish bugs
+  * Swordfish: added synchronization for persisting JSON data
+  * Swordfish: driver can now continue with half-created volume
+  * Fixed source snapshotname from migrated resource
+  * Added -k or --keep-res argument
+  * StorageDrivers can now write into VolumeDefinition's Props
+  * Split SwordfishDriver into *TargetDriver and *InitiatorDriver
+  * Added --port and --skip-hostname-check CLI args
+  * Fixed broken tests
+  * SwordfishDriver: added additional check
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Fri, 31 Aug 2018 13:01:18 +0200
+
+linstor-server (0.5.0-1) experimental; urgency=medium
+
+  [ Joel Colledge ]
+  * Collect real free space information from LVM thin pools
+  * Extract satellite updating from AbsApiCallHandler
+  * Extract name parsing utils from AbsApiCallHandler
+  * Extract response utils from AbsApiCallHandler
+  * Extract props methods from AbsApiCallHandler
+  * Delete unused classes
+  * Extract transaction commit method from AbsApiCallHandler
+  * Load directly from parent objects instead of using factories
+  * Remove AbsApiCallHandler
+  * Fix some checkstyle warnings in the controller API call handling code
+  * Simplify tracking of resources to dispatch
+  * Remove the direct dependency of WorkerPool on DbConnectionPool
+  * Remove the direct dependency of ControllerTransactionMgr on DbConnectionPool
+  * Move DB classes into the controller project
+  * Move DB migration resources into the controller project
+  * Simplify tracking of resources to dispatch
+  * Load controller and satellite props at startup
+  * Load DB objects at startup
+  * Start the DB and load security objects explicitly at startup
+  * Initialize number pools at startup
+  * Initialize diskless stor pool at startup
+  * Fix test that expected the default stor pool which is no longer used i [...]
+  * Fix starting the controller without the debug console
+  * Introduce reactor, using it to collect free space from storage pools
+  * Ensure that the satellite exits with a non-zero exit code when it fail [...]
+  * Allow the node ID to be overridden when creating resources
+  * Integrate the events system with reactor
+
+  [ Rene Peinthor ]
+  * netif: add stlt port and encryption type in protobuf messages
+  * error-report: show node name in report
+  * move RANGE_PATTERN to a better location
+  * cleanup imports
+  * move CONTROLLER_PROPS, SATELLITE_PROPS identifier to LinStor class
+  * use LinStor.SATELLITE_PROPS instead of SatelliteCoreModule.
+  * split project into server, satellite, controller sub-projects
+  * move LinstorConfig to controller project
+  * move database dependencies to controller project
+  * set same version for all subprojects
+  * copy libraries from all sub-projects
+  * gradle: fix deprecated syntax
+  * git: explicit .gitignore file
+  * gradle: enable the idea plugin
+  * unittests: generate error logs into `build/test-logs`
+  * code cleanup
+  * storpool: update satellites that their storagepool was deleted.
+  * conffilebuilder: write peer-device options to common conf
+  * conffilebuilder: allow setting of peer-device options on rscdfn
+  * conffilebuilder: fix missing option section for resource options
+  * deb: correctly distribute .jar files to packages
+  * rpm: correctly distribute jar files to packages
+  * SslTcpConnectorPeer: remove unused msgState assignment
+  * TcpConnectorPeer: use nextInMessage() method to update msg counter
+  * error-report-api: redone with reactive library
+  * update submodule ref
+  * conffilebuilder: fix duplicate disk section in connection section
+  * database: add support for mariadb/mysql
+  * allow new-peer('net') options on resource connections
+  * satellite: change linstor drbd.res file directory to /var/lib/linstor.d
+  * report total capacity for storage pools
+  * storpool: rename free_space to free_capacity
+  * linstor-config: improve error message on invalid database.cfg file
+  * bump api version to 2
+
+  [ Gabor Hernadi ]
+  * Rework netcom implemenation, fixes SSL communication
+
+  [ Roland Kammerer ]
+  * build: add drbd-utils as dependency for satellite
+  * build: add proper rpm packaging
+  * build,rpm: use more idiomatic vars
+  * diffcopy.py: add file
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Thu, 16 Aug 2018 09:58:55 +0200
+
+linstor-server (0.2.6-1) experimental; urgency=medium
+
+  [ Rene Peinthor ]
+  * cmd-parser: don't fail if config directory doesn't exist
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Tue, 24 Jul 2018 13:43:44 +0200
+
+linstor-server (0.2.5-1) experimental; urgency=medium
+
+  [ Joel Colledge ]
+  * Check for the protoc binary when executing the task rather than when c [...]
+  * Tidy up Java generation tasks
+  * Explicitly exclude Java generation from the debian build rules because [...]
+
+  [ Roland Kammerer ]
+  * debian: add python as builddep
+
+  [ Rene Peinthor ]
+  * resourcedfn: add hasDiskless method
+  * rscdfn: only remove the primary flag if rscdfn is not deleted anyway
+  * rscdfn: on delete first try to delete diskless resources
+  * make the error (which it isn't) a warning
+
+ -- Rene Peinthor <rene.peinthor@linbit.com>  Fri, 20 Jul 2018 08:01:28 +0200
+
+linstor-server (0.2.4-1) experimental; urgency=medium
+
+  [ Joel Colledge ]
+  * Enable resize of underlying storage volumes
+  * Enable resize of DRBD volumes
+  * Add a volume definition resize flag so that the client can show a resi [...]
+  * Fix storage driver tests to match behavior introduced for volume resize
+  * Explain unexpected resize size situation
+  * Use driver kind provisioning trait instead of duplicated trait in driver
+  * Do not send restored resources to satellites when no volumes are present
+  * Fix prioritization of storage pools with more free space when auto-placing.
+  * Do not send any free space for LVM thin pools because the data is not useful
+  * Indicate in the max volume size query whether the pool is thin
+  * Allow auto-placement in thin pools even though they have unknown free space.
+  * Error message when loading a node should not depend on current API call type
+  * Simplify API call handler answering and error handling helpers
+  * Remove variables from API call response since the original format stri [...]
+  * Remove mutable state from controller API call handlers
+  * Use 'register' terminology for entity creation when the entity has a c [...]
+  * Do not try to auto-place on nodes which are not connected
+  * Fix auto-place test such that the mock peer is connected
+  * Simplify logic for auto-place selection based on property values
+  * Remove unnecessary driver loading method.
+  * Check for the protoc binary when executing the task rather than when c [...]
+
+  [ Gabor Hernadi ]
+  * Add OverrideVlmId property
+  * Fix: Initial drbd status
+  * Moved apicallhandlers in dedicated packages
+  * Extract auto-select feature
+  * Add qryMaxVlmSize feature
+  * Fixed wrong proto msg for maxSize-reply
+  * Extracted AutoSelectFilter-ProtoMsg
+  * Add disklessOnRemaining for RscAutoPlace
+  * Fix: LvmDriver
+  * Unified internal structures in AutoSelector
+  * Made AutoPlace idempotent.
+  * Refactored AutoPlace calling CtrlRscApiCallHandler
+  * ConfFileBuilder
+  * Improved error reporting for AbsStorDriver.delete
+  * Fixed hung resource creation
+  * Fixed object order when requesting changed data
+  * Fixed potential nullpointer access
+  * DrbdDeviceHandler tries 'drbdsetup down' more eagerly
+
+  [ Rene Peinthor ]
+  * api-serialization: remove a layer of abstraction
+  * stlt/hostname: add hostname satellite api call
+  * allow sub datasets to be used for zfs storage pools
+  * Fix incorrect checking of zfs extend size [BREAKS old ZFS]
+  * maxvlmsize: fix incorrect protobuf deserialization
+  * gradle-rpm: add firewalld service files for linstor and drbd
+  * proto-api: send parser apicall error if protobuf parsing failed
+  * gradle: simplify startscript creation
+  * gradle: fix missing start scripts in .tar/.zip
+  * commandline: add --logs and rework --controller-directory
+  * rsc-list: filter resources states data too
+  * rscapi: fix access to deleted data
+  * drbdevents: volume destroyed was also send for destroyed peer connections
+  * fix incorrect indention
+  * event-generator: withSatelliteState should acquire a writeLock
+  * ctrl-stlt: ensure no apply updates run while fullsync in progress
+  * stltupdaterequester: do not access getLocalNode() for the controller Peer
+  * remove unnecessary string concat
+
+  [ Robert Altnoeder ]
+  * Fix controller notification about deleted resources when free space re [...]
+  * Hotfix: Report PROV_THIN for LvmThinDriver.
+  * Added DRBD metadata generation ID generator
+  * Generation of an initial DRBD current GI for each volume definition
+  * Updated nbproject/build-impl.xml
+  * Skip the initial sync of thinly provisioned volumes
+  * Skip the resync when resizing thin provisioned volumes
+  * Added exception handling comment, slightly optimized value parsing
+  * Fixed potential unit index off by one when formatting very large size values
+  * Unified ...utils.LockSupport & ...locks.MultiLock into com.linbit.lock [...]
+  * Fixed error message for invalid resource name, added error reporting fields
+  * Replaced Class.newInstance() call, which has been marked deprecated in [...]
+  * Removed replaced Class.newInstance() call
+
+  [ Roland Kammerer ]
+  * move from /opt to /usr/share
+  * build: don't include test-libs in release tarballs
+  * debian: initial debian packaging
+  * build: add "release" target
+  * linstor-satellite.service: fix typo
+  * debian: add postinstall script
+  * debian: pkg split
+  * initial docker integration
+  * build: allow FORCE=1 for dockerimage target
+  * Dockerfile: initial lbbuild integration
+  * build: dockerpath target
+
+ -- Joel Colledge <joel.colledge@linbit.com>  Tue, 17 Jul 2018 14:39:06 +0200
+
+linstor-server (0.2.3-1) experimental; urgency=medium
+
+  * initial release
+
+ -- Roland Kammerer <roland.kammerer@linbit.com>  Wed, 06 Jun 2018 15:13:14 +0200

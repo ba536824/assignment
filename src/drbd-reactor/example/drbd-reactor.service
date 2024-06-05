@@ -1,0 +1,25 @@
+[Unit]
+Description=DRBD-Reactor Service
+Documentation=man:drbd-reactor man:drbd-reactorctl man:drbd-reactor.toml
+ConditionKernelCommandLine=!nocluster
+Requires=network-online.target
+After=network-online.target
+
+# Managing systemd service units requires DBus
+Wants=dbus.service
+After=dbus.service
+
+# Managing systemd socket units needs polkit as well
+Wants=polkit.service
+After=polkit.service
+
+# If the AgentX plugin is used we want to be started after snmpd
+After=snmpd.service
+
+[Service]
+Type=notify
+ExecStart=/usr/sbin/drbd-reactor
+ExecReload=/usr/bin/env kill -HUP $MAINPID
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package com.linbit.linstor.proto.common;
+
+enum LayerType
+{
+    UNKNOWN_LAYER = 0;
+
+    DRBD = 1;
+    LUKS = 2;
+    STORAGE = 3;
+    NVME = 4;
+    WRITECACHE = 5;
+    // 6, openflex, deleted
+    CACHE = 7;
+    BCACHE = 8;
+}

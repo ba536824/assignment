@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+package com.linbit.linstor.proto.common;
+
+message ExternalToolsInfo
+{
+    enum ExternalTools
+    {
+        UNKNOWN = 0;
+
+        DRBD9 = 1;
+        DRBD_UTILS = 21;
+        DRBD_PROXY = 2;
+        CRYPT_SETUP = 3;
+        LVM = 4;
+        LVM_THIN = 9;
+        THIN_SEND_RECV = 12;
+        ZFS_KMOD = 5;
+        ZFS_UTILS = 24;
+        NVME = 6;
+        SPDK = 7;
+        DM_WRITECACHE = 8;
+        DM_CACHE = 10;
+        LOSETUP = 11;
+        ZSTD = 13;
+        SOCAT = 14;
+        COREUTILS_LINUX = 15;
+        UDEVADM = 16;
+        LSSCSI = 17;
+        SAS_PHY = 18;
+        SAS_DEVICE = 19;
+        BCACHE_TOOLS = 20;
+        EBS_INIT = 22;
+        EBS_TARGET = 23;
+        STORAGE_SPACES = 25;
+        STORAGE_SPACES_THIN = 26;
+        // next id: 27
+    }
+
+    common.ExternalToolsInfo.ExternalTools ext_tool = 1;
+
+    bool supported = 2;
+
+    // the following version fields are all null if the layer is not supported
+    uint32 version_major = 3;
+    uint32 version_minor = 4;
+    uint32 version_patch = 5;
+
+    repeated string reasons_for_not_supported = 6;
+}

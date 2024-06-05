@@ -1,0 +1,12 @@
+# This file contains the rules to create named DRBD devices.
+
+SUBSYSTEM!="block", GOTO="drbd_end"
+KERNEL!="drbd*", GOTO="drbd_end"
+
+IMPORT{program}="@sbindir@/drbdsetup udev %m"
+
+ENV{SYMLINK_BY_DISK}!="", SYMLINK+="$env{SYMLINK_BY_DISK}"
+ENV{SYMLINK_BY_RES}!="", SYMLINK+="$env{SYMLINK_BY_RES}"
+ENV{SYSTEMD_WANTS}="drbd-graceful-shutdown.service"
+
+LABEL="drbd_end"
