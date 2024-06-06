@@ -85,8 +85,18 @@ jobs:
       - name: local Build LINSTOR Server
         run: |
           cd src/linstor-server
-          dpkg-buildpackage -us -uc -b
-    
+          debmake
+
+      - name: Debug source directory contents
+        run: |
+          cd src/linstor-server
+          ls -R
+  
+      - name: Build LINSTOR Server package
+        run: |
+          cd src/linstor-server
+          dpkg-buildpackage -us -uc -b || (cat debian/rules && exit 1)
+  
       - name: Install PackageCloud CLI
         run: |
           sudo gem install package_cloud
