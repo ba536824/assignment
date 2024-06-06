@@ -80,12 +80,12 @@ jobs:
         run: |
           cd src
           tar -czf linstor-server_1.22.1.orig.tar.gz linstor-server/
-          mv linstor-server_1.22.1.orig.tar.gz linstor-server-1.22.1.tar.gz
     
       - name: local Build LINSTOR Server
         run: |
-          cd src/linstor-server
-          ln -sf ../linstor-server-1.27.1.tar.gz ../linstor-server_1.27.1.orig.tar.gz
+          cd src
+          ln -sf linstor-server-1.27.1.tar.gz linstor-server_1.27.1.orig.tar.gz
+          cd linstor-server
           debmake
 
       - name: Debug source directory contents
