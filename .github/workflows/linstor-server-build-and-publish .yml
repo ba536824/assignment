@@ -60,7 +60,8 @@ jobs:
           equivs \
           aspcud \
           dh-virtualenv \
-          debmake
+          debmake \
+          default-jdk-headless
 
       - name: local LINSTOR API Py repository
         run: |
