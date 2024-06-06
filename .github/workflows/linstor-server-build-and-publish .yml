@@ -65,7 +65,7 @@ jobs:
       - name: local LINSTOR API Py repository
         run: |
           cd src/linstor-api-py
-          make -C linstor-common || true  # Attempt to make in linstor-common, allowing failure
+          make  || true  
           python3 setup.py build
           sudo python3 setup.py install
     
@@ -75,17 +75,15 @@ jobs:
           PYTHONPATH="../linstor-api-py:." python3 setup.py build_man
           sudo python3 setup.py install
     
-      - name: Local LINSTOR Server
+      - name: Create upstream tarball
+        run: |
+          cd src
+          tar -czf linstor-server_1.22.1.orig.tar.gz linstor-server/
+          mv linstor-server_1.22.1.orig.tar.gz linstor-server-1.22.1.tar.gz
+    
+      - name: local Build LINSTOR Server
         run: |
           cd src/linstor-server
-          ./autogen.sh  
-          ./configure 
-          ./Makefile.em
-          sudo make install
-    
-      - name: local Build LINSTOR Gateway
-        run: |
-          cd src/linstor-gateway
           dpkg-buildpackage -us -uc -b
     
       - name: Install PackageCloud CLI
