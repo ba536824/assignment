@@ -61,7 +61,8 @@ jobs:
           aspcud \
           dh-virtualenv \
           debmake \
-          default-jdk-headless
+          default-jdk-headless \
+          gradle
 
       - name: local LINSTOR API Py repository
         run: |
