@@ -69,6 +69,7 @@ jobs:
       - name: Make DRBD-utils Package
         run: |
           cd src/drbd-utils
+          git pull
           ./autogen.sh
           ./configure
           dpkg-buildpackage -rfakeroot -b -uc
