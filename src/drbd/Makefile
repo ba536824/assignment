@@ -186,9 +186,9 @@ drbd/.drbd_git_revision: FORCE
 	@echo GIT-hash: $(GITHEAD)$(GITDIFF) > $@
 else
 drbd/.drbd_git_revision: FORCE
-#	@echo >&2 "Need a git checkout to regenerate $@"; test -s $@
-	@echo "Regenerating $@" 
-	@$(GIT) rev-parse HEAD > $@
+	@echo >&2 "Need a git checkout to regenerate $@"; test -s $@
+#	@echo "Regenerating $@" 
+#	@$(GIT) rev-parse HEAD > $@
 endif
 
 export define SPDX_TEMPLATE
