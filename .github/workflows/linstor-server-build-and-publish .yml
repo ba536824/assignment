@@ -79,7 +79,7 @@ jobs:
       - name: Create upstream tarball
         run: |
           cd src
-          tar -czf linstor-server_1.27.1.orig.tar.gz linstor-server/
+          tar -czf linstor-server_1.27.1.orig.tar.gz linstor-server-1.27.1/
     
       - name: local Build LINSTOR Server
         run: |
