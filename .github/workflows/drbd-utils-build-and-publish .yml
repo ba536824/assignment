@@ -42,7 +42,9 @@ jobs:
           automake \
           coccinelle \
           keyutils \
-          libkeyutils-dev
+          libkeyutils-dev \
+          xmlto \
+          asciidoctor
 
       - name: Build DRBD Package
         run: |
