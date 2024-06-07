@@ -47,7 +47,9 @@ jobs:
           libkeyutils-dev \
           xmlto \
           asciidoctor \
-          po4a
+          po4a \
+          man-db \
+          asciidoc
 
       - name: Clone DRBD Package
         run: |
@@ -65,6 +67,8 @@ jobs:
           ./autogen.sh
           ./configure
           make clean
+          make -j4
+          make -C documentation/v9 doc 
         shell: /usr/bin/bash -e {0}
       
       - name: Build DRBD Utils Package
