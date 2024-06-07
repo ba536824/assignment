@@ -56,12 +56,12 @@ jobs:
           default-jdk-headless \
           unzip 
          
-      - name: Pull latest changes and generate .drbd_git_revision
-        run: |
-          cd src/drbd
-          git checkout .
-          git pull
-          git submodule update --init --recursive
+    #   - name: Pull latest changes and generate .drbd_git_revision
+    #     run: |
+    #       cd src/drbd
+    #       git checkout .
+    #       git pull
+    #       git submodule update --init --recursive
   
       - name: Make DRBD repository
         run: |
