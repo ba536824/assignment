@@ -58,7 +58,9 @@ jobs:
           debmake \
           default-jdk-headless \
           unzip \
-          libkeyutils-dev
+          libkeyutils-dev \
+          asciidoc \
+          xmlto
 
       - name: Make DRBD-utils repository
         run: |
@@ -74,6 +76,12 @@ jobs:
         run: |
           cd drbd-utils
           debmake
+
+      - name: Debug Documentation Build
+        run: |
+          cd drbd-utils/documentation/v9
+          make V=1
+        shell: /usr/bin/bash -e {0}
       
       - name: Build Binary Package
         run: |
