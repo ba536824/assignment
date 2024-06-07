@@ -63,8 +63,7 @@ jobs:
         run: |
           git clone https://github.com/LINBIT/drbd-utils.git
           cd drbd-utils
-          make tools
-          sudo make install
+          ./autogen.sh
         shell: /usr/bin/bash -e {0}
       
       # - name: Build Source Package
@@ -75,7 +74,7 @@ jobs:
       - name: Build Binary Package
         run: |
           cd drbd-utils
-          dpkg-buildpackage -us -uc -b 
+          dpkg-buildpackage -rfakeroot -b -uc
 
       - name: Install PackageCloud CLI
         run: |
