@@ -38,15 +38,19 @@ jobs:
           python3-pip \
           xsltproc \
           flex \
+          gcc \
+          make \
           autoconf \
           automake \
           coccinelle \
           keyutils \
           libkeyutils-dev \
           xmlto \
-          asciidoctor
+          asciidoctor \
+          drbd-pacemaker \
+          drbd-udev
 
-      - name: Build DRBD Package
+      - name: Install DRBD Package
         run: |
           git clone https://github.com/LINBIT/drbd.git
           cd drbd
@@ -55,12 +59,12 @@ jobs:
           sudo make install
         shell: /usr/bin/bash -e {0}
       
-      - name: Make DRBD-utils Package
+      - name: Install DRBD-utils Package
         run: |
           git clone https://github.com/LINBIT/drbd-utils.git
           cd drbd-utils
-          ./autogen.sh
-        #  ./configure
+          make clean all
+          sudo make install
         shell: /usr/bin/bash -e {0}
       
       - name: Build DRBD Utils Package
