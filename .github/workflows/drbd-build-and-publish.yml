@@ -59,6 +59,7 @@ jobs:
       - name: local DRBD repository
         run: |
           cd src/drbd
+          git pull
           make 
           sudo make install
       
