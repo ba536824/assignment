@@ -66,12 +66,21 @@ jobs:
           docbook-xsl \
           gettext 
 
+      - name: Build DRBD Package
+        run: |
+          git clone https://github.com/LINBIT/drbd.git
+          cd drbd
+          make 
+          sudo make install
+        shell: /usr/bin/bash -e {0}
+      
       - name: Make DRBD-utils Package
         run: |
           cd src/drbd-utils
           git pull
           ./autogen.sh
           ./configure
+          make clean
           dpkg-buildpackage -rfakeroot -b -uc
         shell: /usr/bin/bash -e {0}
 
