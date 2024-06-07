@@ -81,7 +81,13 @@ jobs:
         run: |
           cd drbd-utils
           debmake
-      
+          
+      - name: Debug Documentation Build
+        run: |
+          cd drbd-utils/documentation/v9
+          make V=1
+        shell: /usr/bin/bash -e {0}
+        
       - name: Build Binary Package
         run: |
           cd drbd-utils
