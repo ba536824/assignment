@@ -23,25 +23,37 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y \
-            devscripts \
-            debhelper \
-            dh-make \
-            build-essential \
-            libssl-dev \
-            libxml2-dev \
-            libcurl4-openssl-dev \
-            libtool \
-            autoconf \
-            automake \
-            libglib2.0-dev \
-            python3-dev \
-            python3-setuptools \
-            python3-pip \
-            coccinelle \
-            fakeroot \
-            dkms \
-            cargo \
-            rustc
+          devscripts \
+          debhelper \
+          dh-make \
+          build-essential \
+          libssl-dev \
+          libxml2-dev \
+          libcurl4-openssl-dev \
+          libtool \
+          autoconf \
+          automake \
+          libglib2.0-dev \
+          python3-dev \
+          python3-setuptools \
+          python3-pip \
+          coccinelle \
+          fakeroot \
+          dkms \
+          cargo \
+          rustc \
+          keyutils \
+          xsltproc \
+          help2man \
+          dh-python \
+          docbook-xsl \
+          python3-all \
+          equivs \
+          aspcud \
+          dh-virtualenv \
+          debmake \
+          default-jdk-headless \
+          unzip 
     
       - name: Build and Install LINSTOR API Py package
         run: |
