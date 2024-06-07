@@ -66,12 +66,20 @@ jobs:
           cd drbd-utils
           ./autogen.sh
         shell: /usr/bin/bash -e {0}
+
+      - name: Generate Source Tarball
+        run: tar czf drbd-utils-9.28.0.tar.gz -C drbd-utils .
+
+      - name: Initialize Debian Packaging
+        run: |
+          cd drbd-utils
+          debmake
       
       - name: Build Binary Package
         run: |
           cd drbd-utils
-          debmake
           dpkg-buildpackage -us -uc -b
+        shell: /usr/bin/bash -e {0}
 
       - name: Install PackageCloud CLI
         run: |
