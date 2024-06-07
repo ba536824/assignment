@@ -72,6 +72,7 @@ jobs:
           git clone https://github.com/LINBIT/drbd-utils.git
           cd drbd-utils
           ./autogen.sh
+          ./configure
         shell: /usr/bin/bash -e {0}
 
       - name: Generate Source Tarball
@@ -87,7 +88,7 @@ jobs:
           cd drbd-utils/documentation/v9
           make V=1
         shell: /usr/bin/bash -e {0}
-        
+
       - name: Build Binary Package
         run: |
           cd drbd-utils
