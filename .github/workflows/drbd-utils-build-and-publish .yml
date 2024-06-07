@@ -34,8 +34,8 @@ jobs:
           docbook-xsl \
           help2man \
           python-all \
-          python-dbus \
-          python-gobject \
+          python3-dbus \
+          python3-gobject \
           xsltproc \
           dh-systemd \
           flex \
