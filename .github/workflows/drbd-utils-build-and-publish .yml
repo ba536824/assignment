@@ -39,8 +39,8 @@ jobs:
           xsltproc \
           flex \
           autoconf \
-          automake 
-          
+          automake \
+          coccinelle
 
       - name: Build DRBD Package
         run: |
