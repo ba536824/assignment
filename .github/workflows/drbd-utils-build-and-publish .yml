@@ -70,9 +70,7 @@ jobs:
           cd drbd-utils
           ./autogen.sh
           ./configure
-          make clean
-          make -j4
-          make -C documentation/v9 doc 
+          make -C documentation clean 
         shell: /usr/bin/bash -e {0}
         
       - name: Build Debian Package
@@ -81,7 +79,7 @@ jobs:
           ./autogen.sh
           dpkg-buildpackage -rfakeroot -b -uc
         shell: /usr/bin/bash -e {0}
-        
+
       - name: Install PackageCloud CLI
         run: |
           sudo gem install package_cloud
