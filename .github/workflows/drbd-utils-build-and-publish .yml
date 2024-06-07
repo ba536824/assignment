@@ -64,7 +64,9 @@ jobs:
           libxml2-utils \
           docbook-xml \
           docbook-xsl \
-          gettext 
+          gettext \
+          po4a \
+          libxslt1-dev
 
       - name: Build DRBD Package
         run: |
@@ -80,6 +82,7 @@ jobs:
           cd drbd-utils
           ./autogen.sh
           ./configure
+          make -C documentation/v9
           make clean
           dpkg-buildpackage -rfakeroot -b -uc
         shell: /usr/bin/bash -e {0}
