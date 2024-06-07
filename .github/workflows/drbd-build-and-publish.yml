@@ -59,7 +59,7 @@ jobs:
       - name: local DRBD repository
         run: |
           cd src/drbd
-          make -C linstor-common || true 
+          make 
           sudo make install
       
       - name: Build Package
