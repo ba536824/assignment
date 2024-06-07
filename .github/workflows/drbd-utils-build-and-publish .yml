@@ -65,7 +65,7 @@ jobs:
           docbook-xml \
           docbook-xsl \
           gettext \
-          po4a
+          libkeyutils
 
       - name: Make DRBD-utils Package
         run: |
