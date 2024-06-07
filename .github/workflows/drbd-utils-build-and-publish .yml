@@ -60,7 +60,11 @@ jobs:
           unzip \
           libkeyutils-dev \
           asciidoc \
-          xmlto
+          xmlto \
+          libxml2-utils \
+          docbook-xml \
+          docbook-xsl \
+          gettext
 
       - name: Make DRBD-utils repository
         run: |
