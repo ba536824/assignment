@@ -25,7 +25,22 @@ jobs:
 
       - name: Set up APT
         run: |
-          sudo apt-get install aptitude install git build-essential debhelper dkms docbook-xsl help2man python-all python-dbus python-gobject xsltprochelp2man dh-systemd flex autoconf automake
+          sudo apt-get update
+          sudo apt-get install -y \
+          git \
+          build-essential \
+          debhelper \
+          dkms \
+          docbook-xsl \
+          help2man \
+          python-all \
+          python-dbus \
+          python-gobject \
+          xsltproc \
+          dh-systemd \
+          flex \
+          autoconf \
+          automake
 
       - name: Build DRBD Package
         run: |
