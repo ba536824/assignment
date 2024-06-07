@@ -13,6 +13,7 @@ jobs:
     strategy:
       matrix:
         os: ["jammy"]
+
     runs-on: ubuntu-latest
     timeout-minutes: 60
 
@@ -22,54 +23,61 @@ jobs:
         with:
           submodules: true
 
-      - name: Initialize and update submodules
-        run: |
-          git submodule update --init --recursive
-
       - name: Set up APT
         run: |
           sudo apt-get update
           sudo apt-get install -y \
-            devscripts \
-            debhelper \
-            dh-make \
-            build-essential \
-            libssl-dev \
-            libxml2-dev \
-            libcurl4-openssl-dev \
-            libtool \
-            autoconf \
-            automake \
-            libglib2.0-dev \
-            python3-dev \
-            python3-setuptools \
-            python3-pip \
-            coccinelle \
-            fakeroot \
-            dkms \
-            cargo \
-            rustc \
-            keyutils
+          devscripts \
+          debhelper \
+          dh-make \
+          build-essential \
+          libssl-dev \
+          libxml2-dev \
+          libcurl4-openssl-dev \
+          libtool \
+          autoconf \
+          automake \
+          libglib2.0-dev \
+          python3-dev \
+          python3-setuptools \
+          python3-pip \
+          coccinelle \
+          fakeroot \
+          dkms \
+          cargo \
+          rustc \
+          keyutils \
+          xsltproc \
+          help2man \
+          dh-python \
+          docbook-xsl \
+          python3-all \
+          equivs \
+          aspcud \
+          dh-virtualenv \
+          debmake \
+          default-jdk-headless \
+          unzip 
 
-      - name: Use local DRBD-utils repository
+      # - name: Make DRBD-utils repository
+      #   run: |
+      #     git clone https://github.com/LINBIT/drbd-utils.git
+      #     cd drbd-utils
+      #     make 
+      #      sudo make install
+      #   shell: /usr/bin/bash -e {0}
+
+      - name: Make drbd-utils package
         run: |
           cd src/drbd-utils
-          ./configure --enable-spec
-          # or use specific configure parameters
-          ./configure --without-84support --without-drbdmon --with-windrbd --without-manual --prefix=/cygdrive/c/windrbd/usr --localstatedir=/cygdrive/c/windrbd/var --sysconfdir=/cygdrive/c/windrbd/etc
           make
           sudo make install
-
-      - name: Build package
-        run: |
-          cd src/drbd-utils
-          make
-          sudo make install
+          shell: /usr/bin/bash -e {0}
       
-      - name: Build Source Package
-        run: |
-          cd src/drbd-utils
-          dpkg-buildpackage -us -uc -S
+      # - name: Build Source Package
+      #   run: |
+      #     cd src/drbd-utils
+      #     dpkg-buildpackage -us -uc -S
       
       - name: Build Binary Package
         run: |
@@ -84,4 +92,4 @@ jobs:
         env:
           PACKAGECLOUD_TOKEN: ${{ secrets.PACKAGECLOUD_TOKEN }}
         run: |
-          package_cloud push https://packagecloud.io/dniasoff/qcp-linstor-dev/package/ubuntu/${{ matrix.os }} src/drbd/*.deb
+          package_cloud push dniasoff/qcp-linstor-dev/package/ubuntu/${{ matrix.os }} ../*.deb

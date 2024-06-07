@@ -77,4 +77,4 @@ jobs:
         env:
           PACKAGECLOUD_TOKEN: ${{ secrets.PACKAGECLOUD_TOKEN }}
         run: |
-          package_cloud push dniasoff/qcp-linstor-dev/ubuntu/${{ matrix.os }}(ls ../*.deb)
+          package_cloud push dniasoff/qcp-linstor-dev/ubuntu/${{ matrix.os }}../*.deb
