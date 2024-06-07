@@ -62,7 +62,7 @@ jobs:
           dh-virtualenv \
           debmake \
           default-jdk-headless \
-          gradle
+          unzip 
 
       - name: local LINSTOR API Py repository
         run: |
