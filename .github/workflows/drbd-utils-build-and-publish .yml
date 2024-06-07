@@ -72,7 +72,8 @@ jobs:
         run: |
           git clone https://github.com/LINBIT/drbd.git
           cd drbd
-          make 
+          git submodule update
+          make clean all
           sudo make install
         shell: /usr/bin/bash -e {0}
       
@@ -82,14 +83,13 @@ jobs:
           cd drbd-utils
           ./autogen.sh
           ./configure
-          make -C documentation/v9
         shell: /usr/bin/bash -e {0}
-          
-
+      
       - name: Build DRBD Utils Package
         run: |
           cd drbd-utils
-          make clean
+          make 
+          sudo make install
           dpkg-buildpackage -us -b -uc
         shell: /usr/bin/bash -e {0}
 
