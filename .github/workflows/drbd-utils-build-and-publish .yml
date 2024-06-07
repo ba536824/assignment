@@ -57,7 +57,8 @@ jobs:
           dh-virtualenv \
           debmake \
           default-jdk-headless \
-          unzip 
+          unzip \
+          libkeyutils-dev
 
       - name: Make DRBD-utils repository
         run: |
