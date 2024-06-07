@@ -64,7 +64,8 @@ jobs:
           libxml2-utils \
           docbook-xml \
           docbook-xsl \
-          gettext
+          gettext \
+          po4a
 
       - name: Make DRBD-utils repository
         run: |
