@@ -70,12 +70,13 @@ jobs:
           cd drbd-utils
           ./autogen.sh
           ./configure
+          make -j4
+          
         shell: /usr/bin/bash -e {0}
         
       - name: Build Debian Package
         run: |
           cd drbd-utils
-          make clean
           dpkg-buildpackage -rfakeroot -b -uc
         shell: /usr/bin/bash -e {0}
 
