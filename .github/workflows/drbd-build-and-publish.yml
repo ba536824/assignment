@@ -58,7 +58,8 @@ jobs:
   
       - name: Make DRBD repository
         run: |
-          cd src/drbd
+          git clone https://github.com/LINBIT/drbd.git
+          cd drbd
           make 
           sudo make install
         shell: /usr/bin/bash -e {0}
