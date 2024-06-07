@@ -57,14 +57,12 @@ jobs:
           git clone https://github.com/LINBIT/drbd-utils.git
           cd drbd-utils
           ./autogen.sh
-          ./configure
+        #  ./configure
         shell: /usr/bin/bash -e {0}
       
       - name: Build DRBD Utils Package
         run: |
           cd drbd-utils
-          make 
-          sudo make install
           dpkg-buildpackage -us -b -uc
         shell: /usr/bin/bash -e {0}
 
