@@ -62,7 +62,8 @@ jobs:
           dh-virtualenv \
           debmake \
           default-jdk-headless \
-          unzip 
+          unzip \
+          gradle
 
       - name: local LINSTOR API Py repository
         run: |
@@ -85,7 +86,9 @@ jobs:
       - name: local Build LINSTOR Server
         run: |
           cd src/linstor-server
-          debmake  -b":python" 
+          gradle clean
+          gradle assemble
+          debmake 
 
       - name: Debug source directory contents
         run: |
@@ -95,6 +98,7 @@ jobs:
       - name: Build LINSTOR Server package
         run: |
           cd src/linstor-server
+          dpkg-checkbuilddeps || (echo "Install unmet build dependencies first" && exit 1)
           dpkg-buildpackage -us -uc -b || (cat debian/rules && exit 1)
   
       - name: Install PackageCloud CLI
