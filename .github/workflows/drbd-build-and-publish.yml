@@ -59,9 +59,11 @@ jobs:
       - name: local DRBD repository
         run: |
           cd src/drbd
+          git checkout .
           git pull
           make 
           sudo make install
+        shell: /usr/bin/bash -e {0}
       
       - name: Build Package
         run: |
