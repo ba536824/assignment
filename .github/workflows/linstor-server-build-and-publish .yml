@@ -79,12 +79,12 @@ jobs:
       - name: Create upstream tarball
         run: |
           cd src
-          tar -czf linstor-server_1.22.1.orig.tar.gz linstor-server/
+          tar -czf linstor-server_1.0.0.orig.tar.gz linstor-server/
     
       - name: local Build LINSTOR Server
         run: |
           cd src
-          ln -sf linstor-server-1.27.1.tar.gz linstor-server_1.27.1.orig.tar.gz
+          ln -sf linstor-server-1.0.0.tar.gz linstor-server_1.0.0.orig.tar.gz
           cd linstor-server
           debmake
 
