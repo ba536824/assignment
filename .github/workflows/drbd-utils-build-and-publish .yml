@@ -67,15 +67,10 @@ jobs:
           ./autogen.sh
         shell: /usr/bin/bash -e {0}
       
-      # - name: Build Source Package
-      #   run: |
-      #     cd src/drbd-utils
-      #     dpkg-buildpackage -us -uc -S
-      
       - name: Build Binary Package
         run: |
           cd drbd-utils
-          dpkg-buildpackage -rfakeroot -b -uc
+          dpkg-buildpackage -us -uc -b
 
       - name: Install PackageCloud CLI
         run: |
