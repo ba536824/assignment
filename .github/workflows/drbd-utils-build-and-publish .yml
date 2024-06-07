@@ -59,7 +59,6 @@ jobs:
           default-jdk-headless \
           unzip \
           libkeyutils-dev \
-          asciidoc \
           xmlto \
           libxml2-utils \
           docbook-xml \
@@ -67,7 +66,8 @@ jobs:
           gettext \
           po4a \
           libxslt1-dev \
-          asciidoctor
+          asciidoctor \
+          xsltproc
 
       - name: Build DRBD Package
         run: |
