@@ -56,39 +56,16 @@ jobs:
           default-jdk-headless \
           unzip 
 
-      - name: Clone DRBD repository
+      - name: local DRBD repository
         run: |
           cd src/drbd
           make -C linstor-common || true 
-          python3 setup.py build
-          sudo python3 setup.py install
-
-    #   - name: Generate configuration files
-    #     run: |
-    #       cd drbd
-    #       if [ -f ./configure ]; then
-    #         echo "Configure script found, running configure."
-    #         ./configure
-    #       else
-    #         echo "Configure script not found, checking for other setup scripts."
-    #         # Add additional setup steps here if necessary
-    #       fi
-
-    #   - name: Build package
-    #     run: |
-    #       cd drbd
-    #       make
-    #       sudo make install
+          sudo make install
       
       - name: Build Package
         run: |
           cd src/drbd
           dpkg-buildpackage -us -uc -b
-
-    #   - name: Build Binary Package
-    #     run: |
-    #       cd drbd
-    #       dpkg-buildpackage -us -uc -b
 
       - name: Install PackageCloud CLI
         run: |
