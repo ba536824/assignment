@@ -59,20 +59,13 @@ jobs:
           default-jdk-headless \
           unzip 
 
-      # - name: Make DRBD-utils repository
-      #   run: |
-      #     git clone https://github.com/LINBIT/drbd-utils.git
-      #     cd drbd-utils
-      #     make 
-      #      sudo make install
-      #   shell: /usr/bin/bash -e {0}
-
-      - name: Make drbd-utils package
+      - name: Make DRBD-utils repository
         run: |
-          cd src/drbd-utils
-          make
+          git clone https://github.com/LINBIT/drbd-utils.git
+          cd drbd-utils
+          make 
           sudo make install
-          shell: /usr/bin/bash -e {0}
+        shell: /usr/bin/bash -e {0}
       
       # - name: Build Source Package
       #   run: |
@@ -81,7 +74,7 @@ jobs:
       
       - name: Build Binary Package
         run: |
-          cd src/drbd-utils
+          cd drbd-utils
           dpkg-buildpackage -us -uc -b 
 
       - name: Install PackageCloud CLI
