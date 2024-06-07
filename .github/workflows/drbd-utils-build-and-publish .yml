@@ -46,7 +46,8 @@ jobs:
           keyutils \
           libkeyutils-dev \
           xmlto \
-          asciidoctor 
+          asciidoctor \
+          po4a
 
       - name: Install DRBD Package
         run: |
