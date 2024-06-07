@@ -34,12 +34,13 @@ jobs:
           docbook-xsl \
           help2man \
           python-all \
-          python3-dbus \
-          python3-gobject \
+          python3-dev \
+          python3-pip \
           xsltproc \
           flex \
           autoconf \
-          automake
+          automake 
+          
 
       - name: Build DRBD Package
         run: |
