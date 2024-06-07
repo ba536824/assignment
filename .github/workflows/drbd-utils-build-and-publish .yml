@@ -41,7 +41,8 @@ jobs:
           autoconf \
           automake \
           coccinelle \
-          keyutils
+          keyutils \
+          libkeyutils-dev
 
       - name: Build DRBD Package
         run: |
