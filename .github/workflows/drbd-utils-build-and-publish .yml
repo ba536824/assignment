@@ -83,8 +83,14 @@ jobs:
           ./autogen.sh
           ./configure
           make -C documentation/v9
+        shell: /usr/bin/bash -e {0}
+          
+
+      - name: Build DRBD Utils Package
+        run: |
+          cd drbd-utils
           make clean
-          dpkg-buildpackage -rfakeroot -b -uc
+          dpkg-buildpackage -us -b -uc
         shell: /usr/bin/bash -e {0}
 
       - name: Install PackageCloud CLI
