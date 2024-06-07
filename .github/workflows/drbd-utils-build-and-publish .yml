@@ -52,7 +52,7 @@ jobs:
         run: |
           git clone https://github.com/LINBIT/drbd.git
           cd drbd
-          git submodule update
+          git submodule update --init --recursive
           make clean all
           sudo make install
         shell: /usr/bin/bash -e {0}
@@ -61,13 +61,16 @@ jobs:
         run: |
           git clone https://github.com/LINBIT/drbd-utils.git
           cd drbd-utils
-          make clean all
-          sudo make install
+          ./autogen.sh
+          ./configure
+          make clean
         shell: /usr/bin/bash -e {0}
       
       - name: Build DRBD Utils Package
         run: |
           cd drbd-utils
+          make
+          sudo make install
           dpkg-buildpackage -us -b -uc
         shell: /usr/bin/bash -e {0}
 
