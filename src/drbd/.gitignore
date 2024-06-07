@@ -15,7 +15,6 @@ drbd/cscope.out
 drbd/build-*/
 drbd/compat*.h
 drbd/compat*.patch
-drbd/.drbd_git_revision
 drbd/dummy-for-compat-h.c
 drbd/dummy-for-patch.c
 
