@@ -46,8 +46,7 @@ jobs:
           keyutils \
           libkeyutils-dev \
           xmlto \
-          asciidoctor \
-          drbd-pacemaker 
+          asciidoctor 
 
       - name: Install DRBD Package
         run: |
