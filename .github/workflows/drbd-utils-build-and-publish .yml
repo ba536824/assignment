@@ -74,7 +74,7 @@ jobs:
       - name: Build DRBD Utils Package
         run: |
           cd drbd-utils
-          dpkg-buildpackage -us -b -uc
+          debmake
         shell: /usr/bin/bash -e {0}
 
       - name: Install PackageCloud CLI
