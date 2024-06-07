@@ -55,12 +55,17 @@ jobs:
           debmake \
           default-jdk-headless \
           unzip 
-
-      - name: local DRBD repository
+         
+      - name: Pull latest changes and generate .drbd_git_revision
         run: |
           cd src/drbd
           git checkout .
           git pull
+          git submodule update --init --recursive
+  
+      - name: Make DRBD repository
+        run: |
+          cd src/drbd
           make 
           sudo make install
         shell: /usr/bin/bash -e {0}
