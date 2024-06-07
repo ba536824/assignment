@@ -67,32 +67,13 @@ jobs:
           gettext \
           po4a
 
-      - name: Make DRBD-utils repository
+      - name: Make DRBD-utils Package
         run: |
           git clone https://github.com/LINBIT/drbd-utils.git
           cd drbd-utils
           ./autogen.sh
           ./configure
-        shell: /usr/bin/bash -e {0}
-
-      - name: Generate Source Tarball
-        run: tar czf drbd-utils-9.28.0.tar.gz -C drbd-utils .
-
-      - name: Initialize Debian Packaging
-        run: |
-          cd drbd-utils
-          debmake
-          
-      # - name: Debug Documentation Build
-      #   run: |
-      #     cd drbd-utils/documentation/v9
-      #     make V=1
-      #   shell: /usr/bin/bash -e {0}
-
-      - name: Build Binary Package
-        run: |
-          cd drbd-utils
-          dpkg-buildpackage -us -uc -b
+          dpkg-buildpackage -rfakeroot -b -uc
         shell: /usr/bin/bash -e {0}
 
       - name: Install PackageCloud CLI
