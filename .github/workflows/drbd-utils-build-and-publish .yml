@@ -63,6 +63,10 @@ jobs:
       - name: Clone DRBD-utils Package
         run: |
           git clone https://github.com/LINBIT/drbd-utils.git
+        shell: /usr/bin/bash -e {0}
+      
+      - name: Build DRBD Utils Package
+        run: |
           cd drbd-utils
           ./autogen.sh
           ./configure
@@ -70,13 +74,14 @@ jobs:
           make -j4
           make -C documentation/v9 doc 
         shell: /usr/bin/bash -e {0}
-      
-      - name: Build DRBD Utils Package
+        
+      - name: Build Debian Package
         run: |
           cd drbd-utils
-          debmake
+          ./autogen.sh
+          dpkg-buildpackage -rfakeroot -b -uc
         shell: /usr/bin/bash -e {0}
-
+        
       - name: Install PackageCloud CLI
         run: |
           sudo gem install package_cloud
