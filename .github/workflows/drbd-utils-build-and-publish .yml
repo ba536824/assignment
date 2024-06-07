@@ -64,8 +64,7 @@ jobs:
           libxml2-utils \
           docbook-xml \
           docbook-xsl \
-          gettext \
-          libkeyutils
+          gettext 
 
       - name: Make DRBD-utils Package
         run: |
