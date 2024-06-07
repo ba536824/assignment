@@ -63,7 +63,7 @@ jobs:
         run: |
           git clone https://github.com/LINBIT/drbd-utils.git
           cd drbd-utils
-          make 
+          make tools
           sudo make install
         shell: /usr/bin/bash -e {0}
       
