@@ -70,6 +70,7 @@ jobs:
       - name: Build Binary Package
         run: |
           cd drbd-utils
+          debmake
           dpkg-buildpackage -us -uc -b
 
       - name: Install PackageCloud CLI
