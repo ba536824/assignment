@@ -76,8 +76,8 @@ jobs:
       
       - name: Make DRBD-utils Package
         run: |
-          cd src/drbd-utils
-          git pull
+          git clone https://github.com/LINBIT/drbd-utils.git
+          cd drbd-utils
           ./autogen.sh
           ./configure
           make clean
