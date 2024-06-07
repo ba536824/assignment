@@ -86,8 +86,8 @@ jobs:
       - name: local Build LINSTOR Server
         run: |
           cd src/linstor-server
-          gradle clean
-          gradle assemble
+          gradle clean || (cat build.gradle && exit 1)
+          gradle assemble || (cat build.gradle && exit 1)
           debmake 
 
       - name: Debug source directory contents
