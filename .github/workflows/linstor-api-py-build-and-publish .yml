@@ -85,7 +85,7 @@ jobs:
 
       - name: Build Binary Package
         run: |
-          cd src/instor-api-py
+          cd src/linstor-api-py
           dpkg-buildpackage -us -uc -b   
 
       - name: Install PackageCloud CLI
