@@ -87,8 +87,7 @@ jobs:
       - name: Build LINSTOR Server package
         run: |
           cd linstor-server
-          dpkg-checkbuilddeps || (echo "Install unmet build dependencies first" && exit 1)
-          dpkg-buildpackage -us -uc -b || (cat debian/rules && exit 1)
+          dpkg-buildpackage -us -uc -b
   
       - name: Install PackageCloud CLI
         run: |
