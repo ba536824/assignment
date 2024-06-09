@@ -84,7 +84,7 @@ jobs:
           cd linstor-server
           ./gradlew wrapper --gradle-version 7.3.3
           ./gradlew getProtoc 
-          make build || echo "Failed to build. Checking debug info..."
+          ./gradlew build
 
       - name: Release LINSTOR Server package
         run: |
