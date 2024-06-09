@@ -87,7 +87,7 @@ jobs:
       - name: Build LINSTOR Server package
         run: |
           cd linstor-server
-          dpkg-buildpackage -us -uc -b
+          ./gradlew assemble
   
       - name: Install PackageCloud CLI
         run: |
