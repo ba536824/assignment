@@ -81,8 +81,7 @@ jobs:
       - name: local Build LINSTOR Server
         run: |
           cd src/linstor-server
-          ./gradlew getProtoc
-          ./gradlew assemble
+          ./gradlew getProtoc versionInfo --info
 
       - name: Build LINSTOR Server package
         run: |
