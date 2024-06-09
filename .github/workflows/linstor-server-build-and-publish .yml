@@ -81,10 +81,8 @@ jobs:
       - name: local Build LINSTOR Server
         run: |
           cd src/linstor-server
-          gradle clean || (cat build.gradle && exit 1)
-          gradle assemble || (cat build.gradle && exit 1)
-          debmake 
-          
+          ./gradlew getProtoc
+
       - name: Build LINSTOR Server package
         run: |
           cd src/linstor-server
