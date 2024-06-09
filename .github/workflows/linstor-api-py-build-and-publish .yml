@@ -87,8 +87,7 @@ jobs:
       - name: Build Binary Package
         run: |
           cd src/../python-linstor-1.22.0
-          debmake  -b":python"  
-          dpkg-buildpackage -us -uc -b  
+          debmake  -b":python"   
 
       - name: Install PackageCloud CLI
         run: |
