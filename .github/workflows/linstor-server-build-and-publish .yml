@@ -82,6 +82,7 @@ jobs:
         run: |
           cd src/linstor-server
           ./gradlew getProtoc
+          ./gradlew assemble
 
       - name: Build LINSTOR Server package
         run: |
