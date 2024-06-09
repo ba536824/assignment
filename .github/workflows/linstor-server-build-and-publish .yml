@@ -83,6 +83,7 @@ jobs:
           cd linstor-server
           ./gradlew wrapper --gradle-version 7.3.3
           ./gradlew getProtoc 
+          ./gradle build
 
       - name: Build LINSTOR Server package
         run: |
