@@ -82,11 +82,12 @@ jobs:
           cd src
           tar -czf python-linstor-1.22.0.orig.tar.gz linstor-api-py/
           mv python-linstor-1.22.0.orig.tar.gz ../python-linstor-1.22.0.tar.gz
-          
+
       - name: Build Binary Package
         run: |
           cd src/linstor-api-py
           debmake  -b":python"  
+          dpkg-buildpackage -us -uc -b  
 
       - name: Install PackageCloud CLI
         run: |
