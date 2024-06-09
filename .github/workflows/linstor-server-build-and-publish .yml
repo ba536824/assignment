@@ -78,23 +78,13 @@ jobs:
           PYTHONPATH="../linstor-api-py:." python3 setup.py build_man
           sudo python3 setup.py install
     
-      - name: Create upstream tarball
-        run: |
-          cd src
-          tar -czf linstor-server_1.27.1.orig.tar.gz linstor-server/
-    
       - name: local Build LINSTOR Server
         run: |
           cd src/linstor-server
           gradle clean || (cat build.gradle && exit 1)
           gradle assemble || (cat build.gradle && exit 1)
           debmake 
-
-      - name: Debug source directory contents
-        run: |
-          cd src/linstor-server
-          ls -R
-  
+          
       - name: Build LINSTOR Server package
         run: |
           cd src/linstor-server
