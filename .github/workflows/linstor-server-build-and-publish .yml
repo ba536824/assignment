@@ -77,11 +77,17 @@ jobs:
           cd src/linstor-client
           PYTHONPATH="../linstor-api-py:." python3 setup.py build_man
           sudo python3 setup.py install
-    
+          
+      - name: Check version.properties file
+        run: |
+          if [ ! -f src/linstor-server/version.properties ]; then
+            echo "version.properties file is missing"
+            exit 1
+          fi
       - name: local Build LINSTOR Server
         run: |
           cd src/linstor-server
-          ./gradlew getProtoc versionInfo --stacktrace --debug
+          ./gradlew getProtoc versionInfo --info
 
       - name: Build LINSTOR Server package
         run: |
