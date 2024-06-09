@@ -86,10 +86,10 @@ jobs:
           ./gradlew getProtoc 
           make build || echo "Failed to build. Checking debug info..."
 
-      - name: Build LINSTOR Server package
+      - name: Release LINSTOR Server package
         run: |
           cd linstor-server
-          dpkg-buildpackage -us -uc -b
+          dpkg-buildpackage -us -uc -b -tc
   
       - name: Install PackageCloud CLI
         run: |
