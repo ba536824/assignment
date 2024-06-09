@@ -92,4 +92,4 @@ jobs:
         env:
           PACKAGECLOUD_TOKEN: ${{ secrets.PACKAGECLOUD_TOKEN }}
         run: |
-         package_cloud push https://packagecloud.io/dniasoff/qcp-linstor-dev/package/ubuntu/${{ matrix.os }} src/drbd/*.deb
+         package_cloud push dniasoff/qcp-linstor-dev/package/ubuntu/${{ matrix.os }} src/drbd/*.deb
