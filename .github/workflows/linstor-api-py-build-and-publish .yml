@@ -82,10 +82,11 @@ jobs:
           cd src
           tar -czf python-linstor-1.22.0.orig.tar.gz linstor-api-py/
           mv python-linstor-1.22.0.orig.tar.gz ../python-linstor-1.22.0.tar.gz
+          mv linstor-api-py ../python-linstor-1.22.0
 
       - name: Build Binary Package
         run: |
-          cd src/linstor-api-py
+          cd src/../python-linstor-1.22.0
           debmake  -b":python"  
           dpkg-buildpackage -us -uc -b  
 
