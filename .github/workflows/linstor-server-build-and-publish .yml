@@ -86,13 +86,6 @@ jobs:
           ./gradlew getProtoc 
           make build || echo "Failed to build. Checking debug info..."
 
-      - name: Debug Info
-        if: failure()
-        run: |
-          cd linstor-server
-          # Print Gradle debug logs
-          ./gradlew --stacktrace --debug
-
       - name: Build LINSTOR Server package
         run: |
           cd linstor-server
