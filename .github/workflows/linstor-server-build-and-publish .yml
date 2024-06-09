@@ -87,7 +87,7 @@ jobs:
       - name: Build LINSTOR Server package
         run: |
           cd linstor-server
-          pkg-buildpackage -us -uc -b
+          dpkg-buildpackage -us -uc -b
   
       - name: Install PackageCloud CLI
         run: |
