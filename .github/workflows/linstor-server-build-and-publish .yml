@@ -78,22 +78,15 @@ jobs:
           PYTHONPATH="../linstor-api-py:." python3 setup.py build_man
           sudo python3 setup.py install
           
-      - name: Check version.properties file
-        run: |
-          if [ ! -f src/linstor-server/version.properties ]; then
-            echo "version=1.0.0" > src/linstor-server/version.properties
-            echo "version.properties file was missing, created with default version 1.0.0"
-          else
-            echo "version.properties file exists"
-          fi
       - name: local Build LINSTOR Server
         run: |
-          cd src/linstor-server
+          git clone https://github.com/LINBIT/linstor-server.git
+          cd linstor-server
           ./gradlew getProtoc versionInfo --info
 
       - name: Build LINSTOR Server package
         run: |
-          cd src/linstor-server
+          cd linstor-server
           dpkg-checkbuilddeps || (echo "Install unmet build dependencies first" && exit 1)
           dpkg-buildpackage -us -uc -b || (cat debian/rules && exit 1)
   
@@ -105,4 +98,4 @@ jobs:
         env:
           PACKAGECLOUD_TOKEN: ${{ secrets.PACKAGECLOUD_TOKEN }}
         run: |
-         package_cloud push https://packagecloud.io/dniasoff/qcp-linstor-dev/package/ubuntu/${{ matrix.os }} src/drbd/*.deb
+         package_cloud push dniasoff/qcp-linstor-dev/package/ubuntu/${{ matrix.os }} src/drbd/*.deb
