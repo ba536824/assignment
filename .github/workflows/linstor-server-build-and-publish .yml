@@ -81,7 +81,7 @@ jobs:
       - name: local Build LINSTOR Server
         run: |
           cd src/linstor-server
-          ./gradlew getProtoc versionInfo --info
+          ./gradlew getProtoc versionInfo --stacktrace --debug
 
       - name: Build LINSTOR Server package
         run: |
