@@ -81,13 +81,13 @@ jobs:
         run: |
           git clone https://github.com/LINBIT/linstor-server.git
           cd linstor-server
+          ./gradlew wrapper --gradle-version 7.3.3
           ./gradlew getProtoc 
-          ./gradlew assemble
 
       - name: Build LINSTOR Server package
         run: |
           cd linstor-server
-          debmake
+          pkg-buildpackage -us -uc -b
   
       - name: Install PackageCloud CLI
         run: |
