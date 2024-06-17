@@ -12,7 +12,7 @@ jobs:
   build:
     strategy:
       matrix:
-        os: ["jammy"]
+        os: ["jammy","noble"]
 
     runs-on: ubuntu-latest
 
@@ -73,7 +73,13 @@ jobs:
         run: |
           sudo gem install package_cloud
 
-      - name: Publish package to PackageCloud
+      - name: Publish package to PackageCloud for Jammy
+        env:
+          PACKAGECLOUD_TOKEN: ${{ secrets.PACKAGECLOUD_TOKEN }}
+        run: |
+          package_cloud push dniasoff/qcp-linstor-dev/ubuntu/${{ matrix.os }}../*.deb
+
+      - name: Publish package to PackageCloud for Noble
         env:
           PACKAGECLOUD_TOKEN: ${{ secrets.PACKAGECLOUD_TOKEN }}
         run: |
