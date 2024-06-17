@@ -12,7 +12,7 @@ jobs:
   build:
     strategy:
       matrix:
-        os: ["jammy"]
+        os: ["jammy","noble"]
 
     runs-on: ubuntu-latest
 
