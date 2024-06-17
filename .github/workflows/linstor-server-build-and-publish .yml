@@ -83,7 +83,7 @@ jobs:
           git clone https://github.com/LINBIT/linstor-server.git
           cd linstor-server
           ./gradlew getProtoc
-          ./gradlew build
+          ./gradlew assemble
 
       - name: Release LINSTOR Server package
         run: |
