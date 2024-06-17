@@ -73,14 +73,14 @@ jobs:
         run: |
           sudo gem install package_cloud
 
-      - name: Publish package to PackageCloud for Jammy
+      - name: Publish package to PackageCloud 
         env:
           PACKAGECLOUD_TOKEN: ${{ secrets.PACKAGECLOUD_TOKEN }}
         run: |
           package_cloud push dniasoff/qcp-linstor-dev/ubuntu/${{ matrix.os }}../*.deb
 
-      - name: Publish package to PackageCloud for Noble
-        env:
-          PACKAGECLOUD_TOKEN: ${{ secrets.PACKAGECLOUD_TOKEN }}
-        run: |
-          package_cloud push dniasoff/qcp-linstor-dev/ubuntu/${{ matrix.os }}../*.deb
+      # - name: Publish package to PackageCloud for Noble
+      #   env:
+      #     PACKAGECLOUD_TOKEN: ${{ secrets.PACKAGECLOUD_TOKEN }}
+      #   run: |
+      #     package_cloud push dniasoff/qcp-linstor-dev/ubuntu/${{ matrix.os }}../*.deb
