@@ -82,6 +82,7 @@ jobs:
         run: |
           git clone https://github.com/LINBIT/linstor-server.git
           cd linstor-server
+          ./gradlew getProtoc
           ./gradlew build
           ./gradlew build --scan
 
