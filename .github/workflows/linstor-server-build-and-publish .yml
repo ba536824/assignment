@@ -82,8 +82,8 @@ jobs:
         run: |
           git clone https://github.com/LINBIT/linstor-server.git
           cd linstor-server
-          ./gradlew clean
-          ./gradlew run
+          ./gradlew build
+          ./gradlew build --scan
 
       - name: Release LINSTOR Server package
         run: |
